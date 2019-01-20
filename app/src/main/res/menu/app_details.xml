@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/uninstall" android:title="Uninstall" android:icon="@drawable/ic_delete_black_24dp"/>
+    <item android:id="@+id/app_info" android:title="App Info" android:icon="@drawable/ic_info_black_24dp"/>
+    <item android:id="@+id/play_store" android:title="See on Play Store" android:icon="@drawable/ic_local_grocery_store_black_24dp"/>
+</menu>

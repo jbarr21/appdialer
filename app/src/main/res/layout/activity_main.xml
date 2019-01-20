@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.MainActivity">
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/app_grid"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/t9_top_guideline"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_app_grid"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/t9_top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".525"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/t9_bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="48dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dialer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/t9_top_guideline"
+        app:layout_constraintBottom_toTopOf="@id/t9_bottom_guideline"
+        tools:listitem="@layout/item_dialer"/>
+
+    <ImageView
+        android:id="@+id/blue_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/color_launcher_dot"
+        android:clickable="true"
+        app:backgroundTint="#2196F3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/red_button"/>
+
+    <ImageView
+        android:id="@+id/red_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/color_launcher_dot"
+        android:clickable="true"
+        app:backgroundTint="#F44336"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/blue_button"
+        app:layout_constraintRight_toLeftOf="@+id/yellow_button"/>
+
+    <ImageView
+        android:id="@+id/yellow_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/color_launcher_dot"
+        android:clickable="true"
+        app:backgroundTint="#FFEB3B"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/red_button"
+        app:layout_constraintRight_toLeftOf="@+id/green_button"/>
+
+    <ImageView
+        android:id="@+id/green_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/color_launcher_dot"
+        android:clickable="true"
+        app:backgroundTint="#4CAF50"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/yellow_button"
+        app:layout_constraintRight_toLeftOf="@+id/gray_button"/>
+
+    <ImageView
+        android:id="@+id/gray_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/color_launcher_dot"
+        android:clickable="true"
+        app:backgroundTint="#888888"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/green_button"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
