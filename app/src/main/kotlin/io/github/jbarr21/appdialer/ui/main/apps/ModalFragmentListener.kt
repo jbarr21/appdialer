@@ -6,10 +6,10 @@ import android.net.Uri
 import android.os.UserHandle
 import com.commit451.modalbottomsheetdialogfragment.ModalBottomSheetDialogFragment
 import com.commit451.modalbottomsheetdialogfragment.Option
-import io.github.jbarr21.appdialer.util.AppIconDecoder.Companion.PARAM_USER_ID
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.UserCache
-import io.github.jbarr21.appdialer.ui.ActivityLauncher
+import io.github.jbarr21.appdialer.util.ActivityLauncher
+import io.github.jbarr21.appdialer.util.AppIconFetcher.Companion.PARAM_USER_ID
 
 class ModalFragmentListener(
   private val activityLauncher: ActivityLauncher,

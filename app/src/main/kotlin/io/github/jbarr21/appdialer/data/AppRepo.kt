@@ -1,16 +1,17 @@
 package io.github.jbarr21.appdialer.data
 
+import android.app.Application
 import android.content.pm.LauncherApps
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.UserManager
+import androidx.core.graphics.drawable.toBitmap
 import androidx.palette.graphics.Palette
-import com.squareup.picasso.Picasso
+import coil.Coil
+import coil.request.GetRequest
 import io.github.jbarr21.appdialer.data.db.AppDatabase
-import io.github.jbarr21.appdialer.util.AppIconDecoder.Companion.PARAM_USER_ID
-import io.github.jbarr21.appdialer.util.AppIconDecoder.Companion.SCHEME_PNAME
-import io.github.jbarr21.appdialer.ui.main.apps.AppAdapter
+import io.github.jbarr21.appdialer.util.AppIconFetcher.Companion.PARAM_USER_ID
+import io.github.jbarr21.appdialer.util.AppIconFetcher.Companion.SCHEME_PNAME
 import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
@@ -21,6 +22,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class AppRepo(
+  private val application: Application,
   private val appDatabase: AppDatabase,
   private val appStream: AppStream,
   private val launcherApps: LauncherApps,
@@ -56,17 +58,14 @@ class AppRepo(
     return diskCachedApps
   }
 
-  private fun loadAppsFromPackageManager(): List<App> {
+  private suspend fun loadAppsFromPackageManager(): List<App> {
     return userManager.userProfiles
       .flatMap { user ->
         launcherApps.getActivityList(null, user)
           .map {
             val packageName = it.applicationInfo.packageName
             val iconUri = Uri.parse("$SCHEME_PNAME://$packageName?$PARAM_USER_ID=${user.id}")
-            val icon = when (AppAdapter.imageLoader) {
-              AppAdapter.ImageLoader.PICASSO -> Picasso.get().load(iconUri).get()
-              AppAdapter.ImageLoader.GLIDE -> Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888) //GlideApp.with(context).load(iconUri).submit().get().toBitmap()
-            }
+            val icon = Coil.execute(GetRequest.Builder(application).data(iconUri).build()).drawable?.toBitmap()!!
             val iconColor = Palette.from(icon).generate().getDominantColor(Color.TRANSPARENT)
             App(it.label.toString(), packageName, it.componentName.className, user, iconColor)
           }

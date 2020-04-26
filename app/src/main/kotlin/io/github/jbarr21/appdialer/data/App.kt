@@ -6,8 +6,8 @@ import android.content.Intent.ACTION_MAIN
 import android.graphics.Color.TRANSPARENT
 import android.net.Uri
 import android.os.UserHandle
-import io.github.jbarr21.appdialer.util.AppIconDecoder.Companion.PARAM_USER_ID
-import io.github.jbarr21.appdialer.util.AppIconDecoder.Companion.SCHEME_PNAME
+import io.github.jbarr21.appdialer.util.AppIconFetcher.Companion.PARAM_USER_ID
+import io.github.jbarr21.appdialer.util.AppIconFetcher.Companion.SCHEME_PNAME
 
 // TODO: fine tune color selection
 // TODO: ensure that we are using the correct icon for Leak Canary

@@ -11,7 +11,6 @@ import com.jakewharton.processphoenix.ProcessPhoenix
 import de.Maxr1998.modernpreferences.PreferenceScreen
 import de.Maxr1998.modernpreferences.PreferencesAdapter
 import io.github.jbarr21.appdialer.R
-import kotlinx.android.synthetic.main.activity_main.view.*
 
 class SettingsActivity : AppCompatActivity() {
 

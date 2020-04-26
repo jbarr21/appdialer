@@ -10,32 +10,22 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import coil.ImageLoader
+import coil.api.load
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.ui.main.dialer.QueryStream
-import io.github.jbarr21.appdialer.util.GlideApp
 import io.github.jbarr21.appdialer.util.Truss
 
 class AppAdapter(
   callback: DiffUtil.ItemCallback<App>,
+  private val imageLoader: ImageLoader,
   private val queryStream: QueryStream,
   private val clickStream: AppClickStream
 ) : ListAdapter<App, AppViewHolder>(callback) {
 
-  enum class ImageLoader { PICASSO, GLIDE }
-  companion object {
-    val imageLoader = ImageLoader.PICASSO
-  }
-
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppViewHolder {
-    return AppViewHolder(
-      LayoutInflater.from(parent.context).inflate(
-        R.layout.item_app_grid,
-        parent,
-        false
-      )
-    )
+    return AppViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_app_grid, parent, false))
   }
 
   override fun onBindViewHolder(holder: AppViewHolder, position: Int) {
@@ -54,25 +44,10 @@ class AppAdapter(
         itemView.setBackgroundColor(app.iconColor)
       }
 
-      when (imageLoader) {
-        ImageLoader.PICASSO -> Picasso.get()
-          .load(app.uri)
-          .placeholder(R.drawable.app_icon_placeholder)
-          .into(holder.icon)
-        ImageLoader.GLIDE -> GlideApp
-          .with(holder.itemView)
-          .load(app.uri)
-          .placeholder(R.drawable.app_icon_placeholder)
-          .into(holder.icon)
+      icon.load(app.uri, imageLoader = imageLoader) {
+        placeholder(R.drawable.app_icon_placeholder)
+        crossfade(true)
       }
-    }
-  }
-
-  override fun onViewRecycled(holder: AppViewHolder) {
-    super.onViewRecycled(holder)
-    when (imageLoader) {
-      ImageLoader.PICASSO -> Picasso.get().cancelRequest(holder.icon)
-      ImageLoader.GLIDE -> GlideApp.with(holder.itemView).clear(holder.icon)
     }
   }
 }
