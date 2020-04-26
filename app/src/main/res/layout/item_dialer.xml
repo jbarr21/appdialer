@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?selectableItemBackgroundBorderless"
-    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
     android:gravity="center"
     android:clickable="true"
     tools:text="5 JKL"/>
