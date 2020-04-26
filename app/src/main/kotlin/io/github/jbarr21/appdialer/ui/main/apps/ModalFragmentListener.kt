@@ -1,6 +1,5 @@
-package io.github.jbarr21.appdialer.ui.apps
+package io.github.jbarr21.appdialer.ui.main.apps
 
-import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -11,7 +10,6 @@ import io.github.jbarr21.appdialer.util.AppIconDecoder.Companion.PARAM_USER_ID
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.UserCache
 import io.github.jbarr21.appdialer.ui.ActivityLauncher
-import java.lang.ref.WeakReference
 
 class ModalFragmentListener(
   private val activityLauncher: ActivityLauncher,

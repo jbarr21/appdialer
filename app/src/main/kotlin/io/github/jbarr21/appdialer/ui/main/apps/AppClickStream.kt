@@ -1,4 +1,4 @@
-package io.github.jbarr21.appdialer.ui.apps
+package io.github.jbarr21.appdialer.ui.main.apps
 
 import com.jakewharton.rxrelay2.PublishRelay
 import io.github.jbarr21.appdialer.data.App

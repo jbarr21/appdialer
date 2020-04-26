@@ -8,12 +8,10 @@ import android.os.UserManager
 import androidx.palette.graphics.Palette
 import com.squareup.picasso.Picasso
 import io.github.jbarr21.appdialer.data.db.AppDatabase
-import io.github.jbarr21.appdialer.data.db.AppEntity
 import io.github.jbarr21.appdialer.util.AppIconDecoder.Companion.PARAM_USER_ID
 import io.github.jbarr21.appdialer.util.AppIconDecoder.Companion.SCHEME_PNAME
-import io.github.jbarr21.appdialer.ui.apps.AppAdapter
+import io.github.jbarr21.appdialer.ui.main.apps.AppAdapter
 import io.reactivex.Completable
-import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

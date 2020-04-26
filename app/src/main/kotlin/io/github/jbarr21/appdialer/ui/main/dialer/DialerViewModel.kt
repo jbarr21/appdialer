@@ -1,4 +1,4 @@
-package io.github.jbarr21.appdialer.ui.dialer
+package io.github.jbarr21.appdialer.ui.main.dialer
 
 import androidx.lifecycle.ViewModel
 import io.github.jbarr21.appdialer.util.Trie

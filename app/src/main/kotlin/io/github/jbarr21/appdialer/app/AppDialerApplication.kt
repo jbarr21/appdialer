@@ -4,7 +4,6 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import androidx.core.content.getSystemService
 import com.facebook.flipper.android.AndroidFlipperClient
@@ -18,16 +17,12 @@ import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPl
 import com.facebook.soloader.SoLoader
 import com.facebook.stetho.Stetho
 import com.squareup.picasso.Picasso
-import io.github.jbarr21.appdialer.app.AppScopeImpl
 import io.github.jbarr21.appdialer.BuildConfig
-import io.github.jbarr21.appdialer.data.UserCache
 import io.github.jbarr21.appdialer.service.KeepAliveService
-import io.github.jbarr21.appdialer.ui.settings.Settings
-import io.github.jbarr21.appdialer.util.AppIconRequestHandler
 import io.github.jbarr21.appdialer.util.Channels
 import timber.log.Timber
 
-class AppDialerApplication : android.app.Application(), AppScopeImpl.Dependencies {
+class AppDialerApplication : Application(), AppScopeImpl.Dependencies {
 
   val appScope: AppScope by lazy { AppScopeImpl(this) }
 
@@ -35,7 +30,7 @@ class AppDialerApplication : android.app.Application(), AppScopeImpl.Dependencie
     super.onCreate()
     Timber.plant(Timber.DebugTree())
     Timber.tag("JIM").d("Application created")
-    // setupFlipper(this)
+    setupFlipper(this)
     Stetho.initializeWithDefaults(this)
     createNotificationChannel()
     KeepAliveService.start(this, appScope.sharedPreferences())

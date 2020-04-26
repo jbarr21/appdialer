@@ -1,5 +1,6 @@
 package io.github.jbarr21.appdialer.app
 
+import android.app.Activity
 import android.app.ActivityManager
 import android.app.Application
 import android.app.admin.DevicePolicyManager
@@ -8,21 +9,15 @@ import android.content.SharedPreferences
 import android.content.pm.LauncherApps
 import android.os.UserManager
 import android.os.Vibrator
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.getSystemService
 import androidx.preference.PreferenceManager
-import androidx.recyclerview.widget.DiffUtil
 import androidx.room.Room
 import com.google.common.base.Optional
-import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.data.AppStream
 import io.github.jbarr21.appdialer.data.UserCache
 import io.github.jbarr21.appdialer.data.db.AppDatabase
 import io.github.jbarr21.appdialer.ui.ActivityLauncher
-import io.github.jbarr21.appdialer.ui.MainActivity
-import io.github.jbarr21.appdialer.ui.MainScope
-import io.github.jbarr21.appdialer.ui.MainScopeImpl
+import io.github.jbarr21.appdialer.ui.main.MainScope
 import io.github.jbarr21.appdialer.util.AppIconDecoder
 import io.github.jbarr21.appdialer.util.AppIconRequestHandler
 import motif.Expose
@@ -31,7 +26,7 @@ import motif.Scope
 @Scope
 interface AppScope {
 
-  fun mainScope(mainActivity: MainActivity): MainScope
+  fun mainScope(activity: Activity): MainScope
 
   fun appDatabase(): AppDatabase
   fun appIconDecoder(): AppIconDecoder

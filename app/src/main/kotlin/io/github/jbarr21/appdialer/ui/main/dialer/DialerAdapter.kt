@@ -1,4 +1,4 @@
-package io.github.jbarr21.appdialer.ui.dialer
+package io.github.jbarr21.appdialer.ui.main.dialer
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +9,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.github.jbarr21.appdialer.R
 
-class DialerAdapter(callback: DiffUtil.ItemCallback<DialerButton>, val onClick: (DialerButton) -> Unit) :
-    ListAdapter<DialerButton, DialerButtonViewHolder>(callback) {
+class DialerAdapter(
+  callback: DiffUtil.ItemCallback<DialerButton>,
+  val onLongClick: (DialerButton) -> Unit,
+  val onClick: (DialerButton) -> Unit
+) : ListAdapter<DialerButton, DialerButtonViewHolder>(callback) {
 
   private val NUM_ROWS = 3
 
@@ -30,6 +33,7 @@ class DialerAdapter(callback: DiffUtil.ItemCallback<DialerButton>, val onClick: 
     holder.apply {
       label.text = button.label
       itemView.setOnClickListener { onClick(button) }
+      itemView.setOnLongClickListener { onLongClick(button).let { true } }
     }
   }
 }

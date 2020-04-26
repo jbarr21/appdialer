@@ -7,7 +7,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.IBinder
 import io.github.jbarr21.appdialer.R
-import io.github.jbarr21.appdialer.ui.MainActivity
+import io.github.jbarr21.appdialer.ui.main.MainActivity
 import io.github.jbarr21.appdialer.ui.settings.Settings
 import io.github.jbarr21.appdialer.util.Channels
 import timber.log.Timber

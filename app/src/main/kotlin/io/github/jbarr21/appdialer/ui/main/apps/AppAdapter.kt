@@ -1,26 +1,19 @@
-package io.github.jbarr21.appdialer.ui.apps
+package io.github.jbarr21.appdialer.ui.main.apps
 
-import android.graphics.Color
 import android.graphics.Color.TRANSPARENT
-import android.net.Uri
-import android.text.style.BackgroundColorSpan
 import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.squareup.picasso.Picasso
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.App
-import io.github.jbarr21.appdialer.ui.QueryStream
-import io.github.jbarr21.appdialer.util.AppIconDecoder
-import io.github.jbarr21.appdialer.util.AppIconDecoder.Companion.SCHEME_PNAME
+import io.github.jbarr21.appdialer.ui.main.dialer.QueryStream
 import io.github.jbarr21.appdialer.util.GlideApp
 import io.github.jbarr21.appdialer.util.Truss
 
@@ -54,7 +47,6 @@ class AppAdapter(
         .popSpan()
         .append(app.label.substring(queryStream.currentQuery().size))
         .build()
-      subtitle.text = app.packageName
       itemView.setOnClickListener { clickStream.onClick(app) }
       itemView.setOnLongClickListener { clickStream.onLongClick(app) }
 
@@ -88,7 +80,6 @@ class AppAdapter(
 class AppViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
   val icon = itemView.findViewById<ImageView>(R.id.icon)
   val title = itemView.findViewById<TextView>(R.id.text1)
-  val subtitle = itemView.findViewById<TextView>(R.id.text2)
 }
 
 class AppDiffCallback : DiffUtil.ItemCallback<App>() {
