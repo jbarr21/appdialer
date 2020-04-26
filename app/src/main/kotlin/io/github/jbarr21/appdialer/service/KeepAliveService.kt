@@ -1,12 +1,15 @@
 package io.github.jbarr21.appdialer.service
 
-import android.app.*
+import android.app.Notification
+import android.app.PendingIntent
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.IBinder
 import io.github.jbarr21.appdialer.R
+import io.github.jbarr21.appdialer.app.AppDialerApplication
 import io.github.jbarr21.appdialer.ui.main.MainActivity
 import io.github.jbarr21.appdialer.ui.settings.Settings
 import io.github.jbarr21.appdialer.util.Channels
@@ -65,10 +68,15 @@ class KeepAliveService : Service() {
       .build()
   }
 
+  interface Parent {
+    fun sharedPreferences(): SharedPreferences
+  }
+
   companion object {
-    fun start(context: Context, sharedPreferences: SharedPreferences) {
-      if (sharedPreferences.getBoolean(Settings.Keys.SERVICE_ENABLED.name, false)
-          && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    fun start(context: Context) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+          && (AppDialerApplication.component(context) as Parent).sharedPreferences()
+              .getBoolean(Settings.Keys.SERVICE_ENABLED.name, false)) {
         context.startForegroundService(Intent(context, KeepAliveService::class.java))
       }
     }

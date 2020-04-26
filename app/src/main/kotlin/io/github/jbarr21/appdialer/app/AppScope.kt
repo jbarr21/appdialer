@@ -1,10 +1,8 @@
 package io.github.jbarr21.appdialer.app
 
-import android.app.Activity
 import android.app.ActivityManager
 import android.app.Application
 import android.app.admin.DevicePolicyManager
-import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.LauncherApps
 import android.os.UserManager

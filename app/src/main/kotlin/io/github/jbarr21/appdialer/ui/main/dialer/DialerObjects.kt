@@ -13,10 +13,12 @@ interface DialerObjects {
     activity: Activity,
     application: Application,
     appStream: AppStream,
+    dialerLabels: List<DialerButton>,
     queryStream: QueryStream,
     vibrator: Optional<Vibrator>
   ) = DialerAdapter(
     DialerButtonDiffCallback(),
+    dialerLabels,
     { button ->
       if (button.isClearButton || button.isInfoButton) {
         vibrator.orNull()?.vibrateIfAble(application)

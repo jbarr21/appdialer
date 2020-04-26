@@ -11,11 +11,16 @@ import io.github.jbarr21.appdialer.R
 
 class DialerAdapter(
   callback: DiffUtil.ItemCallback<DialerButton>,
+  dialerLabels: List<DialerButton>,
   val onLongClick: (DialerButton) -> Unit,
   val onClick: (DialerButton) -> Unit
 ) : ListAdapter<DialerButton, DialerButtonViewHolder>(callback) {
 
   private val NUM_ROWS = 3
+
+  init {
+    submitList(dialerLabels)
+  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DialerButtonViewHolder {
     return DialerButtonViewHolder(

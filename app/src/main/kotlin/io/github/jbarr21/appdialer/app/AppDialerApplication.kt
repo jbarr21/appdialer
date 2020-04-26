@@ -15,8 +15,6 @@ import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPlugin
 import com.facebook.soloader.SoLoader
-import com.facebook.stetho.Stetho
-import com.squareup.picasso.Picasso
 import io.github.jbarr21.appdialer.BuildConfig
 import io.github.jbarr21.appdialer.service.KeepAliveService
 import io.github.jbarr21.appdialer.util.Channels
@@ -24,38 +22,35 @@ import timber.log.Timber
 
 class AppDialerApplication : Application(), AppScopeImpl.Dependencies {
 
-  val appScope: AppScope by lazy { AppScopeImpl(this) }
+  private val appScope: AppScope by lazy { AppScopeImpl(this) }
 
   override fun onCreate() {
     super.onCreate()
     Timber.plant(Timber.DebugTree())
     Timber.tag("JIM").d("Application created")
     setupFlipper(this)
-    Stetho.initializeWithDefaults(this)
     createNotificationChannel()
-    KeepAliveService.start(this, appScope.sharedPreferences())
-    Picasso.setSingletonInstance(
-      Picasso.Builder(this)
-        .addRequestHandler(appScope.appIconRequestHandler())
-        .build())
+    KeepAliveService.start(this)
   }
 
   override fun onTerminate() {
-    super.onTerminate()
     Timber.tag("JIM").d("Application destroyed")
+    super.onTerminate()
   }
+
+  override fun application(): Application = this
 
   private fun setupFlipper(application: Application) {
     if (BuildConfig.DEBUG) {
-      SoLoader.init(this, false)
+      SoLoader.init(application, false)
       if (FlipperUtils.shouldEnableFlipper(application)) {
         AndroidFlipperClient.getInstance(application).apply {
           listOf(
-            InspectorFlipperPlugin(application, DescriptorMapping.withDefaults()),
-            SharedPreferencesFlipperPlugin(application),
-            NetworkFlipperPlugin(),
+            CrashReporterPlugin.getInstance(),
             DatabasesFlipperPlugin(application),
-            CrashReporterPlugin.getInstance()
+            InspectorFlipperPlugin(application, DescriptorMapping.withDefaults()),
+            NetworkFlipperPlugin(),
+            SharedPreferencesFlipperPlugin(application)
           ).forEach { addPlugin(it) }
           start()
         }
@@ -73,8 +68,6 @@ class AppDialerApplication : Application(), AppScopeImpl.Dependencies {
       }
     }
   }
-
-  override fun application(): Application = this
 
   companion object {
     fun component(context: Context) = (context.applicationContext as AppDialerApplication).appScope

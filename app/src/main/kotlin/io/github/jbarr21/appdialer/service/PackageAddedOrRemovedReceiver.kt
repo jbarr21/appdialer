@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.widget.Toast
 import io.github.jbarr21.appdialer.app.AppDialerApplication
+import io.github.jbarr21.appdialer.data.AppStream
 import timber.log.Timber
 
 class PackageAddedOrRemovedReceiver : BroadcastReceiver() {
@@ -21,6 +22,10 @@ class PackageAddedOrRemovedReceiver : BroadcastReceiver() {
     Timber.tag("JIM").d("App installed or uninstalled")
     Toast.makeText(context, "App installed or uninstalled", Toast.LENGTH_SHORT).show()
     AppDialerApplication.component(context).appStream().setApps(emptyList())
+  }
+
+  interface Parent {
+    fun appStream(): AppStream
   }
 
   companion object {

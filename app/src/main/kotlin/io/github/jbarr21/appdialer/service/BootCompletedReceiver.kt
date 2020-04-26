@@ -10,7 +10,6 @@ import io.github.jbarr21.appdialer.app.AppScopeImpl
 
 class BootCompletedReceiver : BroadcastReceiver() {
   override fun onReceive(context: Context, intent: Intent) {
-    val appScope: AppScope = AppDialerApplication.component(context)
-    KeepAliveService.start(context, appScope.sharedPreferences())
+    KeepAliveService.start(context)
   }
 }
