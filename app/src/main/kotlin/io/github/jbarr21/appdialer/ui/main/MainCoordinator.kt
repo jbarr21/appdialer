@@ -5,6 +5,7 @@ import android.content.pm.LauncherApps
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +35,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 
 class MainCoordinator(
-  private val activity: MainActivity,
+  private val activity: AppCompatActivity,
   private val activityLauncher: ActivityLauncher,
   private val appClickStream: AppClickStream,
   private val appStream: AppStream,

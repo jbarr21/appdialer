@@ -1,3 +1,7 @@
+import org.jetbrains.kotlin.backend.wasm.lower.excludeDeclarationsFromCodegen
+
+val composeVersion = "0.1.0-dev10"
+
 plugins {
   id("com.android.application")
   kotlin("android")
@@ -15,6 +19,9 @@ android {
     versionName = "1.0"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
+  buildFeatures {
+    compose = true
+  }
   buildTypes {
     getByName("release") {
       isMinifyEnabled = false
@@ -24,6 +31,10 @@ android {
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+  }
+  composeOptions {
+    kotlinCompilerVersion = "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
+    kotlinCompilerExtensionVersion = composeVersion
   }
   kotlinOptions {
     jvmTarget = "1.8"
@@ -42,8 +53,9 @@ android {
 dependencies {
   kapt("androidx.room:room-compiler:2.2.5")
   kapt("com.uber.motif:motif-compiler:0.0.18")
+  kapt("androidx.compose:compose-compiler:$composeVersion")
 
-  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.72")
+  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.70")
   implementation("androidx.appcompat:appcompat:1.1.0")
   implementation("androidx.constraintlayout:constraintlayout:1.1.3")
   implementation("androidx.core:core-ktx:1.2.0")
@@ -57,6 +69,16 @@ dependencies {
   implementation("androidx.room:room-rxjava2:2.2.5")
   implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
   implementation("androidx.transition:transition:1.3.1")
+  implementation("androidx.compose:compose-runtime:$composeVersion")
+  implementation("androidx.ui:ui-core:$composeVersion")
+  implementation("androidx.ui:ui-foundation:$composeVersion")
+  implementation("androidx.ui:ui-framework:$composeVersion")
+  implementation("androidx.ui:ui-tooling:$composeVersion")
+  implementation("androidx.ui:ui-layout:$composeVersion")
+  implementation("androidx.ui:ui-material:$composeVersion")
+  implementation("androidx.ui:ui-saved-instance-state:$composeVersion")
+  implementation("androidx.ui:ui-test:$composeVersion")
+  implementation("androidx.ui:ui-livedata:$composeVersion")
   implementation("com.github.Commit451:ModalBottomSheetDialogFragment:1.1.0")
   implementation("com.github.andrefrsousa:SuperBottomSheet:1.3.0")
   implementation("com.google.android.material:material:1.1.0")
@@ -72,11 +94,14 @@ dependencies {
   implementation("com.uber.autodispose:autodispose-lifecycle-ktx:1.1.0")
   implementation("de.Maxr1998.android:modernpreferences:0.4.1")
   implementation("dev.chrisbanes:insetter-ktx:0.2.1")
-  implementation("io.coil-kt:coil:0.10.0")
+  implementation("io.coil-kt:coil:0.10.1") {
+    exclude(module = "kotlinx-coroutines-core")
+    exclude(module = "kotlinx-coroutines-android")
+  }
   implementation("io.reactivex.rxjava2:rxjava:2.2.9")
   implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3")
 
   debugImplementation("com.facebook.flipper:flipper:0.39.0")
   debugImplementation("com.facebook.flipper:flipper-network-plugin:0.39.0")

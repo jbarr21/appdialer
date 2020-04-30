@@ -2,6 +2,7 @@ package io.github.jbarr21.appdialer.ui.main
 
 import android.app.Activity
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import io.github.jbarr21.appdialer.data.UserCache
 import io.github.jbarr21.appdialer.util.ActivityLauncher
@@ -17,7 +18,7 @@ interface MainScope {
   @motif.Objects
   abstract class Objects : AppObjects, DialerObjects {
 
-    abstract fun activity(mainActivity: MainActivity): Activity
+    abstract fun activity(activity: AppCompatActivity): Activity
 
     fun activityLauncher(activity: Activity): ActivityLauncher {
       return object : ActivityLauncher {
@@ -28,12 +29,12 @@ interface MainScope {
       }
     }
 
-    fun dialerViewModel(mainActivity: MainActivity) = ViewModelProviders.of(mainActivity).get(DialerViewModel::class.java)
+    fun dialerViewModel(activity: AppCompatActivity) = ViewModelProviders.of(activity).get(DialerViewModel::class.java)
 
     abstract fun mainCoordinator(): MainCoordinator
 
     fun modalFragmentListener(activityLauncher: ActivityLauncher, userCache: UserCache) = ModalFragmentListener(activityLauncher, userCache)
 
-    fun fragmentManager(activity: MainActivity) = activity.supportFragmentManager
+    fun fragmentManager(activity: AppCompatActivity) = activity.supportFragmentManager
   }
 }
