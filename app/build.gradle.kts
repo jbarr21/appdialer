@@ -21,6 +21,7 @@ android {
   }
   buildFeatures {
     compose = true
+    viewBinding = true
   }
   buildTypes {
     getByName("release") {

@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.content.pm.LauncherApps
 import android.os.UserManager
 import android.os.Vibrator
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import androidx.preference.PreferenceManager
@@ -30,7 +31,7 @@ interface AppScope
   : KeepAliveService.Parent,
   PackageAddedOrRemovedReceiver.Parent {
 
-  fun mainScope(activity: AppCompatActivity): MainScope
+  fun mainScope(activity: AppCompatActivity, viewGroup: ViewGroup): MainScope
 
   @motif.Objects
   abstract class Objects {

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dialer_sheet_elevation">16dp</dimen>
+    <dimen name="dialer_sheet_handle_width">24dp</dimen>
+    <dimen name="dialer_sheet_height">288dp</dimen>
+    <dimen name="dialer_sheet_peek_height">48dp</dimen>
+</resources>

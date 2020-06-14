@@ -2,9 +2,11 @@ package io.github.jbarr21.appdialer.ui.main
 
 import android.app.Activity
 import android.content.Intent
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import io.github.jbarr21.appdialer.data.UserCache
+import io.github.jbarr21.appdialer.databinding.ActivityMainBinding
 import io.github.jbarr21.appdialer.util.ActivityLauncher
 import io.github.jbarr21.appdialer.ui.main.apps.*
 import io.github.jbarr21.appdialer.ui.main.dialer.*
@@ -36,5 +38,7 @@ interface MainScope {
     fun modalFragmentListener(activityLauncher: ActivityLauncher, userCache: UserCache) = ModalFragmentListener(activityLauncher, userCache)
 
     fun fragmentManager(activity: AppCompatActivity) = activity.supportFragmentManager
+
+    fun viewBinding(viewGroup: ViewGroup) = ActivityMainBinding.bind(viewGroup.getChildAt(0))
   }
 }

@@ -58,6 +58,6 @@ class AppViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 }
 
 class AppDiffCallback : DiffUtil.ItemCallback<App>() {
-  override fun areItemsTheSame(oldItem: App, newItem: App) = oldItem.name == newItem.name
-  override fun areContentsTheSame(oldItem: App, newItem: App) = false
+  override fun areItemsTheSame(oldItem: App, newItem: App) = oldItem.packageName == newItem.packageName && oldItem.user == newItem.user
+  override fun areContentsTheSame(oldItem: App, newItem: App) = true
 }

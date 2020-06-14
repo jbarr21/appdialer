@@ -4,21 +4,21 @@ import android.content.Intent
 import android.content.pm.LauncherApps
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SimpleItemAnimator
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.commit451.modalbottomsheetdialogfragment.ModalBottomSheetDialogFragment
 import com.commit451.modalbottomsheetdialogfragment.Option
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import com.jakewharton.rxbinding3.swiperefreshlayout.refreshes
 import com.uber.autodispose.lifecycle.autoDisposable
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.data.AppRepo
 import io.github.jbarr21.appdialer.data.AppStream
+import io.github.jbarr21.appdialer.databinding.ActivityMainBinding
 import io.github.jbarr21.appdialer.ui.BaseCoordinator
 import io.github.jbarr21.appdialer.util.ActivityLauncher
 import io.github.jbarr21.appdialer.ui.main.apps.AppAdapter
@@ -46,15 +46,12 @@ class MainCoordinator(
   private val fragmentManager: FragmentManager,
   private val launcherApps: LauncherApps,
   private val modalFragmentListener: ModalFragmentListener,
-  private val queryStream: QueryStream
+  private val queryStream: QueryStream,
+  private val viewBinding: ActivityMainBinding
 ) : BaseCoordinator(), CoroutineScope, ModalBottomSheetDialogFragment.Listener {
 
   override val coroutineContext: CoroutineContext
     get() = Dispatchers.Main
-
-  private val swipeRefresh by lazy { activity.findViewById<SwipeRefreshLayout>(R.id.swipe_refresh) }
-  private val appGrid by lazy { activity.findViewById<RecyclerView>(R.id.app_grid) }
-  private val dialer by lazy { activity.findViewById<RecyclerView>(R.id.dialer) }
 
   private var longPressedApp: App? = null
 
@@ -65,91 +62,63 @@ class MainCoordinator(
 
     appClickStream.clicks()
       .autoDisposable(this)
-      .subscribe { app ->
-        run {
-          launcherApps.startMainActivity(app.launchIntent.component, app.user, null, Bundle.EMPTY)
-          activity.finish()
-          queryStream.setQuery(emptyList())
-        }
-      }
+      .subscribe { run { launchApp(it) } }
 
     appClickStream.longClicks()
       .autoDisposable(this)
-      .subscribe {app ->
-        run {
-          // TODO: fix how to pass this (use another lib?)
-          longPressedApp = app
-          ModalBottomSheetDialogFragment.Builder()
-            .header(app.label)
-            .add(R.menu.app_details)
-            .build()
-            .show(fragmentManager, app.uri.toString())
-        }
-      }
+      .subscribe { run { showAppOptionsModal(it) } }
 
     queryStream.longClicks()
       .autoDisposable(this)
-      .subscribe {
-        when {
-          it.isClearButton -> activityLauncher.startActivity(Intent(activity, SettingsActivity::class.java))
-          it.isInfoButton -> displayAppCount()
-        }
-      }
+      .subscribe { onDialerLongClick(it) }
 
-    swipeRefresh.refreshes()
+    viewBinding.swipeRefresh.refreshes()
       .observeOn(AndroidSchedulers.mainThread())
       .autoDisposable(this)
-      .subscribe {
-        appRepo.loadApps(useCache = false)
-      }
+      .subscribe { onPullToRefresh() }
 
     queryStream.query()
       .observeOn(AndroidSchedulers.mainThread())
       .autoDisposable(this)
-      .subscribe { query ->
-        if (query.isNullOrEmpty()) {
-          clearQuery()
-        } else {
-          queryApps(query)
-        }
-      }
+      .subscribe { handleQuery(it) }
 
     // TODO: add empty currentApps and progress currentApps
     appStream.allApps()
       .filter { queryStream.currentQuery().isEmpty() }
       .observeOn(AndroidSchedulers.mainThread())
       .autoDisposable(this)
-      .subscribe { apps ->
-        apps.forEach {
-          dialerViewModel.trie.add(it.label, it)
-        }
-        appAdapter.submitList(apps)
-      }
+      .subscribe { handleAppListUpdate(it) }
 
     appRepo.loadApps()
   }
 
-  override fun detach(view: View) {
-
-    super.detach(view)
-  }
-
   private fun setupAppGrid() {
-    appGrid.apply {
+    viewBinding.appGrid.apply {
       setHasFixedSize(true)
       layoutManager = GridLayoutManager(activity,
         NUM_APP_COLUMNS
       )
-      (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       adapter = appAdapter
     }
   }
 
   private fun setupDialerButtons(dialerAdapter: DialerAdapter) {
-    dialer.apply {
+    viewBinding.bottomSheet.dialer.apply {
       setHasFixedSize(true)
       layoutManager = GridLayoutManager(activity, 3)
       adapter = dialerAdapter
+    }
+
+    BottomSheetBehavior.from(viewBinding.bottomSheet.bottomSheet).apply {
+      state = BottomSheetBehavior.STATE_EXPANDED
+      addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        override fun onStateChanged(bottomSheet: View, newState: Int) = Unit
+        override fun onSlide(bottomSheet: View, slideOffset: Float) {
+          viewBinding.bottomSheet.dialer.apply {
+            translationY = (1 - slideOffset) * resources.getDimension(R.dimen.dialer_sheet_peek_height)
+          }
+        }
+      })
     }
   }
 
@@ -171,12 +140,55 @@ class MainCoordinator(
   private fun clearQuery() {
     dialerViewModel.query.clear()
     appAdapter.submitList(appStream.currentApps()) {
-      appGrid.scrollToPosition(0)
+      viewBinding.appGrid.scrollToPosition(0)
     }
   }
 
+  private fun handleQuery(query: List<DialerButton>) {
+    if (query.isNullOrEmpty()) {
+      clearQuery()
+    } else {
+      queryApps(query)
+    }
+  }
+
+  private fun handleAppListUpdate(apps: List<App>) {
+    apps.forEach {
+      dialerViewModel.trie.add(it.label, it)
+    }
+    appAdapter.submitList(apps)
+  }
+
+  private fun launchApp(app: App) {
+    launcherApps.startMainActivity(app.launchIntent.component, app.user, null, Bundle.EMPTY)
+    activity.finish()
+    queryStream.setQuery(emptyList())
+  }
+
+  private fun onDialerLongClick(button: DialerButton) {
+    when {
+      button.isClearButton -> activityLauncher.startActivity(Intent(activity, SettingsActivity::class.java))
+      button.isInfoButton -> displayAppCount()
+    }
+  }
+
+  private fun onPullToRefresh() {
+    appRepo.loadApps(useCache = false)
+  }
+
+  private fun showAppOptionsModal(app: App) {
+    longPressedApp = app
+    ModalBottomSheetDialogFragment.Builder()
+      .header(app.label)
+      .add(R.menu.app_details)
+      .build()
+      .show(fragmentManager, app.uri.toString())
+  }
+
   private fun displayAppCount() {
-    Toast.makeText(activity, "Found ${appStream.currentApps().size} apps", Toast.LENGTH_SHORT).show()
+    Snackbar.make(viewBinding.coordinator, "Found ${appStream.currentApps().size} apps", LENGTH_SHORT)
+      .setAnchorView(viewBinding.bottomSheet.dialerSheetHandle)
+      .show()
   }
 
   override fun onModalOptionSelected(tag: String?, option: Option) = modalFragmentListener.onModalOptionSelected(tag, option)
