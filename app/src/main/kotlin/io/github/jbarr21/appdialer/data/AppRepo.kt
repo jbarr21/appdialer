@@ -3,15 +3,12 @@ package io.github.jbarr21.appdialer.data
 import android.app.Application
 import android.content.pm.LauncherApps
 import android.graphics.Color
-import android.net.Uri
 import android.os.UserManager
 import androidx.core.graphics.drawable.toBitmap
 import androidx.palette.graphics.Palette
 import coil.Coil
 import coil.request.GetRequest
 import io.github.jbarr21.appdialer.data.db.AppDatabase
-import io.github.jbarr21.appdialer.util.AppIconFetcher.Companion.PARAM_USER_ID
-import io.github.jbarr21.appdialer.util.AppIconFetcher.Companion.SCHEME_PNAME
 import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
@@ -66,8 +63,10 @@ class AppRepo @Inject constructor(
         launcherApps.getActivityList(null, user)
           .map {
             val packageName = it.applicationInfo.packageName
-            val iconUri = Uri.parse("$SCHEME_PNAME://$packageName?$PARAM_USER_ID=${user.id}")
-            val icon = Coil.execute(GetRequest.Builder(application).data(iconUri).build()).drawable?.toBitmap()!!
+            val activityName: String = it.componentName.className
+            val iconUri = App.iconUri(packageName, activityName, user)
+            val icon = Coil.execute(GetRequest.Builder(application).data(iconUri).build()).drawable?.toBitmap()
+              ?: throw IllegalStateException("Null icon for uri: $iconUri")
             val iconColor = Palette.from(icon).generate().getDominantColor(Color.TRANSPARENT)
             App(it.label.toString(), packageName, it.componentName.className, user, iconColor)
           }

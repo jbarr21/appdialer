@@ -35,7 +35,8 @@ class AppIconFetcher @Inject constructor(
   override suspend fun fetch(pool: BitmapPool, data: Uri, size: Size, options: Options): FetchResult {
     val packageName = data.host.orEmpty()
     val user = userCache.findById(data.getQueryParameter(PARAM_USER_ID).orEmpty().toInt())
-    val icon = getFullResIcon(packageName, user)
+    val activityName = data.getQueryParameter(PARAM_ACTIVITY_NAME).orEmpty()
+    val icon = getFullResIcon(packageName, activityName, user)
     return DrawableResult(
       drawable = icon,
       isSampled = false,
@@ -47,10 +48,13 @@ class AppIconFetcher @Inject constructor(
 
   override fun handles(data: Uri) = data.scheme == SCHEME_PNAME
 
-  private fun getFullResIcon(packageName: String, user: UserHandle): Drawable {
+  private fun getFullResIcon(packageName: String, activityName: String, user: UserHandle): Drawable {
     try {
-      val icon = launcherApps.getActivityList(packageName, user).first().getIcon(dpi)
-      return if (user.isMain) icon else packageManager.getUserBadgedIcon(icon, user)
+      return launcherApps.getActivityList(packageName, user).let {
+        if (it.size == 1) it.first() else it.first { it.componentName.className == activityName }
+      }.getIcon(dpi).let { icon ->
+        if (user.isMain) icon else packageManager.getUserBadgedIcon(icon, user)
+      }
     }
     catch (ignored: PackageManager.NameNotFoundException) { }
     catch (ignored: Resources.NotFoundException) { }
@@ -60,6 +64,7 @@ class AppIconFetcher @Inject constructor(
 
   companion object {
     const val SCHEME_PNAME = "pname"
+    const val PARAM_ACTIVITY_NAME = "activityName"
     const val PARAM_USER_ID = "userId"
   }
 }

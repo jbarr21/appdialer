@@ -45,7 +45,7 @@ class AppAdapter @Inject constructor(
         itemView.setBackgroundColor(app.iconColor)
       }
 
-      icon.load(app.uri, imageLoader = imageLoader) {
+      icon.load(app.iconUri, imageLoader = imageLoader) {
         placeholder(R.drawable.app_icon_placeholder)
         crossfade(true)
       }
@@ -58,7 +58,7 @@ class AppViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
   val title = itemView.findViewById<TextView>(R.id.text1)
 }
 
-class AppDiffCallback : DiffUtil.ItemCallback<App>() {
-  override fun areItemsTheSame(oldItem: App, newItem: App) = oldItem.packageName == newItem.packageName && oldItem.user == newItem.user
+class AppDiffCallback @Inject constructor() : DiffUtil.ItemCallback<App>() {
+  override fun areItemsTheSame(oldItem: App, newItem: App) = oldItem.isItemSameAs(newItem)
   override fun areContentsTheSame(oldItem: App, newItem: App) = true
 }

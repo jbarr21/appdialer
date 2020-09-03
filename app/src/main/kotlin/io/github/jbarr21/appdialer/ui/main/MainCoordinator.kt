@@ -99,7 +99,8 @@ class MainCoordinator @Inject constructor(
   private fun setupAppGrid() {
     viewBinding.appGrid.apply {
       setHasFixedSize(true)
-      layoutManager = GridLayoutManager(activity,
+      layoutManager = GridLayoutManager(
+        activity,
         NUM_APP_COLUMNS
       )
       adapter = appAdapter
@@ -132,7 +133,8 @@ class MainCoordinator @Inject constructor(
       addAll(buttons)
     }
     // TODO: update UI or use LiveData/RxJava
-    dialerViewModel.trie.predictWord(dialerViewModel.query.map { it.letters[0].toString() }.joinToString(separator = ""))
+    dialerViewModel.trie.predictWord(dialerViewModel.query.map { it.letters[0].toString() }
+      .joinToString(separator = ""))
       .sortedBy { it.label.toLowerCase() }
       .also {
         val query = dialerViewModel.query.map { app -> app.digit }.joinToString(separator = "")
@@ -186,7 +188,7 @@ class MainCoordinator @Inject constructor(
       .header(app.label)
       .add(R.menu.app_details)
       .build()
-      .show(fragmentManager, app.uri.toString())
+      .show(fragmentManager, app.iconUri.toString())
   }
 
   private fun displayAppCount() {
@@ -195,7 +197,10 @@ class MainCoordinator @Inject constructor(
       .show()
   }
 
-  override fun onModalOptionSelected(tag: String?, option: Option) = modalFragmentListener.onModalOptionSelected(tag, option)
+  override fun onModalOptionSelected(tag: String?, option: Option) = modalFragmentListener.onModalOptionSelected(
+    tag,
+    option
+  )
 
   companion object {
     private const val NUM_APP_COLUMNS = 4
