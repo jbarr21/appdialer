@@ -4,6 +4,7 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.core.content.getSystemService
 import com.facebook.flipper.android.AndroidFlipperClient
@@ -20,9 +21,13 @@ import io.github.jbarr21.appdialer.BuildConfig
 import io.github.jbarr21.appdialer.service.KeepAliveService
 import io.github.jbarr21.appdialer.util.Channels
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltAndroidApp
 class AppDialerApplication : Application() {
+
+  @Inject
+  lateinit var sharedPreferences: SharedPreferences
 
   override fun onCreate() {
     super.onCreate()
@@ -30,7 +35,7 @@ class AppDialerApplication : Application() {
     Timber.tag("JIM").d("Application created")
     setupFlipper(this)
     createNotificationChannel()
-    KeepAliveService.start(this)
+    KeepAliveService.start(this, sharedPreferences)
   }
 
   override fun onTerminate() {

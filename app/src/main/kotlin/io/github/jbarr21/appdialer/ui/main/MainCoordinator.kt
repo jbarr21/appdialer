@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.pm.LauncherApps
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -60,7 +59,7 @@ class MainCoordinator @Inject constructor(
 
   override fun attach(view: View) {
     super.attach(view)
-    viewBinding = ActivityMainBinding.bind((activity.findViewById(android.R.id.content) as ViewGroup).getChildAt(0))
+    viewBinding = ActivityMainBinding.bind(view)
     setupAppGrid()
     setupDialerButtons(dialerAdapter)
 

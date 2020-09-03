@@ -30,10 +30,6 @@ class PackageAddedOrRemovedReceiver : BroadcastReceiver() {
     appStream.setApps(emptyList())
   }
 
-  interface Parent {
-    fun appStream(): AppStream
-  }
-
   companion object {
     fun register(context: Context, receiver: PackageAddedOrRemovedReceiver) {
       val filter = IntentFilter().apply {
@@ -44,8 +40,14 @@ class PackageAddedOrRemovedReceiver : BroadcastReceiver() {
     }
 
     fun unregister(context: Context, receiver: PackageAddedOrRemovedReceiver) {
-      context.unregisterReceiver(receiver)
-      Timber.tag("JIM").d("Receiver unregistered")
+      try {
+        context.unregisterReceiver(receiver)
+        Timber.tag("JIM").d("Receiver unregistered")
+      } catch (e: IllegalArgumentException) {
+        if ("Receiver not registered" !in e.message.orEmpty()) {
+          throw e
+        }
+      }
     }
   }
 }

@@ -1,6 +1,7 @@
 package io.github.jbarr21.appdialer.ui.main
 
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.commit451.modalbottomsheetdialogfragment.ModalBottomSheetDialogFragment
 import com.commit451.modalbottomsheetdialogfragment.Option
@@ -18,12 +19,11 @@ class MainActivity : AppCompatActivity(), ModalBottomSheetDialogFragment.Listene
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
-    Coordinators.bind(findViewById(android.R.id.content)) {
-      return@bind mainCoordinator
-    }
+    val rootView = (findViewById<ViewGroup>(android.R.id.content)).getChildAt(0)
+    Coordinators.bind(rootView) { mainCoordinator }
   }
 
   override fun onModalOptionSelected(tag: String?, option: Option) {
-    mainCoordinator?.onModalOptionSelected(tag, option)
+    mainCoordinator.onModalOptionSelected(tag, option)
   }
 }

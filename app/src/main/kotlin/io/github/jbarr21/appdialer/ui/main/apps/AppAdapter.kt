@@ -17,6 +17,7 @@ import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.ui.main.dialer.QueryStream
 import io.github.jbarr21.appdialer.util.Truss
 import javax.inject.Inject
+import javax.inject.Singleton
 
 class AppAdapter @Inject constructor(
   callback: DiffUtil.ItemCallback<App>,
@@ -58,6 +59,7 @@ class AppViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
   val title = itemView.findViewById<TextView>(R.id.text1)
 }
 
+@Singleton
 class AppDiffCallback @Inject constructor() : DiffUtil.ItemCallback<App>() {
   override fun areItemsTheSame(oldItem: App, newItem: App) = oldItem.isItemSameAs(newItem)
   override fun areContentsTheSame(oldItem: App, newItem: App) = true
