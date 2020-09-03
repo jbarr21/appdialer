@@ -1,30 +1,36 @@
 package io.github.jbarr21.appdialer.ui.settings
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.MenuItem.SHOW_AS_ACTION_ALWAYS
+import android.view.PointerIcon
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.ImageLoader
 import com.jakewharton.processphoenix.ProcessPhoenix
-import de.Maxr1998.modernpreferences.PreferenceScreen
+import dagger.hilt.android.AndroidEntryPoint
 import de.Maxr1998.modernpreferences.PreferencesAdapter
 import io.github.jbarr21.appdialer.R
+import io.github.jbarr21.appdialer.util.AppIconFetcher
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SettingsActivity : AppCompatActivity() {
 
-  private lateinit var preferenceView: RecyclerView
-  private lateinit var preferencesAdapter: PreferencesAdapter
+  @Inject
+  lateinit var appIcon: AppIconFetcher
+
+  private val preferencesAdapter by lazy { createPreferencesAdapter(this) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-    val preferenceScreen = Settings.createScreen(applicationContext)
-    preferencesAdapter = PreferencesAdapter(preferenceScreen)
+    println(appIcon.toString())
 
-    preferenceView = RecyclerView(this).apply {
+    RecyclerView(this).apply {
       layoutManager = LinearLayoutManager(this@SettingsActivity)
       adapter = preferencesAdapter
       setContentView(this)
@@ -62,5 +68,10 @@ class SettingsActivity : AppCompatActivity() {
   override fun onDestroy() {
     preferencesAdapter.onScreenChangeListener = null
     super.onDestroy()
+  }
+
+  private fun createPreferencesAdapter(context: Context): PreferencesAdapter {
+    val preferenceScreen = Settings.createScreen(context.applicationContext)
+    return PreferencesAdapter(preferenceScreen)
   }
 }

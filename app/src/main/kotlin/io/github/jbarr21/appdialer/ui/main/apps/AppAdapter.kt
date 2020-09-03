@@ -16,8 +16,9 @@ import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.ui.main.dialer.QueryStream
 import io.github.jbarr21.appdialer.util.Truss
+import javax.inject.Inject
 
-class AppAdapter(
+class AppAdapter @Inject constructor(
   callback: DiffUtil.ItemCallback<App>,
   private val imageLoader: ImageLoader,
   private val queryStream: QueryStream,

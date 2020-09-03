@@ -15,14 +15,14 @@ import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPlugin
 import com.facebook.soloader.SoLoader
+import dagger.hilt.android.HiltAndroidApp
 import io.github.jbarr21.appdialer.BuildConfig
 import io.github.jbarr21.appdialer.service.KeepAliveService
 import io.github.jbarr21.appdialer.util.Channels
 import timber.log.Timber
 
-class AppDialerApplication : Application(), AppScopeImpl.Dependencies {
-
-  private val appScope: AppScope by lazy { AppScopeImpl(this) }
+@HiltAndroidApp
+class AppDialerApplication : Application() {
 
   override fun onCreate() {
     super.onCreate()
@@ -37,8 +37,6 @@ class AppDialerApplication : Application(), AppScopeImpl.Dependencies {
     Timber.tag("JIM").d("Application destroyed")
     super.onTerminate()
   }
-
-  override fun application(): Application = this
 
   private fun setupFlipper(application: Application) {
     if (BuildConfig.DEBUG) {
@@ -67,9 +65,5 @@ class AppDialerApplication : Application(), AppScopeImpl.Dependencies {
         }
       }
     }
-  }
-
-  companion object {
-    fun component(context: Context) = (context.applicationContext as AppDialerApplication).appScope
   }
 }

@@ -8,18 +8,31 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.IBinder
+import dagger.hilt.android.AndroidEntryPoint
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.app.AppDialerApplication
 import io.github.jbarr21.appdialer.ui.main.MainActivity
 import io.github.jbarr21.appdialer.ui.settings.Settings
+import io.github.jbarr21.appdialer.util.AppIconFetcher
 import io.github.jbarr21.appdialer.util.Channels
 import timber.log.Timber
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class KeepAliveService : Service() {
 
-  val appReceiver by lazy { PackageAddedOrRemovedReceiver() }
+  @Inject
+  lateinit var sharedPreferences: SharedPreferences
+
+  private val appReceiver by lazy { PackageAddedOrRemovedReceiver() }
 
   override fun onCreate() {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O
+      && !sharedPreferences.getBoolean(Settings.Keys.SERVICE_ENABLED.name, false)) {
+      stopSelf() // TODO: check if this is the correct method to use
+      return
+    }
+
     Timber.tag("JIM").d("Service created")
     startForeground(1337, createNotification())
     PackageAddedOrRemovedReceiver.register(this, appReceiver)
@@ -68,15 +81,9 @@ class KeepAliveService : Service() {
       .build()
   }
 
-  interface Parent {
-    fun sharedPreferences(): SharedPreferences
-  }
-
   companion object {
     fun start(context: Context) {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-          && (AppDialerApplication.component(context) as Parent).sharedPreferences()
-              .getBoolean(Settings.Keys.SERVICE_ENABLED.name, false)) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         context.startForegroundService(Intent(context, KeepAliveService::class.java))
       }
     }

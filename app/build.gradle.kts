@@ -1,9 +1,11 @@
 val composeVersion = "1.0.0-alpha02"
+val hiltVersion = "2.28-alpha"
 
 plugins {
   id("com.android.application")
   kotlin("android")
   kotlin("kapt")
+  id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -52,8 +54,9 @@ android {
 
 dependencies {
   kapt("androidx.room:room-compiler:2.2.5")
-  kapt("com.uber.motif:motif-compiler:0.0.18")
+  kapt("com.uber.motif:motif-compiler:0.3.4")
   kapt("androidx.compose:compose-compiler:$composeVersion")
+  kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
 
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.0")
   implementation("androidx.appcompat:appcompat:1.2.0")

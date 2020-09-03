@@ -2,8 +2,11 @@ package io.github.jbarr21.appdialer.data
 
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AppStream {
+@Singleton
+class AppStream @Inject constructor() {
   private val appSubject = BehaviorSubject.createDefault<List<App>>(emptyList())
 
   fun allApps(): Observable<List<App>> {

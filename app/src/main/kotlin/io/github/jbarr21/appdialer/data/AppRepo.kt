@@ -20,8 +20,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
+import kotlin.IllegalStateException
 
-class AppRepo(
+class AppRepo @Inject constructor(
   private val application: Application,
   private val appDatabase: AppDatabase,
   private val appStream: AppStream,

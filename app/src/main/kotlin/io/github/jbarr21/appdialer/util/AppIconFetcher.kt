@@ -16,8 +16,11 @@ import coil.fetch.Fetcher
 import coil.size.Size
 import io.github.jbarr21.appdialer.data.UserCache
 import io.github.jbarr21.appdialer.data.isMain
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AppIconFetcher(
+@Singleton
+class AppIconFetcher @Inject constructor(
   private val activityManager: ActivityManager,
   private val launcherApps: LauncherApps,
   private val packageManager: PackageManager,

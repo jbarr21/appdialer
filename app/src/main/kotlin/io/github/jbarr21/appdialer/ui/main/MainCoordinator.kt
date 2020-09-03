@@ -4,7 +4,8 @@ import android.content.Intent
 import android.content.pm.LauncherApps
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.commit451.modalbottomsheetdialogfragment.ModalBottomSheetDialogFragment
@@ -20,7 +21,6 @@ import io.github.jbarr21.appdialer.data.AppRepo
 import io.github.jbarr21.appdialer.data.AppStream
 import io.github.jbarr21.appdialer.databinding.ActivityMainBinding
 import io.github.jbarr21.appdialer.ui.BaseCoordinator
-import io.github.jbarr21.appdialer.util.ActivityLauncher
 import io.github.jbarr21.appdialer.ui.main.apps.AppAdapter
 import io.github.jbarr21.appdialer.ui.main.apps.AppClickStream
 import io.github.jbarr21.appdialer.ui.main.apps.ModalFragmentListener
@@ -29,13 +29,15 @@ import io.github.jbarr21.appdialer.ui.main.dialer.DialerButton
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerViewModel
 import io.github.jbarr21.appdialer.ui.main.dialer.QueryStream
 import io.github.jbarr21.appdialer.ui.settings.SettingsActivity
+import io.github.jbarr21.appdialer.util.ActivityLauncher
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-class MainCoordinator(
-  private val activity: AppCompatActivity,
+class MainCoordinator @Inject constructor(
+  private val activity: FragmentActivity,
   private val activityLauncher: ActivityLauncher,
   private val appClickStream: AppClickStream,
   private val appStream: AppStream,
@@ -46,17 +48,19 @@ class MainCoordinator(
   private val fragmentManager: FragmentManager,
   private val launcherApps: LauncherApps,
   private val modalFragmentListener: ModalFragmentListener,
-  private val queryStream: QueryStream,
-  private val viewBinding: ActivityMainBinding
+  private val queryStream: QueryStream
 ) : BaseCoordinator(), CoroutineScope, ModalBottomSheetDialogFragment.Listener {
 
   override val coroutineContext: CoroutineContext
     get() = Dispatchers.Main
 
+  private lateinit var viewBinding: ActivityMainBinding
+
   private var longPressedApp: App? = null
 
   override fun attach(view: View) {
     super.attach(view)
+    viewBinding = ActivityMainBinding.bind((activity.findViewById(android.R.id.content) as ViewGroup).getChildAt(0))
     setupAppGrid()
     setupDialerButtons(dialerAdapter)
 

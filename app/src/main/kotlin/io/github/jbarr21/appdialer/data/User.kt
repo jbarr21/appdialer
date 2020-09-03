@@ -3,8 +3,11 @@ package io.github.jbarr21.appdialer.data
 import android.os.Process
 import android.os.UserHandle
 import android.os.UserManager
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class UserCache(userManager: UserManager) {
+@Singleton
+class UserCache @Inject constructor(userManager: UserManager) {
   private val userMap: MutableMap<Int, UserHandle>
 
   init {

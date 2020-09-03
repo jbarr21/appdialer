@@ -4,8 +4,9 @@ import com.google.common.base.Optional
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
+import javax.inject.Inject
 
-class QueryStream {
+class QueryStream @Inject constructor() {
   private val queryRelay = BehaviorRelay.createDefault(emptyList<DialerButton>())
   private val colorRelay = BehaviorRelay.createDefault(Optional.absent<Int>())
   private val longClicksRelay = PublishRelay.create<DialerButton>()
