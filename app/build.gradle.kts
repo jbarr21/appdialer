@@ -1,6 +1,4 @@
-import org.jetbrains.kotlin.backend.wasm.lower.excludeDeclarationsFromCodegen
-
-val composeVersion = "0.1.0-dev10"
+val composeVersion = "1.0.0-alpha02"
 
 plugins {
   id("com.android.application")
@@ -34,11 +32,12 @@ android {
     targetCompatibility = JavaVersion.VERSION_1_8
   }
   composeOptions {
-    kotlinCompilerVersion = "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
+    kotlinCompilerVersion = "1.4.0"
     kotlinCompilerExtensionVersion = composeVersion
   }
   kotlinOptions {
     jvmTarget = "1.8"
+    useIR = true
   }
   sourceSets {
     map {
@@ -56,10 +55,10 @@ dependencies {
   kapt("com.uber.motif:motif-compiler:0.0.18")
   kapt("androidx.compose:compose-compiler:$composeVersion")
 
-  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.70")
-  implementation("androidx.appcompat:appcompat:1.1.0")
-  implementation("androidx.constraintlayout:constraintlayout:1.1.3")
-  implementation("androidx.core:core-ktx:1.2.0")
+  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.0")
+  implementation("androidx.appcompat:appcompat:1.2.0")
+  implementation("androidx.constraintlayout:constraintlayout:2.0.1")
+  implementation("androidx.core:core-ktx:1.3.1")
   implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
   implementation("androidx.lifecycle:lifecycle-runtime:2.2.0")
   implementation("androidx.palette:palette:1.0.0")
@@ -68,23 +67,27 @@ dependencies {
   implementation("androidx.room:room-ktx:2.2.5")
   implementation("androidx.room:room-runtime:2.2.5")
   implementation("androidx.room:room-rxjava2:2.2.5")
-  implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
+  implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
   implementation("androidx.transition:transition:1.3.1")
-  implementation("androidx.compose:compose-runtime:$composeVersion")
-  implementation("androidx.ui:ui-core:$composeVersion")
-  implementation("androidx.ui:ui-foundation:$composeVersion")
-  implementation("androidx.ui:ui-framework:$composeVersion")
+  implementation("androidx.compose.ui:ui:$composeVersion")
+  // Tooling support (Previews, etc.)
   implementation("androidx.ui:ui-tooling:$composeVersion")
-  implementation("androidx.ui:ui-layout:$composeVersion")
-  implementation("androidx.ui:ui-material:$composeVersion")
-  implementation("androidx.ui:ui-saved-instance-state:$composeVersion")
-  implementation("androidx.ui:ui-test:$composeVersion")
-  implementation("androidx.ui:ui-livedata:$composeVersion")
+  // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+  implementation("androidx.compose.foundation:foundation:$composeVersion")
+  // Material Design
+  implementation("androidx.compose.material:material:$composeVersion")
+  // Material design icons
+  implementation("androidx.compose.material:material-icons-core:$composeVersion")
+  implementation("androidx.compose.material:material-icons-extended:$composeVersion")
+  // Integration with observables
+  implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
+  implementation("androidx.compose.runtime:runtime-rxjava2:$composeVersion")
   implementation("com.github.Commit451:ModalBottomSheetDialogFragment:1.1.0")
   implementation("com.github.andrefrsousa:SuperBottomSheet:1.3.0")
-  implementation("com.google.android.material:material:1.1.0")
+  implementation("com.google.android.material:material:1.2.1")
+  implementation("com.google.dagger:hilt-android:$hiltVersion")
   implementation("com.google.guava:guava:27.0.1-android")
-  implementation("com.uber.motif:motif:0.2.1")
+  implementation("com.uber.motif:motif:0.3.4")
   implementation("com.jakewharton:process-phoenix:2.0.0")
   implementation("com.jakewharton.rxrelay2:rxrelay:2.1.1")
   implementation("com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:3.1.0")
@@ -99,7 +102,7 @@ dependencies {
     exclude(module = "kotlinx-coroutines-core")
     exclude(module = "kotlinx-coroutines-android")
   }
-  implementation("io.reactivex.rxjava2:rxjava:2.2.9")
+  implementation("io.reactivex.rxjava2:rxjava:2.2.10")
   implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3")
@@ -114,4 +117,7 @@ dependencies {
 
   androidTestImplementation("androidx.test:runner:1.2.0")
   androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
+
+  // UI Tests
+  androidTestImplementation("androidx.ui:ui-test:$composeVersion")
 }
