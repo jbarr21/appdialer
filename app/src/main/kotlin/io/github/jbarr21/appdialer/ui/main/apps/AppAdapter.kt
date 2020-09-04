@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -16,11 +18,14 @@ import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.ui.main.dialer.QueryStream
 import io.github.jbarr21.appdialer.util.Truss
+import ru.ldralighieri.corbind.view.clicks
+import ru.ldralighieri.corbind.view.longClicks
 import javax.inject.Inject
 import javax.inject.Singleton
 
 class AppAdapter @Inject constructor(
   callback: DiffUtil.ItemCallback<App>,
+  private val activity: FragmentActivity,
   private val imageLoader: ImageLoader,
   private val queryStream: QueryStream,
   private val clickStream: AppClickStream
@@ -39,8 +44,8 @@ class AppAdapter @Inject constructor(
         .popSpan()
         .append(app.label.substring(queryStream.currentQuery().size))
         .build()
-      itemView.setOnClickListener { clickStream.onClick(app) }
-      itemView.setOnLongClickListener { clickStream.onLongClick(app) }
+      itemView.setOnClickListener { clickStream.onClick(app, activity.lifecycleScope) }
+      itemView.setOnLongClickListener { clickStream.onLongClick(app, activity.lifecycleScope).let { true } }
 
       if (app.iconColor != TRANSPARENT) {
         itemView.setBackgroundColor(app.iconColor)

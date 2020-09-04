@@ -1,21 +1,24 @@
 package io.github.jbarr21.appdialer.data
 
-import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
+import dagger.hilt.android.scopes.ActivityScoped
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.BroadcastChannel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@ActivityScoped
 class AppStream @Inject constructor() {
-  private val appSubject = BehaviorSubject.createDefault<List<App>>(emptyList())
+  private val appChannel = BroadcastChannel<List<App>>(Channel.CONFLATED)
+  private var currentApps = emptyList<App>()
 
-  fun allApps(): Observable<List<App>> {
-    return appSubject.hide()
+  fun allApps() = appChannel.asFlow()
+
+  fun setApps(apps: List<App>, coroutineScope: CoroutineScope) = coroutineScope.launch {
+    currentApps = apps
+    appChannel.send(apps)
   }
 
-  fun setApps(apps: List<App>) {
-    appSubject.onNext(apps)
-  }
-
-  fun currentApps() = appSubject.value!!
+  fun currentApps() = currentApps
 }

@@ -1,25 +1,29 @@
 package io.github.jbarr21.appdialer.ui.main.apps
 
-import com.jakewharton.rxrelay2.PublishRelay
+import dagger.hilt.android.scopes.ActivityScoped
 import io.github.jbarr21.appdialer.data.App
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.BroadcastChannel
+import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@ActivityScoped
 class AppClickStream @Inject constructor() {
-  private val clickRelay = PublishRelay.create<App>()
-  private val longClickRelay = PublishRelay.create<App>()
 
-  fun clicks() = clickRelay.hide()
+  private val clickChannel = BroadcastChannel<App>(BUFFERED)
+  private val longClickChannel = BroadcastChannel<App>(BUFFERED)
 
-  fun longClicks() = longClickRelay.hide()
+  fun clicks() = clickChannel.asFlow()
 
-  fun onClick(app: App) {
-    clickRelay.accept(app)
+  fun longClicks() = longClickChannel.asFlow()
+
+  fun onClick(app: App, coroutineScope: CoroutineScope) = coroutineScope.launch {
+    clickChannel.send(app)
   }
 
-  fun onLongClick(app: App): Boolean {
-    longClickRelay.accept(app)
-    return true
+  fun onLongClick(app: App, coroutineScope: CoroutineScope) = coroutineScope.launch {
+    longClickChannel.send(app)
   }
 }

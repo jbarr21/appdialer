@@ -8,17 +8,17 @@ import androidx.room.Query
 @Dao
 interface AppDao {
   @Query("SELECT * FROM appentity")
-  fun getAll(): List<AppEntity>
+  suspend fun getAll(): List<AppEntity>
 
   @Query("SELECT * FROM appentity WHERE packageName LIKE :packageName AND userId == :userId LIMIT 1")
-  fun findByPackageName(packageName: String, userId: Int = 0): AppEntity
+  suspend fun findByPackageName(packageName: String, userId: Int = 0): AppEntity
 
   @Insert
-  fun insertAll(vararg apps: AppEntity)
+  suspend fun insertAll(vararg apps: AppEntity)
 
   @Query("DELETE FROM appentity")
-  fun deleteAll()
+  suspend fun deleteAll()
 
   @Delete
-  fun delete(app: AppEntity)
+  suspend fun delete(app: AppEntity)
 }

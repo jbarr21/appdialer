@@ -8,10 +8,11 @@ import com.commit451.modalbottomsheetdialogfragment.Option
 import com.squareup.coordinators.Coordinators
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.jbarr21.appdialer.R
+import io.github.jbarr21.appdialer.ui.BaseActivity
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), ModalBottomSheetDialogFragment.Listener {
+class MainActivity : BaseActivity(), ModalBottomSheetDialogFragment.Listener {
 
   @Inject
   lateinit var mainCoordinator: MainCoordinator

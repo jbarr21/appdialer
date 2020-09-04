@@ -3,7 +3,6 @@ package io.github.jbarr21.appdialer.app
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import androidx.core.content.getSystemService
@@ -20,14 +19,21 @@ import dagger.hilt.android.HiltAndroidApp
 import io.github.jbarr21.appdialer.BuildConfig
 import io.github.jbarr21.appdialer.service.KeepAliveService
 import io.github.jbarr21.appdialer.util.Channels
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 @HiltAndroidApp
-class AppDialerApplication : Application() {
+class AppDialerApplication : Application(), CoroutineScope {
 
   @Inject
   lateinit var sharedPreferences: SharedPreferences
+
+  override val coroutineContext: CoroutineContext
+    get() = Dispatchers.Main
 
   override fun onCreate() {
     super.onCreate()
@@ -39,6 +45,7 @@ class AppDialerApplication : Application() {
   }
 
   override fun onTerminate() {
+    cancel()
     Timber.tag("JIM").d("Application destroyed")
     super.onTerminate()
   }

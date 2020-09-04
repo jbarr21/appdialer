@@ -9,8 +9,6 @@ import androidx.palette.graphics.Palette
 import coil.Coil
 import coil.request.GetRequest
 import io.github.jbarr21.appdialer.data.db.AppDatabase
-import io.reactivex.Completable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -28,22 +26,24 @@ class AppRepo @Inject constructor(
   private val userCache: UserCache,
   private val userManager: UserManager
 ) {
-  fun loadApps(useCache: Boolean = true): Job {
+
+  fun loadApps(useCache: Boolean = true, onComplete: () -> (Unit) = {}): Job {
     return CoroutineScope(Dispatchers.Main).launch {
       withContext(Dispatchers.IO) {
         if (useCache) {
           val cachedApps = loadAppsFromCache()
           if (cachedApps.isNotEmpty()) {
-            appStream.setApps(cachedApps)
+            appStream.setApps(cachedApps, this)
             return@withContext
           }
         }
-        appStream.setApps(loadAppsFromPackageManager())
+        appStream.setApps(loadAppsFromPackageManager(), this)
       }
+      onComplete()
     }
   }
 
-  private fun loadAppsFromCache(): List<App> {
+  private suspend fun loadAppsFromCache(): List<App> {
     val memoryCachedApps = appStream.currentApps()
     Timber.tag("JIM").d("# of memory cached apps = ${memoryCachedApps.size}")
     if (memoryCachedApps.isNotEmpty())
@@ -73,13 +73,8 @@ class AppRepo @Inject constructor(
       }
       .sortedBy { app -> app.name.toLowerCase() }
       .also { apps ->
-        Completable.create { emitter ->
-          appDatabase.appDao().deleteAll()
-          appDatabase.appDao().insertAll(*apps.map { it.toAppEntity() }.toTypedArray())
-          emitter.onComplete()
-        }
-        .subscribeOn(Schedulers.io())
-        .subscribe()
+        appDatabase.appDao().deleteAll()
+        appDatabase.appDao().insertAll(*apps.map { it.toAppEntity() }.toTypedArray())
       }
   }
 }

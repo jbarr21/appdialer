@@ -1,31 +1,41 @@
 package io.github.jbarr21.appdialer.ui.main.dialer
 
 import com.google.common.base.Optional
-import com.jakewharton.rxrelay2.BehaviorRelay
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
+import dagger.hilt.android.scopes.ActivityScoped
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.BroadcastChannel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@ActivityScoped
 class QueryStream @Inject constructor() {
-  private val queryRelay = BehaviorRelay.createDefault(emptyList<DialerButton>())
-  private val colorRelay = BehaviorRelay.createDefault(Optional.absent<Int>())
-  private val longClicksRelay = PublishRelay.create<DialerButton>()
+  private var currentQuery = emptyList<DialerButton>()
+  private val queryChannel = BroadcastChannel<List<DialerButton>>(Channel.CONFLATED)
 
-  fun query(): Observable<List<DialerButton>> = queryRelay.hide()
+  private val colorChannel = BroadcastChannel<Optional<Int>>(Channel.CONFLATED)
 
-  fun color(): Observable<Optional<Int>> = colorRelay.hide()
+  private val longClickChannel = BroadcastChannel<DialerButton>(Channel.BUFFERED)
 
-  fun longClicks() = longClicksRelay.hide()
+  fun query() = queryChannel.asFlow()
 
-  fun setQuery(query: List<DialerButton>) = queryRelay.accept(query)
+  fun color() = colorChannel.asFlow()
 
-  fun setColor(color: Optional<Int>) = colorRelay.accept(color)
+  fun longClicks() = longClickChannel.asFlow()
 
-  fun currentQuery() = queryRelay.value!!
+  fun setQuery(query: List<DialerButton>, coroutineScope: CoroutineScope) = coroutineScope.launch {
+    currentQuery = query
+    queryChannel.send(query)
+  }
 
-  fun currentColor() = colorRelay.value!!
+  fun setColor(color: Optional<Int>, coroutineScope: CoroutineScope) = coroutineScope.launch {
+    colorChannel.send(color)
+  }
 
-  fun longClick(button: DialerButton) = longClicksRelay.accept(button)
+  fun longClick(button: DialerButton, coroutineScope: CoroutineScope) = coroutineScope.launch {
+   longClickChannel.send(button)
+  }
+
+  fun currentQuery() = currentQuery
 }

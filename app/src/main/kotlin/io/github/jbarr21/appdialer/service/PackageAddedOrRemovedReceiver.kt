@@ -13,8 +13,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class PackageAddedOrRemovedReceiver : BroadcastReceiver() {
 
-  @Inject
-  lateinit var appStream: AppStream
+//  @Inject
+//  lateinit var appStream: AppStream
 
   override fun onReceive(context: Context, intent: Intent?) {
     Timber.tag("JIM").d("Broadcoast received!")
@@ -27,7 +27,7 @@ class PackageAddedOrRemovedReceiver : BroadcastReceiver() {
   private fun refreshApps(context: Context) {
     Timber.tag("JIM").d("App installed or uninstalled")
     Toast.makeText(context, "App installed or uninstalled", Toast.LENGTH_SHORT).show()
-    appStream.setApps(emptyList())
+//    appStream.setApps(emptyList())
   }
 
   companion object {

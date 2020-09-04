@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Vibrator
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import com.google.common.base.Optional
 import dagger.Module
@@ -15,6 +16,7 @@ import dagger.hilt.android.components.ActivityComponent
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.data.AppStream
 import io.github.jbarr21.appdialer.data.UserCache
+import io.github.jbarr21.appdialer.ui.main.apps.AppClickStream
 import io.github.jbarr21.appdialer.ui.main.apps.AppDiffCallback
 import io.github.jbarr21.appdialer.ui.main.apps.ModalFragmentListener
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerAdapter
@@ -24,6 +26,7 @@ import io.github.jbarr21.appdialer.ui.main.dialer.DialerViewModel
 import io.github.jbarr21.appdialer.ui.main.dialer.QueryStream
 import io.github.jbarr21.appdialer.util.ActivityLauncher
 import io.github.jbarr21.appdialer.util.vibrateIfAble
+import kotlinx.coroutines.CoroutineScope
 
 @InstallIn(ActivityComponent::class)
 @Module
@@ -55,7 +58,7 @@ object MainModule {
 
   @Provides
   fun dialerAdapter(
-    activity: Activity,
+    activity: FragmentActivity,
     application: Application,
     appStream: AppStream,
     dialerLabels: List<DialerButton>,
@@ -67,16 +70,17 @@ object MainModule {
     { button ->
       if (button.isClearButton || button.isInfoButton) {
         vibrator.orNull()?.vibrateIfAble(application)
-        queryStream.longClick(button)
+        // TODO: switch from activity lifecycle to coordinator (x3)
+        queryStream.longClick(button, activity.lifecycleScope)
       }
     },
     { button ->
       if (appStream.currentApps().isNotEmpty()) {
         vibrator.orNull()?.vibrateIfAble(application)
         if (button.isClearButton) {
-          queryStream.setQuery(emptyList())
+          queryStream.setQuery(emptyList(), activity.lifecycleScope)
         } else {
-          queryStream.setQuery(queryStream.currentQuery() + button)
+          queryStream.setQuery(queryStream.currentQuery() + button, activity.lifecycleScope)
         }
       }
     }

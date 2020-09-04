@@ -6,14 +6,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.commit451.modalbottomsheetdialogfragment.ModalBottomSheetDialogFragment
 import com.commit451.modalbottomsheetdialogfragment.Option
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
-import com.jakewharton.rxbinding3.swiperefreshlayout.refreshes
-import com.uber.autodispose.lifecycle.autoDisposable
+import dagger.hilt.android.scopes.ActivityScoped
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.data.AppRepo
@@ -29,12 +29,14 @@ import io.github.jbarr21.appdialer.ui.main.dialer.DialerViewModel
 import io.github.jbarr21.appdialer.ui.main.dialer.QueryStream
 import io.github.jbarr21.appdialer.ui.settings.SettingsActivity
 import io.github.jbarr21.appdialer.util.ActivityLauncher
-import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.material.slides
+import ru.ldralighieri.corbind.swiperefreshlayout.refreshes
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
+@ActivityScoped
 class MainCoordinator @Inject constructor(
   private val activity: FragmentActivity,
   private val activityLauncher: ActivityLauncher,
@@ -48,10 +50,7 @@ class MainCoordinator @Inject constructor(
   private val launcherApps: LauncherApps,
   private val modalFragmentListener: ModalFragmentListener,
   private val queryStream: QueryStream
-) : BaseCoordinator(), CoroutineScope, ModalBottomSheetDialogFragment.Listener {
-
-  override val coroutineContext: CoroutineContext
-    get() = Dispatchers.Main
+) : BaseCoordinator(activity.lifecycleScope), ModalBottomSheetDialogFragment.Listener {
 
   private lateinit var viewBinding: ActivityMainBinding
 
@@ -64,44 +63,40 @@ class MainCoordinator @Inject constructor(
     setupDialerButtons(dialerAdapter)
 
     appClickStream.clicks()
-      .autoDisposable(this)
-      .subscribe { run { launchApp(it) } }
+      .onEach { launchApp(it) }
+      .launchIn(this)
 
     appClickStream.longClicks()
-      .autoDisposable(this)
-      .subscribe { run { showAppOptionsModal(it) } }
-
-    queryStream.longClicks()
-      .autoDisposable(this)
-      .subscribe { onDialerLongClick(it) }
-
-    viewBinding.swipeRefresh.refreshes()
-      .observeOn(AndroidSchedulers.mainThread())
-      .autoDisposable(this)
-      .subscribe { onPullToRefresh() }
+      .onEach { showAppOptionsModal(it) }
+      .launchIn(this)
 
     queryStream.query()
-      .observeOn(AndroidSchedulers.mainThread())
-      .autoDisposable(this)
-      .subscribe { handleQuery(it) }
+      .onEach { handleQuery(it) }
+      .launchIn(this)
+
+    queryStream.longClicks()
+      .onEach { onDialerLongClick(it) }
+      .launchIn(this)
 
     // TODO: add empty currentApps and progress currentApps
     appStream.allApps()
       .filter { queryStream.currentQuery().isEmpty() }
-      .observeOn(AndroidSchedulers.mainThread())
-      .autoDisposable(this)
-      .subscribe { handleAppListUpdate(it) }
+      .onEach { handleAppListUpdate(it) }
+      .launchIn(this)
 
-    appRepo.loadApps()
+    viewBinding.swipeRefresh.refreshes()
+      .onEach { onPullToRefresh() }
+      .launchIn(this)
+
+    appRepo.loadApps() {
+      viewBinding.swipeRefresh.isRefreshing = false
+    }
   }
 
   private fun setupAppGrid() {
     viewBinding.appGrid.apply {
       setHasFixedSize(true)
-      layoutManager = GridLayoutManager(
-        activity,
-        NUM_APP_COLUMNS
-      )
+      layoutManager = GridLayoutManager(activity, NUM_APP_COLUMNS)
       adapter = appAdapter
     }
   }
@@ -113,17 +108,15 @@ class MainCoordinator @Inject constructor(
       adapter = dialerAdapter
     }
 
-    BottomSheetBehavior.from(viewBinding.bottomSheet.bottomSheet).apply {
-      state = BottomSheetBehavior.STATE_EXPANDED
-      addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-        override fun onStateChanged(bottomSheet: View, newState: Int) = Unit
-        override fun onSlide(bottomSheet: View, slideOffset: Float) {
-          viewBinding.bottomSheet.dialer.apply {
-            translationY = (1 - slideOffset) * resources.getDimension(R.dimen.dialer_sheet_peek_height)
-          }
+    val bottomSheet = viewBinding.bottomSheet.bottomSheet
+    BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
+    bottomSheet.slides()
+      .onEach { slideOffset ->
+        viewBinding.bottomSheet.dialer.apply {
+          translationY = (1 - slideOffset) * resources.getDimension(R.dimen.dialer_sheet_peek_height)
         }
-      })
-    }
+      }
+      .launchIn(this)
   }
 
   private fun queryApps(buttons: List<DialerButton>) {
@@ -131,7 +124,7 @@ class MainCoordinator @Inject constructor(
       clear()
       addAll(buttons)
     }
-    // TODO: update UI or use LiveData/RxJava
+    // TODO: update UI or use Flow
     dialerViewModel.trie.predictWord(dialerViewModel.query.map { it.letters[0].toString() }
       .joinToString(separator = ""))
       .sortedBy { it.label.toLowerCase() }
@@ -167,7 +160,7 @@ class MainCoordinator @Inject constructor(
   private fun launchApp(app: App) {
     launcherApps.startMainActivity(app.launchIntent.component, app.user, null, Bundle.EMPTY)
     activity.finish()
-    queryStream.setQuery(emptyList())
+    queryStream.setQuery(emptyList(), this)
   }
 
   private fun onDialerLongClick(button: DialerButton) {
@@ -178,7 +171,9 @@ class MainCoordinator @Inject constructor(
   }
 
   private fun onPullToRefresh() {
-    appRepo.loadApps(useCache = false)
+    appRepo.loadApps(useCache = false) {
+      viewBinding.swipeRefresh.isRefreshing = false
+    }
   }
 
   private fun showAppOptionsModal(app: App) {
