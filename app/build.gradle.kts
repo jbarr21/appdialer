@@ -1,7 +1,7 @@
 val composeVersion = "1.0.0-alpha02"
 val coroutinesVersion = "1.3.8"
 val corbindVersion = "1.4.0"
-val flipperVersion = "0.39.0"
+val flipperVersion = "0.55.0"
 val hiltVersion = "2.28-alpha"
 val roomVersion = "2.2.5"
 

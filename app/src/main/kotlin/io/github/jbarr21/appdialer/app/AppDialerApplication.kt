@@ -12,6 +12,7 @@ import com.facebook.flipper.plugins.crashreporter.CrashReporterPlugin
 import com.facebook.flipper.plugins.databases.DatabasesFlipperPlugin
 import com.facebook.flipper.plugins.inspector.DescriptorMapping
 import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
+import com.facebook.flipper.plugins.navigation.NavigationFlipperPlugin
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPlugin
 import com.facebook.soloader.SoLoader
@@ -59,6 +60,7 @@ class AppDialerApplication : Application(), CoroutineScope {
             CrashReporterPlugin.getInstance(),
             DatabasesFlipperPlugin(application),
             InspectorFlipperPlugin(application, DescriptorMapping.withDefaults()),
+            NavigationFlipperPlugin.getInstance(),
             NetworkFlipperPlugin(),
             SharedPreferencesFlipperPlugin(application)
           ).forEach { addPlugin(it) }
