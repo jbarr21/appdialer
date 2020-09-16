@@ -159,8 +159,8 @@ class MainCoordinator @Inject constructor(
 
   private fun launchApp(app: App) {
     launcherApps.startMainActivity(app.launchIntent.component, app.user, null, Bundle.EMPTY)
-    activity.finish()
     queryStream.setQuery(emptyList(), this)
+    activity.finishAndRemoveTask()
   }
 
   private fun onDialerLongClick(button: DialerButton) {
