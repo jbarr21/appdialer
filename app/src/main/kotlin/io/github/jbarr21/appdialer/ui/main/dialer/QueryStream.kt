@@ -34,7 +34,7 @@ class QueryStream @Inject constructor() {
   }
 
   fun longClick(button: DialerButton, coroutineScope: CoroutineScope) = coroutineScope.launch {
-   longClickChannel.send(button)
+    longClickChannel.send(button)
   }
 
   fun currentQuery() = currentQuery

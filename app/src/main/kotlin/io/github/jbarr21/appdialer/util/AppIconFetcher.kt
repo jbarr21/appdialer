@@ -55,9 +55,7 @@ class AppIconFetcher @Inject constructor(
       }.getIcon(dpi).let { icon ->
         if (user.isMain) icon else packageManager.getUserBadgedIcon(icon, user)
       }
-    }
-    catch (ignored: PackageManager.NameNotFoundException) { }
-    catch (ignored: Resources.NotFoundException) { }
+    } catch (ignored: PackageManager.NameNotFoundException) { } catch (ignored: Resources.NotFoundException) { }
 
     return defaultAppIcon!!
   }

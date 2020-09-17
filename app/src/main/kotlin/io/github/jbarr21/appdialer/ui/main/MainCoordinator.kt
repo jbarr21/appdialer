@@ -125,8 +125,10 @@ class MainCoordinator @Inject constructor(
       addAll(buttons)
     }
     // TODO: update UI or use Flow
-    dialerViewModel.trie.predictWord(dialerViewModel.query.map { it.letters[0].toString() }
-      .joinToString(separator = ""))
+    dialerViewModel.trie.predictWord(
+      dialerViewModel.query.map { it.letters[0].toString() }
+        .joinToString(separator = "")
+    )
       .sortedBy { it.label.toLowerCase() }
       .also {
         val query = dialerViewModel.query.map { app -> app.digit }.joinToString(separator = "")

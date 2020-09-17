@@ -10,22 +10,18 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.palette.graphics.Palette
 import coil.Coil
 import coil.request.GetRequest
-import io.github.jbarr21.appdialer.app.AppDialerApplication
 import io.github.jbarr21.appdialer.data.db.AppDatabase
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.IllegalStateException
-import kotlin.coroutines.CoroutineContext
 
 class AppRepo @Inject constructor(
   private val application: Application,

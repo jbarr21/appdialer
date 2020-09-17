@@ -30,7 +30,8 @@ class DialerAdapter(
         false
       ).apply {
         minimumHeight = parent.measuredHeight / NUM_ROWS
-      })
+      }
+    )
   }
 
   override fun onBindViewHolder(holder: DialerButtonViewHolder, position: Int) {

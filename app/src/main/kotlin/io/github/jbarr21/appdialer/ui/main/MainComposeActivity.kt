@@ -15,9 +15,12 @@ class MainComposeActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
-      Box(modifier = Modifier.fillMaxSize(), gravity = ContentGravity.Center, children = {
-        Text("Hello, world!")
-      })
+      Box(
+        modifier = Modifier.fillMaxSize(), gravity = ContentGravity.Center,
+        children = {
+          Text("Hello, world!")
+        }
+      )
     }
   }
 }

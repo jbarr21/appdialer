@@ -28,7 +28,7 @@ data class App(
       .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
 
   fun isItemSameAs(other: App): Boolean {
-    return user == other.user &&  packageName == other.packageName && activityName == other.activityName
+    return user == other.user && packageName == other.packageName && activityName == other.activityName
   }
 
   companion object {

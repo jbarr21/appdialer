@@ -2,13 +2,8 @@ package io.github.jbarr21.appdialer.service
 
 import android.content.*
 import android.widget.Toast
-import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
-import io.github.jbarr21.appdialer.app.AppDialerApplication
-import io.github.jbarr21.appdialer.data.AppStream
 import timber.log.Timber
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class PackageAddedOrRemovedReceiver : BroadcastReceiver() {

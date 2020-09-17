@@ -18,8 +18,6 @@ import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.ui.main.dialer.QueryStream
 import io.github.jbarr21.appdialer.util.Truss
-import ru.ldralighieri.corbind.view.clicks
-import ru.ldralighieri.corbind.view.longClicks
 import javax.inject.Inject
 import javax.inject.Singleton
 

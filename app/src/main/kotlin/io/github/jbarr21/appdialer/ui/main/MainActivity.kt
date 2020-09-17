@@ -2,7 +2,6 @@ package io.github.jbarr21.appdialer.ui.main
 
 import android.os.Bundle
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import com.commit451.modalbottomsheetdialogfragment.ModalBottomSheetDialogFragment
 import com.commit451.modalbottomsheetdialogfragment.Option
 import com.squareup.coordinators.Coordinators

@@ -2,9 +2,7 @@ package io.github.jbarr21.appdialer.data.db
 
 import android.graphics.Color.TRANSPARENT
 import androidx.annotation.ColorInt
-import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
 @Entity(primaryKeys = ["userId", "packageName", "activityName"])
 data class AppEntity(

@@ -3,9 +3,10 @@ package io.github.jbarr21.appdialer.util
 import java.util.*
 
 // TODO: support matching at more than just the first letter of the label
-class Trie<T>(val root: TrieNode<T> = TrieNode(
-  ' '
-)
+class Trie<T>(
+  val root: TrieNode<T> = TrieNode(
+    ' '
+  )
 ) {
 
   private val keyMappings = mapOf(2 to "abc", 3 to "def", 4 to "ghi", 5 to "jkl", 6 to "mno", 7 to "pqrs", 8 to "tuv", 9 to "wxyz")
@@ -68,5 +69,10 @@ class Trie<T>(val root: TrieNode<T> = TrieNode(
   operator fun Trie<T>.plusAssign(word: String) = add(word, value = null)
   operator fun contains(word: String): Boolean = contains(word, partial = false)
 
-  data class TrieNode<T>(val key: Char, var value: T? = null, var isLeaf: Boolean = false, val children: MutableList<TrieNode<T>> = mutableListOf())
+  data class TrieNode<T>(
+    val key: Char,
+    var value: T? = null,
+    var isLeaf: Boolean = false,
+    val children: MutableList<TrieNode<T>> = mutableListOf()
+  )
 }
