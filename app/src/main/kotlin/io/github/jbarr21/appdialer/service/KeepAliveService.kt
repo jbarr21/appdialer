@@ -5,13 +5,12 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.IBinder
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.jbarr21.appdialer.R
+import io.github.jbarr21.appdialer.data.UserPreferencesRepo
 import io.github.jbarr21.appdialer.ui.main.MainActivity
-import io.github.jbarr21.appdialer.ui.settings.Settings
 import io.github.jbarr21.appdialer.util.Channels
 import timber.log.Timber
 import javax.inject.Inject
@@ -20,7 +19,7 @@ import javax.inject.Inject
 class KeepAliveService : Service() {
 
   @Inject
-  lateinit var sharedPreferences: SharedPreferences
+  lateinit var userPreferencesRepo: UserPreferencesRepo
 
   private val appReceiver by lazy { PackageAddedOrRemovedReceiver() }
 
@@ -75,10 +74,11 @@ class KeepAliveService : Service() {
   }
 
   companion object {
-    fun start(context: Context, sharedPreferences: SharedPreferences) {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-          && sharedPreferences.getBoolean(Settings.Keys.SERVICE_ENABLED.name, false)) {
-        context.startForegroundService(Intent(context, KeepAliveService::class.java))
+    suspend fun start(context: Context, userPreferencesRepo: UserPreferencesRepo) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (userPreferencesRepo.usePersistentService()) {
+          context.startForegroundService(Intent(context, KeepAliveService::class.java))
+        }
       }
     }
   }

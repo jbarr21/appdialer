@@ -1,7 +1,5 @@
 package io.github.jbarr21.appdialer.ui.main
 
-import android.app.Activity
-import android.app.Application
 import android.content.Intent
 import android.os.Vibrator
 import androidx.fragment.app.FragmentActivity
@@ -16,7 +14,7 @@ import dagger.hilt.android.components.ActivityComponent
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.data.AppStream
 import io.github.jbarr21.appdialer.data.UserCache
-import io.github.jbarr21.appdialer.ui.main.apps.AppClickStream
+import io.github.jbarr21.appdialer.data.UserPreferencesRepo
 import io.github.jbarr21.appdialer.ui.main.apps.AppDiffCallback
 import io.github.jbarr21.appdialer.ui.main.apps.ModalFragmentListener
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerAdapter
@@ -26,7 +24,7 @@ import io.github.jbarr21.appdialer.ui.main.dialer.DialerViewModel
 import io.github.jbarr21.appdialer.ui.main.dialer.QueryStream
 import io.github.jbarr21.appdialer.util.ActivityLauncher
 import io.github.jbarr21.appdialer.util.vibrateIfAble
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @InstallIn(ActivityComponent::class)
 @Module
@@ -59,8 +57,8 @@ object MainModule {
   @Provides
   fun dialerAdapter(
     activity: FragmentActivity,
-    application: Application,
     appStream: AppStream,
+    userPreferencesRepo: UserPreferencesRepo,
     dialerLabels: List<DialerButton>,
     queryStream: QueryStream,
     vibrator: Optional<Vibrator>
@@ -69,14 +67,18 @@ object MainModule {
     dialerLabels,
     { button ->
       if (button.isClearButton || button.isInfoButton) {
-        vibrator.orNull()?.vibrateIfAble(application)
+        activity.lifecycleScope.launch {
+          vibrator.orNull()?.vibrateIfAble(userPreferencesRepo)
+        }
         // TODO: switch from activity lifecycle to coordinator (x3)
         queryStream.longClick(button, activity.lifecycleScope)
       }
     },
     { button ->
       if (appStream.currentApps().isNotEmpty()) {
-        vibrator.orNull()?.vibrateIfAble(application)
+        activity.lifecycleScope.launch {
+          vibrator.orNull()?.vibrateIfAble(userPreferencesRepo)
+        }
         if (button.isClearButton) {
           queryStream.setQuery(emptyList(), activity.lifecycleScope)
         } else {

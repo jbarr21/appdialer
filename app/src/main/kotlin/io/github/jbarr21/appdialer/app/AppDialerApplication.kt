@@ -3,7 +3,6 @@ package io.github.jbarr21.appdialer.app
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.SharedPreferences
 import android.os.Build
 import androidx.core.content.getSystemService
 import com.facebook.flipper.android.AndroidFlipperClient
@@ -18,11 +17,14 @@ import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPl
 import com.facebook.soloader.SoLoader
 import dagger.hilt.android.HiltAndroidApp
 import io.github.jbarr21.appdialer.BuildConfig
+import io.github.jbarr21.appdialer.data.UserPreferencesRepo
 import io.github.jbarr21.appdialer.service.KeepAliveService
 import io.github.jbarr21.appdialer.util.Channels
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -31,7 +33,7 @@ import kotlin.coroutines.CoroutineContext
 class AppDialerApplication : Application(), CoroutineScope {
 
   @Inject
-  lateinit var sharedPreferences: SharedPreferences
+  lateinit var userPreferencesRepo: UserPreferencesRepo
 
   override val coroutineContext: CoroutineContext
     get() = Dispatchers.Main
@@ -42,7 +44,9 @@ class AppDialerApplication : Application(), CoroutineScope {
     Timber.tag("JIM").d("Application created")
     setupFlipper(this)
     createNotificationChannel()
-    KeepAliveService.start(this, sharedPreferences)
+    GlobalScope.launch(Dispatchers.IO) {
+      KeepAliveService.start(this@AppDialerApplication, userPreferencesRepo)
+    }
   }
 
   override fun onTerminate() {

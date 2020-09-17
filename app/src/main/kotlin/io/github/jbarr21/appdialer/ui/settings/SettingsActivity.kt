@@ -1,77 +1,161 @@
 package io.github.jbarr21.appdialer.ui.settings
 
-import android.content.Context
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.PointerIcon
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import coil.ImageLoader
-import com.jakewharton.processphoenix.ProcessPhoenix
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope.gravity
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
+import androidx.compose.material.Switch
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.setContent
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
-import de.Maxr1998.modernpreferences.PreferencesAdapter
 import io.github.jbarr21.appdialer.R
-import io.github.jbarr21.appdialer.util.AppIconFetcher
+import io.github.jbarr21.appdialer.data.UserPreferences
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsActivity : AppCompatActivity() {
 
   @Inject
-  lateinit var appIcon: AppIconFetcher
+  lateinit var viewModelFactory: SettingsViewModel.Factory
 
-  private val preferencesAdapter by lazy { createPreferencesAdapter(this) }
+  @Inject
+  lateinit var settingsData: List<Setting>
+
+  private val viewModel: SettingsViewModel by viewModels { viewModelFactory }
+
+  private val onNavIconPressed = { finish() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-    println(appIcon.toString())
-
-    RecyclerView(this).apply {
-      layoutManager = LinearLayoutManager(this@SettingsActivity)
-      adapter = preferencesAdapter
-      setContentView(this)
+    viewModel.userPreferences.observe(this) {
+      setContent {
+        SettingsScreen(onNavIconPressed = onNavIconPressed, userPreferences = it)
+      }
     }
-
-    // Restore adapter state from saved state
-    savedInstanceState?.getParcelable<PreferencesAdapter.SavedState>("adapter")
-      ?.let(preferencesAdapter::loadSavedState)
   }
 
-  // Save the adapter state as a parcelable into the Android-managed instance state
-  override fun onSaveInstanceState(outState: Bundle) {
-    super.onSaveInstanceState(outState)
-    outState.putParcelable("adapter", preferencesAdapter.getSavedState())
+  @Composable
+  fun SettingsScreen(
+    onNavIconPressed: () -> Unit,
+    userPreferences: UserPreferences
+  ) {
+    MaterialTheme(colors = if (isSystemInDarkTheme()) darkColors() else lightColors()) {
+      Scaffold(
+        topBar = { TopBar(onNavIconPressed = onNavIconPressed) },
+        bodyContent = {
+          Surface(modifier = Modifier.fillMaxSize()) {
+            Column {
+              SettingsGroup("General")
+              SettingsItem(
+                setting = settingsData[0],
+                checked = userPreferences.useHapticFeedback,
+                onCheckedChange = { viewModel.updateUseHaptipFeedback(it) }
+              )
+              SettingsItem(
+                setting = settingsData[1],
+                checked = userPreferences.usePersistentService,
+                onCheckedChange = { viewModel.updateUsePersistentService(it) }
+              )
+            }
+          }
+        }
+      )
+    }
   }
 
-  override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-    menuInflater.inflate(R.menu.settings, menu)
-    return super.onCreateOptionsMenu(menu)
+  @Composable
+  fun TopBar(onNavIconPressed: () -> Unit) {
+    TopAppBar(
+      title = { Text("AppDialer Settings") },
+      navigationIcon = {
+        Image(
+          asset = vectorResource(id = R.drawable.ic_back),
+          modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .gravity(Alignment.CenterVertically)
+            .clickable(onClick = onNavIconPressed)
+        )
+      }
+    )
   }
 
-  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-    return when (item?.itemId) {
-      android.R.id.home -> onBackPressed()
-      R.id.refresh -> ProcessPhoenix.triggerRebirth(this)
-      else -> super.onOptionsItemSelected(item)
-    }.run { true }
+  @Composable
+  fun SettingsGroup(title: String) {
+    Text(
+      title,
+      style = MaterialTheme.typography.button,
+      color = MaterialTheme.colors.secondaryVariant,
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(vertical = 8.dp, horizontal = 72.dp)
+        .padding(top = 16.dp)
+    )
   }
 
-  override fun onBackPressed() {
-    if (!preferencesAdapter.goBack())
-      super.onBackPressed()
+  @Composable
+  fun SettingsItem(setting: Setting, checked: Boolean, onCheckedChange: (Boolean) -> Unit = { }) {
+    Row(
+      verticalGravity = Alignment.CenterVertically,
+      modifier = Modifier/*.clickable(onClick = {})*/.padding(vertical = 16.dp)
+    ) {
+      Image(
+        asset = vectorResource(id = setting.iconRes),
+        colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
+        modifier = Modifier.padding(horizontal = 24.dp)
+      )
+      Column(modifier = Modifier.weight(1f, fill = true)) {
+        Text(setting.title, style = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.Medium))
+        Text(setting.description, style = MaterialTheme.typography.body2)
+      }
+      Switch(
+        checked = checked,
+        onCheckedChange = onCheckedChange,
+        modifier = Modifier.padding(horizontal = 16.dp)
+      )
+    }
   }
 
-  override fun onDestroy() {
-    preferencesAdapter.onScreenChangeListener = null
-    super.onDestroy()
-  }
+  @Preview
+  @Composable
+  fun DefaultPreview() {
+    Column {
+      TopBar(onNavIconPressed = {})
 
-  private fun createPreferencesAdapter(context: Context): PreferencesAdapter {
-    val preferenceScreen = Settings.createScreen(context.applicationContext)
-    return PreferencesAdapter(preferenceScreen)
+      SettingsGroup(title = "General")
+
+      repeat(3) {
+        SettingsItem(
+          setting = Setting(
+            title = "Setting title $it",
+            description = "A description for the use of the setting $it",
+            iconRes = R.drawable.ic_vibration
+          ),
+          checked = it % 2 == 0
+        )
+      }
+    }
   }
 }
