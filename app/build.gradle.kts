@@ -1,4 +1,4 @@
-val composeVersion = "1.0.0-alpha02"
+val composeVersion = "1.0.0-alpha04"
 val coroutinesVersion = "1.3.8"
 val corbindVersion = "1.4.0"
 val flipperVersion = "0.55.0"
@@ -58,7 +58,6 @@ android {
 
 dependencies {
   kapt("androidx.room:room-compiler:2.2.5")
-  kapt("androidx.compose:compose-compiler:$composeVersion")
   kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
   kapt("androidx.lifecycle:lifecycle-compiler:2.2.0")
 

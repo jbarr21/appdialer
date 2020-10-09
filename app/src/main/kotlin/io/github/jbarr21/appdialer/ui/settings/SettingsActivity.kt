@@ -9,7 +9,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope.gravity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -95,7 +94,6 @@ class SettingsActivity : AppCompatActivity() {
           asset = vectorResource(id = R.drawable.ic_back),
           modifier = Modifier
             .padding(horizontal = 16.dp)
-            .gravity(Alignment.CenterVertically)
             .clickable(onClick = onNavIconPressed)
         )
       }
@@ -118,8 +116,8 @@ class SettingsActivity : AppCompatActivity() {
   @Composable
   fun SettingsItem(setting: Setting, checked: Boolean, onCheckedChange: (Boolean) -> Unit = { }) {
     Row(
-      verticalGravity = Alignment.CenterVertically,
-      modifier = Modifier/*.clickable(onClick = {})*/.padding(vertical = 16.dp)
+      verticalAlignment = Alignment.CenterVertically,
+      modifier = Modifier.clickable(onClick = { onCheckedChange(!checked) }).padding(vertical = 16.dp)
     ) {
       Image(
         asset = vectorResource(id = setting.iconRes),
