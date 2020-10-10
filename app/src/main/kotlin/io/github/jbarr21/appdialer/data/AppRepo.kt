@@ -21,7 +21,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.IllegalStateException
 
 class AppRepo @Inject constructor(
   private val application: Application,
@@ -31,6 +30,16 @@ class AppRepo @Inject constructor(
   private val userCache: UserCache,
   private val userManager: UserManager
 ) {
+
+  suspend fun loadApps(): List<App> {
+    return withContext(Dispatchers.IO) {
+      val cachedApps = loadAppsFromCache()
+      if (cachedApps.isNotEmpty()) return@withContext cachedApps
+
+      val pmApps = loadAppsFromPackageManager()
+      return@withContext pmApps
+    }
+  }
 
   fun loadApps(useCache: Boolean = true, onComplete: () -> (Unit) = {}): Job {
     return CoroutineScope(Dispatchers.Main).launch {

@@ -18,6 +18,27 @@ class MainViewModel(
   val query = mutableListOf<DialerButton>()
   val trie = Trie<App>()
 
+  val allApps by lazy {
+    MutableLiveData<List<App>>().also {
+      loadAllApps()
+    }
+  }
+
+  val filteredApps by lazy {
+    MutableLiveData<List<App>>().also {
+      loadAllApps()
+    }
+  }
+
+  private fun loadAllApps() {
+    viewModelScope.launch {
+      appRepo.loadApps().let { apps ->
+        allApps.value = apps
+        filteredApps.value = apps
+      }
+    }
+  }
+
   class Factory @Inject constructor(private val appRepo: AppRepo) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>) = MainViewModel(appRepo) as T
   }
