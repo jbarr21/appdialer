@@ -2,7 +2,6 @@ package io.github.jbarr21.appdialer.ui.main
 
 import android.content.Intent
 import android.content.pm.LauncherApps
-import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -160,7 +159,7 @@ class MainCoordinator @Inject constructor(
   }
 
   private fun launchApp(app: App) {
-    launcherApps.startMainActivity(app.launchIntent.component, app.user, null, Bundle.EMPTY)
+    activityLauncher.startMainActivity(app)
     queryStream.setQuery(emptyList(), this)
     activity.finishAndRemoveTask()
   }
