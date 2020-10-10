@@ -5,12 +5,10 @@ import android.app.Application
 import android.app.admin.DevicePolicyManager
 import android.content.pm.LauncherApps
 import android.os.UserManager
-import android.os.Vibrator
 import androidx.core.content.getSystemService
 import androidx.room.Room
 import coil.Coil
 import coil.ImageLoader
-import com.google.common.base.Optional
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -56,8 +54,4 @@ object AppModule {
   @Singleton
   @Provides
   fun userManager(application: Application) = application.getSystemService<UserManager>()!!
-
-  @Singleton
-  @Provides
-  fun vibrator(application: Application): Optional<Vibrator> = Optional.fromNullable(application.getSystemService<Vibrator>())
 }
