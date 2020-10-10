@@ -1,5 +1,6 @@
 package io.github.jbarr21.appdialer.util
 
+import io.github.jbarr21.appdialer.ui.main.MainModule
 import java.util.*
 
 // TODO: support matching at more than just the first letter of the label
@@ -9,7 +10,7 @@ class Trie<T>(
   )
 ) {
 
-  private val keyMappings = mapOf(2 to "abc", 3 to "def", 4 to "ghi", 5 to "jkl", 6 to "mno", 7 to "pqrs", 8 to "tuv", 9 to "wxyz")
+  private val keyMappings = MainModule.keyMappings()
 
   fun add(word: String, value: T? = null) {
     var node = root
@@ -62,7 +63,9 @@ class Trie<T>(
   }
 
   private fun digitize(ch: Char): String {
-    return keyMappings.entries.first { (_, letters) -> letters.any { it == ch } }.key.toString()
+    return keyMappings.entries.firstOrNull {
+        (_, letters) -> letters.any { it == ch }
+    }?.key?.toString() ?: throw IllegalStateException("No match for $ch")
   }
 
   operator fun Trie<T>.plus(word: String) = add(word, value = null)
