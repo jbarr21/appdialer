@@ -101,6 +101,7 @@ dependencies {
   implementation("com.jakewharton:process-phoenix:2.0.0")
   implementation("com.jakewharton.timber:timber:4.7.1")
   implementation("com.squareup.coordinators:coordinators:0.4")
+  implementation("dev.chrisbanes.accompanist:accompanist-coil:0.3.0")
   implementation("dev.chrisbanes:insetter-ktx:0.2.1")
   implementation("io.coil-kt:coil:0.10.1")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")

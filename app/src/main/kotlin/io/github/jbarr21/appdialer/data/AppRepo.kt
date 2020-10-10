@@ -9,7 +9,7 @@ import android.os.UserManager
 import androidx.core.graphics.drawable.toBitmap
 import androidx.palette.graphics.Palette
 import coil.Coil
-import coil.request.GetRequest
+import coil.request.ImageRequest
 import io.github.jbarr21.appdialer.data.db.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -91,7 +91,7 @@ class AppRepo @Inject constructor(
     val packageName = it.applicationInfo.packageName
     val activityName: String = it.componentName.className
     val iconUri = App.iconUri(packageName, activityName, user)
-    val icon = Coil.execute(GetRequest.Builder(application).data(iconUri).build()).drawable?.toBitmap()
+    val icon = Coil.execute(ImageRequest.Builder(application).data(iconUri).build()).drawable?.toBitmap()
       ?: throw IllegalStateException("Null icon for uri: $iconUri")
     val iconColor = Palette.from(icon).generate().getDominantColor(Color.TRANSPARENT)
     return App(it.label.toString(), packageName, it.componentName.className, user, iconColor)
