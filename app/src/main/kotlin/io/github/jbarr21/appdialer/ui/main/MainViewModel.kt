@@ -30,11 +30,25 @@ class MainViewModel(
     }
   }
 
+  fun addToQuery(dialerButton: DialerButton) {
+    query += dialerButton
+    val queryText = query.map { it.letters[0].toString() }.joinToString(separator = "")
+    trie.predictWord(queryText)
+      .sortedBy { it.label.toLowerCase() }
+      .also { apps -> filteredApps.value = apps }
+  }
+
+  fun clearQuery() {
+    query.clear()
+    filteredApps.value = allApps.value
+  }
+
   private fun loadAllApps() {
     viewModelScope.launch {
       appRepo.loadApps().let { apps ->
         allApps.value = apps
         filteredApps.value = apps
+        apps.forEach { trie.add(it.label, it) }
       }
     }
   }
