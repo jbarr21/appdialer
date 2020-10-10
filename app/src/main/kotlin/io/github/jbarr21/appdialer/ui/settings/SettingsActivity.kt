@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,8 +16,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Switch
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +28,7 @@ import androidx.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.UserPreferences
+import io.github.jbarr21.appdialer.ui.AppTheme
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -61,7 +59,7 @@ class SettingsActivity : AppCompatActivity() {
     onNavIconPressed: () -> Unit,
     userPreferences: UserPreferences
   ) {
-    MaterialTheme(colors = if (isSystemInDarkTheme()) darkColors() else lightColors()) {
+    AppTheme {
       Scaffold(
         topBar = { TopBar(onNavIconPressed = onNavIconPressed) },
         bodyContent = {
