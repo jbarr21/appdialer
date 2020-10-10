@@ -24,7 +24,6 @@ import io.github.jbarr21.appdialer.ui.main.apps.AppClickStream
 import io.github.jbarr21.appdialer.ui.main.apps.ModalFragmentListener
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerAdapter
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerButton
-import io.github.jbarr21.appdialer.ui.main.dialer.DialerViewModel
 import io.github.jbarr21.appdialer.ui.main.dialer.QueryStream
 import io.github.jbarr21.appdialer.ui.settings.SettingsActivity
 import io.github.jbarr21.appdialer.util.ActivityLauncher
@@ -44,7 +43,7 @@ class MainCoordinator @Inject constructor(
   private val appAdapter: AppAdapter,
   private val appRepo: AppRepo,
   private val dialerAdapter: DialerAdapter,
-  private val dialerViewModel: DialerViewModel,
+  private val mainViewModelFactory: MainViewModel.Factory,
   private val fragmentManager: FragmentManager,
   private val launcherApps: LauncherApps,
   private val modalFragmentListener: ModalFragmentListener,
@@ -54,6 +53,8 @@ class MainCoordinator @Inject constructor(
   private lateinit var viewBinding: ActivityMainBinding
 
   private var longPressedApp: App? = null
+
+  private val mainViewModel: MainViewModel by lazy { mainViewModelFactory.create(MainViewModel::class.java) }
 
   override fun attach(view: View) {
     super.attach(view)
@@ -119,25 +120,25 @@ class MainCoordinator @Inject constructor(
   }
 
   private fun queryApps(buttons: List<DialerButton>) {
-    dialerViewModel.query.apply {
+    mainViewModel.query.apply {
       clear()
       addAll(buttons)
     }
     // TODO: update UI or use Flow
-    dialerViewModel.trie.predictWord(
-      dialerViewModel.query.map { it.letters[0].toString() }
+    mainViewModel.trie.predictWord(
+      mainViewModel.query.map { it.letters[0].toString() }
         .joinToString(separator = "")
     )
       .sortedBy { it.label.toLowerCase() }
       .also {
-        val query = dialerViewModel.query.map { app -> app.digit }.joinToString(separator = "")
+        val query = mainViewModel.query.map { app -> app.digit }.joinToString(separator = "")
         println("suggestions for \"$query\": ${it.take(5).map { it.label }.toList()}")
         appAdapter.submitList(it)
       }
   }
 
   private fun clearQuery() {
-    dialerViewModel.query.clear()
+    mainViewModel.query.clear()
     appAdapter.submitList(appStream.currentApps()) {
       viewBinding.appGrid.scrollToPosition(0)
     }
@@ -153,7 +154,7 @@ class MainCoordinator @Inject constructor(
 
   private fun handleAppListUpdate(apps: List<App>) {
     apps.forEach {
-      dialerViewModel.trie.add(it.label, it)
+      mainViewModel.trie.add(it.label, it)
     }
     appAdapter.submitList(apps)
   }

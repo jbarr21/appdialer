@@ -5,7 +5,6 @@ import android.content.pm.LauncherApps
 import android.os.Bundle
 import android.os.Vibrator
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import com.google.common.base.Optional
@@ -22,7 +21,6 @@ import io.github.jbarr21.appdialer.ui.main.apps.ModalFragmentListener
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerAdapter
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerButton
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerButtonDiffCallback
-import io.github.jbarr21.appdialer.ui.main.dialer.DialerViewModel
 import io.github.jbarr21.appdialer.ui.main.dialer.QueryStream
 import io.github.jbarr21.appdialer.util.ActivityLauncher
 import io.github.jbarr21.appdialer.util.vibrateIfAble
@@ -46,9 +44,6 @@ object MainModule {
       }
     }
   }
-
-  @Provides
-  fun dialerViewModel(activity: FragmentActivity) = ViewModelProviders.of(activity).get(DialerViewModel::class.java)
 
   @Provides
   fun modalFragmentListener(activityLauncher: ActivityLauncher, userCache: UserCache) = ModalFragmentListener(activityLauncher, userCache)
