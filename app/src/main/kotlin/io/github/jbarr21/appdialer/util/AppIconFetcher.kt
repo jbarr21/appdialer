@@ -7,6 +7,7 @@ import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.UserHandle
+import androidx.collection.LruCache
 import coil.bitmap.BitmapPool
 import coil.decode.DataSource
 import coil.decode.Options
@@ -22,6 +23,7 @@ import javax.inject.Singleton
 @Singleton
 class AppIconFetcher @Inject constructor(
   private val activityManager: ActivityManager,
+  private val imageCache: LruCache<String, Drawable>,
   private val launcherApps: LauncherApps,
   private val packageManager: PackageManager,
   private val userCache: UserCache
@@ -33,10 +35,21 @@ class AppIconFetcher @Inject constructor(
   }
 
   override suspend fun fetch(pool: BitmapPool, data: Uri, size: Size, options: Options): FetchResult {
+    return imageCache.get(key(data))?.let { icon ->
+      DrawableResult(
+        drawable = icon,
+        isSampled = false,
+        dataSource = DataSource.MEMORY
+      )
+    } ?: fetchUncachedIcon(data)
+  }
+
+  private fun fetchUncachedIcon(data: Uri): DrawableResult {
     val packageName = data.host.orEmpty()
     val user = userCache.findById(data.getQueryParameter(PARAM_USER_ID).orEmpty().toInt())
     val activityName = data.getQueryParameter(PARAM_ACTIVITY_NAME).orEmpty()
     val icon = getFullResIcon(packageName, activityName, user)
+    imageCache.put(key(data), icon)
     return DrawableResult(
       drawable = icon,
       isSampled = false,

@@ -5,6 +5,8 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import androidx.core.content.getSystemService
+import coil.Coil
+import coil.ImageLoader
 import com.facebook.flipper.android.AndroidFlipperClient
 import com.facebook.flipper.android.utils.FlipperUtils
 import com.facebook.flipper.plugins.crashreporter.CrashReporterPlugin
@@ -32,8 +34,8 @@ import kotlin.coroutines.CoroutineContext
 @HiltAndroidApp
 class AppDialerApplication : Application(), CoroutineScope {
 
-  @Inject
-  lateinit var userPreferencesRepo: UserPreferencesRepo
+  @Inject lateinit var imageLoader: ImageLoader
+  @Inject lateinit var userPreferencesRepo: UserPreferencesRepo
 
   override val coroutineContext: CoroutineContext
     get() = Dispatchers.Main
@@ -44,6 +46,7 @@ class AppDialerApplication : Application(), CoroutineScope {
     Timber.tag("JIM").d("Application created")
     setupFlipper(this)
     createNotificationChannel()
+    Coil.setImageLoader(imageLoader)
     GlobalScope.launch(Dispatchers.IO) {
       KeepAliveService.start(this@AppDialerApplication, userPreferencesRepo)
     }
