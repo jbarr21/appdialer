@@ -24,13 +24,14 @@ import io.github.jbarr21.appdialer.data.App
 @Composable
 fun AppItem(
   app: App,
-  onSelected: (App) -> Unit = {}
+  onClick: (App) -> Unit = {},
+  onLongClick: (App) -> Unit = {}
 ) {
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = Modifier
       .fillMaxWidth()
-      .clickable(onClick = { onSelected(app) })
+      .clickable(onClick = { onClick(app) }, onLongClick = { onLongClick(app) })
       .background(color = Color(app.iconColor))
       .padding(all = 8.dp)
   ) {

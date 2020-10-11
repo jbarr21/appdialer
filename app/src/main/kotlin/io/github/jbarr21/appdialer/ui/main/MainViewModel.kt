@@ -20,6 +20,8 @@ class MainViewModel(
   private val query = mutableStateOf(listOf<DialerButton>())
   private val trie = Trie<App>()
 
+  val selectedApp = mutableStateOf<App?>(null)
+
   val allApps by lazy {
     MutableLiveData<List<App>>().also {
       loadAllApps()
@@ -47,6 +49,14 @@ class MainViewModel(
   fun clearQuery() {
     query.value = emptyList()
     filteredApps.value = allApps.value
+  }
+
+  fun selectApp(app: App) {
+    selectedApp.value = app
+  }
+
+  fun deselectApp() {
+    selectedApp.value = null
   }
 
   private fun loadAllApps() {

@@ -33,6 +33,11 @@ class MainComposeActivity : AppCompatActivity() {
       finishAndRemoveTask()
     }
 
+    val onAppLongClicked: (App) -> Unit = {
+      vibrator.vibrate()
+      mainViewModel.selectApp(it)
+    }
+
     val onDialerClicked: (DialerButton) -> Unit = {
       vibrator.vibrate()
       if (it.isClearButton) {
@@ -49,13 +54,26 @@ class MainComposeActivity : AppCompatActivity() {
       }
     }
 
+    val runThenDeselect: (() -> Unit) -> Unit = {
+      it()
+      mainViewModel.deselectApp()
+    }
+    val appLongClickActions = listOf(
+      "Uninstall" to { app: App -> runThenDeselect { activityLauncher.uninstallApp(app.packageName, app.user) } },
+      "App Info" to { app: App -> runThenDeselect { activityLauncher.startAppDetails(app.packageName, app.user) } },
+      "Play Store" to { app: App -> runThenDeselect { activityLauncher.startPlayStore(app.packageName, app.user) } }
+    )
+
     setContent {
       AppTheme {
         MainScreen(
           apps = mainViewModel.filteredApps.observeAsState(emptyList()),
           buttons = dialerLabels,
           query = mainViewModel.queryText(),
+          selectedApp = mainViewModel.selectedApp,
+          appLongClickActions = appLongClickActions,
           onAppClicked = onAppClicked,
+          onAppLongClicked = onAppLongClicked,
           onDialerClicked = onDialerClicked,
           onDialerLongClicked = onDialerLongClicked
         )

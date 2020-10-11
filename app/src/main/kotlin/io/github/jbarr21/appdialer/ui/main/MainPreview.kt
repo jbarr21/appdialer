@@ -58,6 +58,24 @@ fun MainPreviewLight() {
 
 @Preview
 @Composable
+fun MainPreviewModal() {
+  AppTheme(darkTheme = false) {
+    MainScreen(apps = mutableStateOf(previewApps), buttons = buttons)
+  }
+}
+
+@Preview(widthDp = 300, heightDp = 400)
+@Composable
+fun MainAppBottomSheet() {
+  MainAppBottomSheet(previewApp, actions = listOf(
+    "Uninstall" to {},
+    "App Info" to {},
+    "Play Store" to {}
+  ))
+}
+
+@Preview
+@Composable
 fun AppGridPreview() {
   AppGrid(mutableStateOf(previewApps))
 }

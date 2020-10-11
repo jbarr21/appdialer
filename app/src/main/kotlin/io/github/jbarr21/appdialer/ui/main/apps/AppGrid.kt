@@ -22,7 +22,8 @@ fun AppGrid(
   apps: State<List<App>>,
   query: State<String> = mutableStateOf(""),
   numColumns: Int = 4,
-  onSelected: (App) -> Unit = {}
+  onClick: (App) -> Unit = {},
+  onLongClick: (App) -> Unit = {}
 ) {
   val isEmpty = apps.value.isEmpty() && query.value.isNotEmpty()
   val isLoading = apps.value.isEmpty() && query.value.isEmpty()
@@ -48,7 +49,7 @@ fun AppGrid(
         Row {
           rowApps.forEach { app ->
             Box(modifier = Modifier.weight(1f)) {
-              AppItem(app, onSelected)
+              AppItem(app, onClick, onLongClick)
             }
           }
 
