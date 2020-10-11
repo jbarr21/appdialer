@@ -22,7 +22,10 @@ import dev.chrisbanes.accompanist.imageloading.MaterialLoadingImage
 import io.github.jbarr21.appdialer.data.App
 
 @Composable
-fun AppItem(app: App, onSelected: (App) -> Unit) {
+fun AppItem(
+  app: App,
+  onSelected: (App) -> Unit = {}
+) {
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = Modifier

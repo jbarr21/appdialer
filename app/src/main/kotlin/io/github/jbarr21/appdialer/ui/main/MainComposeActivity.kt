@@ -1,5 +1,6 @@
 package io.github.jbarr21.appdialer.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.livedata.observeAsState
@@ -8,6 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.ui.AppTheme
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerButton
+import io.github.jbarr21.appdialer.ui.settings.SettingsActivity
 import io.github.jbarr21.appdialer.util.ActivityLauncher
 import io.github.jbarr21.appdialer.util.Vibrator
 import javax.inject.Inject
@@ -40,6 +42,13 @@ class MainComposeActivity : AppCompatActivity() {
       }
     }
 
+    val onDialerLongClicked: (DialerButton) -> Unit = {
+      vibrator.vibrate()
+      when {
+        it.isClearButton -> activityLauncher.startActivity(Intent(this, SettingsActivity::class.java))
+      }
+    }
+
     setContent {
       AppTheme {
         MainScreen(
@@ -47,7 +56,8 @@ class MainComposeActivity : AppCompatActivity() {
           buttons = dialerLabels,
           query = mainViewModel.queryText(),
           onAppClicked = onAppClicked,
-          onDialerClicked = onDialerClicked
+          onDialerClicked = onDialerClicked,
+          onDialerLongClicked = onDialerLongClicked
         )
       }
     }

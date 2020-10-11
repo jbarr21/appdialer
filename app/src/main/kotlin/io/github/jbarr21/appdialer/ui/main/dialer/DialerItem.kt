@@ -14,13 +14,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DialerItem(button: DialerButton, onClick: (DialerButton) -> Unit) {
+fun DialerItem(
+  button: DialerButton,
+  onClick: (DialerButton) -> Unit = {},
+  onLongClick: (DialerButton) -> Unit = {}
+) {
   Text(
     text = button.label.toString(),
     textAlign = TextAlign.Center,
     style = MaterialTheme.typography.h6,
     modifier = Modifier
-      .clickable(onClick = { onClick(button) }, indication = RippleIndication(bounded = false))
+      .clickable(
+        onClick = { onClick(button) },
+        onLongClick = { onLongClick(button) },
+        indication = RippleIndication(bounded = false),
+      )
       .fillMaxWidth()
       .preferredHeight(96.dp)
       .wrapContentHeight(align = Alignment.CenterVertically)

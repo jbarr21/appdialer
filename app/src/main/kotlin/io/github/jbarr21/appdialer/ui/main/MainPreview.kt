@@ -44,7 +44,7 @@ private fun randomColor(): Int {
 @Composable
 fun MainPreview() {
   AppTheme(darkTheme = true) {
-    MainScreen(apps = mutableStateOf(previewApps), buttons = buttons, onAppClicked = {}, onDialerClicked = {})
+    MainScreen(apps = mutableStateOf(previewApps), buttons = buttons)
   }
 }
 
@@ -52,14 +52,14 @@ fun MainPreview() {
 @Composable
 fun MainPreviewLight() {
   AppTheme(darkTheme = false) {
-    MainScreen(apps = mutableStateOf(previewApps), buttons = buttons, onAppClicked = {}, onDialerClicked = {})
+    MainScreen(apps = mutableStateOf(previewApps), buttons = buttons)
   }
 }
 
 @Preview
 @Composable
 fun AppGridPreview() {
-  AppGrid(mutableStateOf(previewApps)) {}
+  AppGrid(mutableStateOf(previewApps))
 }
 
 @Preview(widthDp = 300, heightDp = 300)
@@ -74,22 +74,22 @@ fun EmptyAppGridPreview() {
 fun AppItemPreview() {
   Column {
     AppItem(previewApp) {}
-    AppItem(previewApp.copy(name = "Application Name")) {}
-    AppItem(previewApp.copy(name = "Really Long Application Name")) {}
+    AppItem(previewApp.copy(name = "Application Name"))
+    AppItem(previewApp.copy(name = "Really Long Application Name"))
   }
 }
 
 @Preview
 @Composable
 fun DialerGridPreview() {
-  DialerGrid(buttons = buttons, onClick = {})
+  DialerGrid(buttons = buttons)
 }
 
 @Preview
 @Composable
 fun DialerItemPreview() {
   Column {
-    DialerItem(DialerButton(digit = 5, letters = "JKL"), {})
-    DialerItem(DialerButton(digit = -1, label = "CLEAR*"), {})
+    DialerItem(DialerButton(digit = 5, letters = "JKL"))
+    DialerItem(DialerButton(digit = -1, label = "CLEAR*"))
   }
 }

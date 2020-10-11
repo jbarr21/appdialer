@@ -22,7 +22,7 @@ fun AppGrid(
   apps: State<List<App>>,
   query: State<String> = mutableStateOf(""),
   numColumns: Int = 4,
-  onSelected: (App) -> Unit
+  onSelected: (App) -> Unit = {}
 ) {
   val isEmpty = apps.value.isEmpty() && query.value.isNotEmpty()
   val isLoading = apps.value.isEmpty() && query.value.isEmpty()
