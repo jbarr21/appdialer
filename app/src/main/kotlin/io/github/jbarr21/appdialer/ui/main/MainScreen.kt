@@ -33,9 +33,9 @@ fun MainScreen(
   buttons: List<DialerButton>,
   query: State<String> = mutableStateOf(""),
   selectedApp: State<App?> = mutableStateOf(null),
-  appLongClickActions: List<Pair<String, (App) -> Unit>> = emptyList(),
+  appLongClickActions: List<BottomSheetItem> = emptyList(),
   onAppClicked: (App) -> Unit = {},
-  onAppLongClicked: (App) -> Unit = {},
+  onAppLongClicked: (App?) -> Unit = {},
   onDialerClicked: (DialerButton) -> Unit = {},
   onDialerLongClicked: (DialerButton) -> Unit = {}
 ) {
@@ -66,7 +66,7 @@ fun MainScreen(
         modifier = Modifier.fillMaxSize().padding(8.dp).align(alignment = Alignment.TopCenter)
       )
       selectedApp.value?.let {
-        MainAppBottomSheet(it, appLongClickActions)
+        MainAppBottomSheet(it, appLongClickActions, onDismiss = { onAppLongClicked(null) })
       }
     }
   }

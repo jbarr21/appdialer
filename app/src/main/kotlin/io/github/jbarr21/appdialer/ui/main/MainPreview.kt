@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.ui.tooling.preview.Preview
+import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.ui.AppTheme
 import io.github.jbarr21.appdialer.ui.main.apps.AppGrid
@@ -68,9 +69,9 @@ fun MainPreviewModal() {
 @Composable
 fun MainAppBottomSheet() {
   MainAppBottomSheet(previewApp, actions = listOf(
-    "Uninstall" to {},
-    "App Info" to {},
-    "Play Store" to {}
+    BottomSheetItem("Uninstall", R.drawable.ic_delete_black_24dp),
+    BottomSheetItem("App Info", R.drawable.ic_info_black_24dp),
+    BottomSheetItem("Play Store", R.drawable.ic_local_grocery_store_black_24dp)
   ))
 }
 

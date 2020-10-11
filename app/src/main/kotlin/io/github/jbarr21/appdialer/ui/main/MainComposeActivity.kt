@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.setContent
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.ui.AppTheme
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerButton
@@ -33,9 +34,9 @@ class MainComposeActivity : AppCompatActivity() {
       finishAndRemoveTask()
     }
 
-    val onAppLongClicked: (App) -> Unit = {
+    val onAppLongClicked: (App?) -> Unit = {
       vibrator.vibrate()
-      mainViewModel.selectApp(it)
+      it?.let { mainViewModel.selectApp(it) } ?: mainViewModel.deselectApp()
     }
 
     val onDialerClicked: (DialerButton) -> Unit = {
@@ -54,14 +55,20 @@ class MainComposeActivity : AppCompatActivity() {
       }
     }
 
-    val runThenDeselect: (() -> Unit) -> Unit = {
+    val itemAction: (() -> Unit) -> Unit = {
       it()
       mainViewModel.deselectApp()
     }
     val appLongClickActions = listOf(
-      "Uninstall" to { app: App -> runThenDeselect { activityLauncher.uninstallApp(app.packageName, app.user) } },
-      "App Info" to { app: App -> runThenDeselect { activityLauncher.startAppDetails(app.packageName, app.user) } },
-      "Play Store" to { app: App -> runThenDeselect { activityLauncher.startPlayStore(app.packageName, app.user) } }
+      BottomSheetItem("Uninstall", R.drawable.ic_delete_black_24dp) {
+        itemAction { activityLauncher.uninstallApp(it.packageName, it.user) }
+      },
+      BottomSheetItem("App Info", R.drawable.ic_info_black_24dp) {
+        itemAction { activityLauncher.startAppDetails(it.packageName, it.user) }
+      },
+      BottomSheetItem("Play Store", R.drawable.ic_local_grocery_store_black_24dp) {
+        itemAction { activityLauncher.startPlayStore(it.packageName, it.user) }
+      }
     )
 
     setContent {
