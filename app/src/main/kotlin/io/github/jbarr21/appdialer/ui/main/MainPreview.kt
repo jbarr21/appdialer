@@ -3,7 +3,7 @@ package io.github.jbarr21.appdialer.ui.main
 import android.os.Process
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.ui.tooling.preview.Preview
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.ui.AppTheme
@@ -28,11 +28,6 @@ private val previewApps = (0 until 10).map {
   )
 }
 
-private val previewAppsState = object : State<List<App>> {
-  override val value: List<App>
-    get() = previewApps
-}
-
 private val buttons = listOf(DialerButton(label = "CLEAR*")) + (0 until 8).map { digit ->
   DialerButton(
     digit = digit + 2,
@@ -49,7 +44,7 @@ private fun randomColor(): Int {
 @Composable
 fun MainPreview() {
   AppTheme(darkTheme = true) {
-    MainScreen(apps = previewAppsState, buttons = buttons, onAppClicked = {}, onDialerClicked = {})
+    MainScreen(apps = mutableStateOf(previewApps), buttons = buttons, onAppClicked = {}, onDialerClicked = {})
   }
 }
 
@@ -57,14 +52,21 @@ fun MainPreview() {
 @Composable
 fun MainPreviewLight() {
   AppTheme(darkTheme = false) {
-    MainScreen(apps = previewAppsState, buttons = buttons, onAppClicked = {}, onDialerClicked = {})
+    MainScreen(apps = mutableStateOf(previewApps), buttons = buttons, onAppClicked = {}, onDialerClicked = {})
   }
 }
 
 @Preview
 @Composable
 fun AppGridPreview() {
-  AppGrid(previewAppsState) {}
+  AppGrid(mutableStateOf(previewApps)) {}
+}
+
+@Preview(widthDp = 300, heightDp = 300)
+@Preview
+@Composable
+fun EmptyAppGridPreview() {
+  AppGrid(mutableStateOf(emptyList()), query = mutableStateOf("xyz")) {}
 }
 
 @Preview(widthDp = 150)

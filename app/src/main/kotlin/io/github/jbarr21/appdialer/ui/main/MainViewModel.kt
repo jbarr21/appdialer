@@ -1,5 +1,7 @@
 package io.github.jbarr21.appdialer.ui.main
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -15,8 +17,8 @@ class MainViewModel(
   private val appRepo: AppRepo
 ) : ViewModel() {
 
-  val query = mutableListOf<DialerButton>()
-  val trie = Trie<App>()
+  private val query = mutableStateOf(listOf<DialerButton>())
+  private val trie = Trie<App>()
 
   val allApps by lazy {
     MutableLiveData<List<App>>().also {
@@ -31,15 +33,19 @@ class MainViewModel(
   }
 
   fun addToQuery(dialerButton: DialerButton) {
-    query += dialerButton
-    val queryText = query.map { it.letters[0].toString() }.joinToString(separator = "")
+    query.value = query.value.plus(dialerButton)
+    val queryText = query.value.map { it.letters.first().toString() }.joinToString(separator = "")
     trie.predictWord(queryText)
       .sortedBy { it.label.toLowerCase() }
       .also { apps -> filteredApps.value = apps }
   }
 
+  fun queryText(): State<String> {
+    return mutableStateOf(query.value.map { it.letters.first().toString() }.joinToString(separator = ""))
+  }
+
   fun clearQuery() {
-    query.clear()
+    query.value = emptyList()
     filteredApps.value = allApps.value
   }
 

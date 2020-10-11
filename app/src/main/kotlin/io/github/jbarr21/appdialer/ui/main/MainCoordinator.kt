@@ -120,25 +120,14 @@ class MainCoordinator @Inject constructor(
   }
 
   private fun queryApps(buttons: List<DialerButton>) {
-    mainViewModel.query.apply {
-      clear()
-      addAll(buttons)
+    mainViewModel.addToQuery(buttons.last())
+    mainViewModel.filteredApps.observe(activity) {
+      appAdapter.submitList(it)
     }
-    // TODO: update UI or use Flow
-    mainViewModel.trie.predictWord(
-      mainViewModel.query.map { it.letters[0].toString() }
-        .joinToString(separator = "")
-    )
-      .sortedBy { it.label.toLowerCase() }
-      .also {
-        val query = mainViewModel.query.map { app -> app.digit }.joinToString(separator = "")
-        println("suggestions for \"$query\": ${it.take(5).map { it.label }.toList()}")
-        appAdapter.submitList(it)
-      }
   }
 
   private fun clearQuery() {
-    mainViewModel.query.clear()
+    mainViewModel.clearQuery()
     appAdapter.submitList(appStream.currentApps()) {
       viewBinding.appGrid.scrollToPosition(0)
     }
@@ -153,9 +142,6 @@ class MainCoordinator @Inject constructor(
   }
 
   private fun handleAppListUpdate(apps: List<App>) {
-    apps.forEach {
-      mainViewModel.trie.add(it.label, it)
-    }
     appAdapter.submitList(apps)
   }
 

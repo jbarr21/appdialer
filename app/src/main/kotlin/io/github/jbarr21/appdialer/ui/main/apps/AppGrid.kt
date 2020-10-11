@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import io.github.jbarr21.appdialer.data.App
 
 @Composable
 fun AppGrid(
   apps: State<List<App>>,
+  query: State<String> = mutableStateOf(""),
   numColumns: Int = 4,
   onSelected: (App) -> Unit
 ) {
