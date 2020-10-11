@@ -7,4 +7,5 @@ data class DialerButton(
 ) {
   val isClearButton = "clear" in label.toString().toLowerCase()
   val isInfoButton = "i" in label.toString().toLowerCase()
+  val isRefreshButton = "r" in label.toString().toLowerCase()
 }

@@ -52,6 +52,7 @@ class MainComposeActivity : AppCompatActivity() {
       vibrator.vibrate()
       when {
         it.isClearButton -> activityLauncher.startActivity(Intent(this, SettingsActivity::class.java))
+        it.isRefreshButton -> mainViewModel.loadApps(useCache = false)
       }
     }
 

@@ -21,17 +21,11 @@ class MainViewModel(
   private val trie = Trie<App>()
 
   val selectedApp = mutableStateOf<App?>(null)
+  val allApps by lazy { MutableLiveData<List<App>>() }
+  val filteredApps by lazy { MutableLiveData<List<App>>() }
 
-  val allApps by lazy {
-    MutableLiveData<List<App>>().also {
-      loadAllApps()
-    }
-  }
-
-  val filteredApps by lazy {
-    MutableLiveData<List<App>>().also {
-      loadAllApps()
-    }
+  init {
+    loadApps(useCache = true)
   }
 
   fun addToQuery(dialerButton: DialerButton) {
@@ -59,11 +53,14 @@ class MainViewModel(
     selectedApp.value = null
   }
 
-  private fun loadAllApps() {
+  fun loadApps(useCache: Boolean = true) {
     viewModelScope.launch {
-      appRepo.loadApps().let { apps ->
+      appRepo.loadApps(useCache).let { apps ->
         allApps.value = apps
-        filteredApps.value = apps
+        if (query.value.isEmpty()) {
+          filteredApps.value = apps
+        }
+        trie.clear()
         apps.forEach { trie.add(it.label, it) }
       }
     }

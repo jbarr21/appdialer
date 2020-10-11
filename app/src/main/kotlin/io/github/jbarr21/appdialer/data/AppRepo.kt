@@ -31,11 +31,12 @@ class AppRepo @Inject constructor(
   private val userManager: UserManager
 ) {
 
-  suspend fun loadApps(): List<App> {
+  suspend fun loadApps(useCache: Boolean): List<App> {
     return withContext(Dispatchers.IO) {
-      val cachedApps = loadAppsFromCache()
-      if (cachedApps.isNotEmpty()) return@withContext cachedApps
-
+      if (useCache) {
+        val cachedApps = loadAppsFromCache()
+        if (cachedApps.isNotEmpty()) return@withContext cachedApps
+      }
       val pmApps = loadAppsFromPackageManager()
       return@withContext pmApps
     }
