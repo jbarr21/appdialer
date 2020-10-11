@@ -51,6 +51,13 @@ fun MainScreen(
           duration = SnackbarDuration.Short
         )
       }
+    } else if (it.isRefreshButton) {
+      scope.launch {
+        snackbarHostState.showSnackbar(
+          message = "Refreshing...",
+          duration = SnackbarDuration.Short
+        )
+      }
     }
   }
 

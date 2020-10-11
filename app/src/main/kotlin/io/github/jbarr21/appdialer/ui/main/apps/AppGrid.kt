@@ -4,6 +4,7 @@ import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.CircularProgressIndicator
@@ -29,12 +30,12 @@ fun AppGrid(
   val isLoading = apps.value.isEmpty() && query.value.isEmpty()
   when {
     isLoading -> {
-      Box(modifier = Modifier.fillMaxHeight(), alignment = Alignment.TopCenter) {
+      Box(modifier = Modifier.fillMaxSize(), alignment = Alignment.TopCenter) {
         CircularProgressIndicator(modifier = Modifier.padding(32.dp))
       }
     }
     isEmpty -> {
-      Box(modifier = Modifier.fillMaxHeight(), alignment = Alignment.TopCenter) {
+      Box(modifier = Modifier.fillMaxSize(), alignment = Alignment.TopCenter) {
         Text(
           text = "No matches for \"${query.value}\"",
           textAlign = TextAlign.Center,
