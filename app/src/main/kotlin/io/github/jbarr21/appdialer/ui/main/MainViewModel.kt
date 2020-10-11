@@ -2,6 +2,7 @@ package io.github.jbarr21.appdialer.ui.main
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +21,7 @@ class MainViewModel(
   private val query = mutableStateOf(listOf<DialerButton>())
   private val trie = Trie<App>()
 
+  val buttonColors = listOf(0xff2196f3, 0xfff44336, 0xffffeb3b, 0xff4caf50, 0xff888888).map { Color(it) }
   val selectedApp = mutableStateOf<App?>(null)
   val allApps by lazy { MutableLiveData<List<App>>() }
   val filteredApps by lazy { MutableLiveData<List<App>>() }

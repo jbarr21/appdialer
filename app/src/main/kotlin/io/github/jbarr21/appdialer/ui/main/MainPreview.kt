@@ -4,6 +4,7 @@ import android.os.Process
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.ui.tooling.preview.Preview
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.App
@@ -37,6 +38,8 @@ private val buttons = listOf(DialerButton(label = "CLEAR*")) + (0 until 8).map {
     }.joinToString(separator = ""))
 }
 
+private val buttonColors = (0 until 5).map { Color(randomColor()) }
+
 private fun randomColor(): Int {
   return android.graphics.Color.rgb((0..256).random(), (0..256).random(), (0..256).random())
 }
@@ -45,7 +48,7 @@ private fun randomColor(): Int {
 @Composable
 fun MainPreview() {
   AppTheme(darkTheme = true) {
-    MainScreen(apps = mutableStateOf(previewApps), buttons = buttons)
+    MainScreen(apps = mutableStateOf(previewApps), buttons = buttons, buttonColors = buttonColors)
   }
 }
 
@@ -53,7 +56,7 @@ fun MainPreview() {
 @Composable
 fun MainPreviewLight() {
   AppTheme(darkTheme = false) {
-    MainScreen(apps = mutableStateOf(previewApps), buttons = buttons)
+    MainScreen(apps = mutableStateOf(previewApps), buttons = buttons, buttonColors = buttonColors)
   }
 }
 
@@ -61,7 +64,7 @@ fun MainPreviewLight() {
 @Composable
 fun MainPreviewModal() {
   AppTheme(darkTheme = false) {
-    MainScreen(apps = mutableStateOf(previewApps), buttons = buttons)
+    MainScreen(apps = mutableStateOf(previewApps), buttons = buttons, buttonColors = buttonColors)
   }
 }
 
@@ -101,7 +104,7 @@ fun AppItemPreview() {
 @Preview
 @Composable
 fun DialerGridPreview() {
-  DialerGrid(buttons = buttons)
+  DialerGrid(buttons = buttons, buttonColors = buttonColors)
 }
 
 @Preview

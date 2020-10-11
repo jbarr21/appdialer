@@ -77,6 +77,7 @@ class MainComposeActivity : AppCompatActivity() {
         MainScreen(
           apps = mainViewModel.filteredApps.observeAsState(emptyList()),
           buttons = dialerLabels,
+          buttonColors = mainViewModel.buttonColors,
           query = mainViewModel.queryText(),
           selectedApp = mainViewModel.selectedApp,
           appLongClickActions = appLongClickActions,

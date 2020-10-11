@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.ui.main.apps.AppGrid
@@ -31,6 +32,7 @@ import kotlinx.coroutines.launch
 fun MainScreen(
   apps: State<List<App>>,
   buttons: List<DialerButton>,
+  buttonColors: List<Color> = emptyList(),
   query: State<String> = mutableStateOf(""),
   selectedApp: State<App?> = mutableStateOf(null),
   appLongClickActions: List<BottomSheetItem> = emptyList(),
@@ -65,7 +67,7 @@ fun MainScreen(
     Stack {
       AppGrid(apps = apps, query = query, onClick = onAppClicked, onLongClick = onAppLongClicked)
       Box(modifier = Modifier.align(alignment = Alignment.BottomCenter)) {
-        DialerGrid(buttons = buttons, onClick = onDialerClicked, onLongClick = onDialerLongClickedDecorated)
+        DialerGrid(buttons = buttons, buttonColors = buttonColors, onClick = onDialerClicked, onLongClick = onDialerLongClickedDecorated)
       }
       SnackbarHost(
         hostState = snackbarHostState,
