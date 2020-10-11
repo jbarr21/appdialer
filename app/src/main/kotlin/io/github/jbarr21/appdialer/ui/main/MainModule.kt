@@ -1,8 +1,6 @@
 package io.github.jbarr21.appdialer.ui.main
 
-import android.content.Intent
 import android.content.pm.LauncherApps
-import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
@@ -20,6 +18,7 @@ import io.github.jbarr21.appdialer.ui.main.dialer.DialerButton
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerButtonDiffCallback
 import io.github.jbarr21.appdialer.ui.main.dialer.QueryStream
 import io.github.jbarr21.appdialer.util.ActivityLauncher
+import io.github.jbarr21.appdialer.util.ActivityLauncherImpl
 import io.github.jbarr21.appdialer.util.Vibrator
 import kotlinx.coroutines.launch
 
@@ -29,17 +28,7 @@ object MainModule {
 
   @Provides
   fun activityLauncher(activity: FragmentActivity, launcherApps: LauncherApps): ActivityLauncher {
-    return object : ActivityLauncher {
-      override fun startActivity(intent: Intent) = activity.startActivity(intent)
-
-      override fun startActivityInNewTask(intent: Intent) {
-        activity.startActivity(intent.run { addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) })
-      }
-
-      override fun startMainActivity(app: App) {
-        launcherApps.startMainActivity(app.launchIntent.component, app.user, null, Bundle.EMPTY)
-      }
-    }
+    return ActivityLauncherImpl(activity, launcherApps)
   }
 
   @Provides
