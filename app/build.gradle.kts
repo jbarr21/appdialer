@@ -19,8 +19,8 @@ android {
     applicationId = "io.github.jbarr21.appdialer"
     minSdkVersion(23)
     targetSdkVersion(29)
-    versionCode = 1
-    versionName = "1.0"
+    versionCode = 2
+    versionName = "0.0.2"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
   buildFeatures {
