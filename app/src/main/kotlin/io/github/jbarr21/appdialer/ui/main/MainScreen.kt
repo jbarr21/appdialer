@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.ui.main.apps.AppGrid
-import io.github.jbarr21.appdialer.ui.main.dialer.DialerButton
+import io.github.jbarr21.appdialer.data.DialerButton
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerGrid
 import kotlinx.coroutines.launch
 

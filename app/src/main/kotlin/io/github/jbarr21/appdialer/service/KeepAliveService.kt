@@ -10,7 +10,7 @@ import android.os.IBinder
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.UserPreferencesRepo
-import io.github.jbarr21.appdialer.ui.main.MainComposeActivity
+import io.github.jbarr21.appdialer.ui.main.MainActivity
 import io.github.jbarr21.appdialer.util.Channels
 import timber.log.Timber
 import javax.inject.Inject
@@ -51,7 +51,7 @@ class KeepAliveService : Service() {
   }
 
   private fun createNotification(): Notification {
-    val pendingIntent: PendingIntent = Intent(this, MainComposeActivity::class.java).let { intent ->
+    val pendingIntent: PendingIntent = Intent(this, MainActivity::class.java).let { intent ->
       PendingIntent.getActivity(this, 0, intent, 0)
     }
 

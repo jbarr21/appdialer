@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
-import io.github.jbarr21.appdialer.ui.main.dialer.DialerButton
+import io.github.jbarr21.appdialer.data.DialerButton
 
 @InstallIn(ActivityComponent::class)
 @Module

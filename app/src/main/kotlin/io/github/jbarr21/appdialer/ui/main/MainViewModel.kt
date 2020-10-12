@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.data.AppRepo
-import io.github.jbarr21.appdialer.ui.main.dialer.DialerButton
+import io.github.jbarr21.appdialer.data.DialerButton
 import io.github.jbarr21.appdialer.util.Trie
 import kotlinx.coroutines.launch
 import javax.inject.Inject

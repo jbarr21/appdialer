@@ -11,13 +11,10 @@ import androidx.palette.graphics.Palette
 import coil.Coil
 import coil.request.ImageRequest
 import io.github.jbarr21.appdialer.data.db.AppDatabase
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
@@ -39,22 +36,6 @@ class AppRepo @Inject constructor(
       }
       val pmApps = loadAppsFromPackageManager()
       return@withContext pmApps
-    }
-  }
-
-  fun loadApps(useCache: Boolean = true, onComplete: () -> (Unit) = {}): Job {
-    return CoroutineScope(Dispatchers.Main).launch {
-      withContext(Dispatchers.IO) {
-        if (useCache) {
-          val cachedApps = loadAppsFromCache()
-          if (cachedApps.isNotEmpty()) {
-            appStream.setApps(cachedApps, this)
-            return@withContext
-          }
-        }
-        appStream.setApps(loadAppsFromPackageManager(), this)
-      }
-      onComplete()
     }
   }
 

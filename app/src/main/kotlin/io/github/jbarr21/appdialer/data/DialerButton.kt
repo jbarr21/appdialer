@@ -1,4 +1,4 @@
-package io.github.jbarr21.appdialer.ui.main.dialer
+package io.github.jbarr21.appdialer.data
 
 data class DialerButton(
   val digit: Int = 0,

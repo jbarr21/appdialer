@@ -9,14 +9,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.ui.AppTheme
-import io.github.jbarr21.appdialer.ui.main.dialer.DialerButton
+import io.github.jbarr21.appdialer.data.DialerButton
 import io.github.jbarr21.appdialer.ui.settings.SettingsActivity
 import io.github.jbarr21.appdialer.util.ActivityLauncher
 import io.github.jbarr21.appdialer.util.Vibrator
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainComposeActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
   @Inject lateinit var activityLauncher: ActivityLauncher
   @Inject lateinit var dialerLabels: List<DialerButton>
