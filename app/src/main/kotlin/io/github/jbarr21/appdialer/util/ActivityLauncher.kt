@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.LauncherApps
 import android.net.Uri
 import android.os.Bundle
-import android.os.UserHandle
 import android.provider.Settings
 import androidx.fragment.app.FragmentActivity
 import dagger.hilt.android.scopes.ActivityScoped
@@ -28,27 +27,27 @@ class ActivityLauncher @Inject constructor(
     launcherApps.startMainActivity(app.launchIntent.component, app.user, null, Bundle.EMPTY)
   }
 
-  fun uninstallApp(packageName: String, user: UserHandle) {
-    val packageURI = Uri.parse("package:$packageName")
+  fun uninstallApp(app: App) {
+    val packageURI = Uri.parse("package:${app.packageName}")
     val intent = Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageURI)
-    intent.putExtra(Intent.EXTRA_USER, user)
+    intent.putExtra(Intent.EXTRA_USER, app.user)
     startActivity(intent)
   }
 
-  fun startAppDetails(packageName: String, user: UserHandle) {
+  fun startAppDetails(app: App) {
     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-    intent.data = Uri.parse("package:$packageName")
-    intent.putExtra(Intent.EXTRA_USER, user)
+    intent.data = Uri.parse("package:${app.packageName}")
+    intent.putExtra(Intent.EXTRA_USER, app.user)
     startActivity(intent)
   }
 
-  fun startPlayStore(packageName: String, user: UserHandle) {
+  fun startPlayStore(app: App) {
     val intent = try {
-      Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName"))
+      Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${app.packageName}"))
     } catch (anfe: ActivityNotFoundException) {
-      Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName"))
+      Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=${app.packageName}"))
     }
-    intent.putExtra(Intent.EXTRA_USER, user)
+    intent.putExtra(Intent.EXTRA_USER, app.user)
     startActivity(intent)
   }
 }

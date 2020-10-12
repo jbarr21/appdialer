@@ -1,6 +1,5 @@
 package io.github.jbarr21.appdialer.ui.main
 
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.data.AppRepo
 import io.github.jbarr21.appdialer.data.DialerButton
+import io.github.jbarr21.appdialer.data.asText
 import io.github.jbarr21.appdialer.util.Trie
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,13 +18,14 @@ class MainViewModel(
   private val appRepo: AppRepo
 ) : ViewModel() {
 
+  private val allApps by lazy { MutableLiveData<List<App>>() }
   private val query = mutableStateOf(listOf<DialerButton>())
   private val trie = Trie<App>()
 
   val buttonColors = listOf(0xff2196f3, 0xfff44336, 0xffffeb3b, 0xff4caf50, 0xff888888).map { Color(it) }
   val selectedApp = mutableStateOf<App?>(null)
-  val allApps by lazy { MutableLiveData<List<App>>() }
   val filteredApps by lazy { MutableLiveData<List<App>>() }
+  val queryText = mutableStateOf(query.value.asText())
 
   init {
     loadApps(useCache = true)
@@ -32,27 +33,15 @@ class MainViewModel(
 
   fun addToQuery(dialerButton: DialerButton) {
     query.value = query.value.plus(dialerButton)
-    val queryText = query.value.map { it.letters.first().toString() }.joinToString(separator = "")
+    val queryText = query.value.asText()
     trie.predictWord(queryText)
       .sortedBy { it.label.toLowerCase() }
       .also { apps -> filteredApps.value = apps }
   }
 
-  fun queryText(): State<String> {
-    return mutableStateOf(query.value.map { it.letters.first().toString() }.joinToString(separator = ""))
-  }
-
   fun clearQuery() {
     query.value = emptyList()
     filteredApps.value = allApps.value
-  }
-
-  fun selectApp(app: App) {
-    selectedApp.value = app
-  }
-
-  fun deselectApp() {
-    selectedApp.value = null
   }
 
   fun loadApps(useCache: Boolean = true) {

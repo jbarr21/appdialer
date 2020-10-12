@@ -22,8 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.github.jbarr21.appdialer.data.App
-import io.github.jbarr21.appdialer.ui.main.apps.AppGrid
 import io.github.jbarr21.appdialer.data.DialerButton
+import io.github.jbarr21.appdialer.data.SimpleListItem
+import io.github.jbarr21.appdialer.ui.main.apps.AppGrid
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerGrid
 import kotlinx.coroutines.launch
 
@@ -35,7 +36,7 @@ fun MainScreen(
   buttonColors: List<Color> = emptyList(),
   query: State<String> = mutableStateOf(""),
   selectedApp: State<App?> = mutableStateOf(null),
-  appLongClickActions: List<BottomSheetItem> = emptyList(),
+  appLongClickActions: List<SimpleListItem<App>> = emptyList(),
   onAppClicked: (App) -> Unit = {},
   onAppLongClicked: (App?) -> Unit = {},
   onDialerClicked: (DialerButton) -> Unit = {},

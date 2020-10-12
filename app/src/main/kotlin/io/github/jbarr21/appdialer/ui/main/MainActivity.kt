@@ -8,8 +8,9 @@ import androidx.compose.ui.platform.setContent
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.App
-import io.github.jbarr21.appdialer.ui.AppTheme
 import io.github.jbarr21.appdialer.data.DialerButton
+import io.github.jbarr21.appdialer.data.SimpleListItem
+import io.github.jbarr21.appdialer.ui.AppTheme
 import io.github.jbarr21.appdialer.ui.settings.SettingsActivity
 import io.github.jbarr21.appdialer.util.ActivityLauncher
 import io.github.jbarr21.appdialer.util.Vibrator
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     val onAppLongClicked: (App?) -> Unit = {
       vibrator.vibrate()
-      it?.let { mainViewModel.selectApp(it) } ?: mainViewModel.deselectApp()
+      mainViewModel.selectedApp.value = it
     }
 
     val onDialerClicked: (DialerButton) -> Unit = {
@@ -58,18 +59,18 @@ class MainActivity : AppCompatActivity() {
 
     val itemAction: (() -> Unit) -> Unit = {
       it()
-      mainViewModel.deselectApp()
+      mainViewModel.selectedApp.value = null
     }
-    val appLongClickActions = listOf(
-      BottomSheetItem("Uninstall", R.drawable.ic_delete_black_24dp) {
-        itemAction { activityLauncher.uninstallApp(it.packageName, it.user) }
-      },
-      BottomSheetItem("App Info", R.drawable.ic_info_black_24dp) {
-        itemAction { activityLauncher.startAppDetails(it.packageName, it.user) }
-      },
-      BottomSheetItem("Play Store", R.drawable.ic_local_grocery_store_black_24dp) {
-        itemAction { activityLauncher.startPlayStore(it.packageName, it.user) }
-      }
+    val appLongClickActions = listOf<SimpleListItem<App>>(
+      SimpleListItem("Uninstall", iconRes = R.drawable.ic_delete_black_24dp, action = {
+        itemAction { activityLauncher.uninstallApp(it) }
+      }),
+      SimpleListItem("App Info", iconRes = R.drawable.ic_info_black_24dp, action = {
+        itemAction { activityLauncher.startAppDetails(it) }
+      }),
+      SimpleListItem("Play Store", iconRes = R.drawable.ic_local_grocery_store_black_24dp, action = {
+        itemAction { activityLauncher.startPlayStore(it) }
+      })
     )
 
     setContent {
@@ -78,7 +79,7 @@ class MainActivity : AppCompatActivity() {
           apps = mainViewModel.filteredApps.observeAsState(emptyList()),
           buttons = dialerLabels,
           buttonColors = mainViewModel.buttonColors,
-          query = mainViewModel.queryText(),
+          query = mainViewModel.queryText,
           selectedApp = mainViewModel.selectedApp,
           appLongClickActions = appLongClickActions,
           onAppClicked = onAppClicked,

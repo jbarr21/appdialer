@@ -20,11 +20,12 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import io.github.jbarr21.appdialer.data.App
+import io.github.jbarr21.appdialer.data.SimpleListItem
 
 @Composable
 fun MainAppBottomSheet(
   app: App,
-  actions: List<BottomSheetItem>,
+  actions: List<SimpleListItem<App>>,
   onDismiss: () -> Unit = {}
 ) {
   Surface(
@@ -68,9 +69,3 @@ fun MainAppBottomSheet(
     }
   }
 }
-
-data class BottomSheetItem(
-  val label: String,
-  val iconRes: Int,
-  val action: (App) -> Unit = {}
-)

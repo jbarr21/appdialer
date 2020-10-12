@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.jbarr21.appdialer.R
+import io.github.jbarr21.appdialer.data.SimpleListItem
 import io.github.jbarr21.appdialer.data.UserPreferences
 import io.github.jbarr21.appdialer.ui.AppTheme
 import javax.inject.Inject
@@ -34,14 +35,10 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SettingsActivity : AppCompatActivity() {
 
-  @Inject
-  lateinit var viewModelFactory: SettingsViewModel.Factory
-
-  @Inject
-  lateinit var settingsData: List<Setting>
+  @Inject lateinit var viewModelFactory: SettingsViewModel.Factory
+  @Inject lateinit var settingsData: List<SimpleListItem<Any>>
 
   private val viewModel: SettingsViewModel by viewModels { viewModelFactory }
-
   private val onNavIconPressed = { finish() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,12 +64,12 @@ class SettingsActivity : AppCompatActivity() {
             Column {
               SettingsGroup("General")
               SettingsItem(
-                setting = settingsData[0],
+                listItem = settingsData[0],
                 checked = userPreferences.useHapticFeedback,
                 onCheckedChange = { viewModel.updateUseHaptipFeedback(it) }
               )
               SettingsItem(
-                setting = settingsData[1],
+                listItem = settingsData[1],
                 checked = userPreferences.usePersistentService,
                 onCheckedChange = { viewModel.updateUsePersistentService(it) }
               )
@@ -112,19 +109,19 @@ class SettingsActivity : AppCompatActivity() {
   }
 
   @Composable
-  fun SettingsItem(setting: Setting, checked: Boolean, onCheckedChange: (Boolean) -> Unit = { }) {
+  fun SettingsItem(listItem: SimpleListItem<Any>, checked: Boolean, onCheckedChange: (Boolean) -> Unit = { }) {
     Row(
       verticalAlignment = Alignment.CenterVertically,
       modifier = Modifier.clickable(onClick = { onCheckedChange(!checked) }).padding(vertical = 16.dp)
     ) {
       Image(
-        asset = vectorResource(id = setting.iconRes),
+        asset = vectorResource(id = listItem.iconRes),
         colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
         modifier = Modifier.padding(horizontal = 24.dp)
       )
       Column(modifier = Modifier.weight(1f, fill = true)) {
-        Text(setting.title, style = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.Medium))
-        Text(setting.description, style = MaterialTheme.typography.body2)
+        Text(listItem.label, style = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.Medium))
+        Text(listItem.description.orEmpty(), style = MaterialTheme.typography.body2)
       }
       Switch(
         checked = checked,
@@ -144,8 +141,8 @@ class SettingsActivity : AppCompatActivity() {
 
       repeat(3) {
         SettingsItem(
-          setting = Setting(
-            title = "Setting title $it",
+          listItem = SimpleListItem(
+            label = "Setting title $it",
             description = "A description for the use of the setting $it",
             iconRes = R.drawable.ic_vibration
           ),

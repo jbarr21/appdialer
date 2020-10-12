@@ -22,11 +22,12 @@ import javax.inject.Inject
 class AppRepo @Inject constructor(
   private val application: Application,
   private val appDatabase: AppDatabase,
-  private val appStream: AppStream,
   private val launcherApps: LauncherApps,
   private val userCache: UserCache,
   private val userManager: UserManager
 ) {
+
+  val cachedApps: MutableList<App> = mutableListOf()
 
   suspend fun loadApps(useCache: Boolean): List<App> {
     return withContext(Dispatchers.IO) {
@@ -40,7 +41,7 @@ class AppRepo @Inject constructor(
   }
 
   private suspend fun loadAppsFromCache(): List<App> {
-    val memoryCachedApps = appStream.currentApps()
+    val memoryCachedApps = cachedApps
     Timber.tag("JIM").d("# of memory cached apps = ${memoryCachedApps.size}")
     return if (memoryCachedApps.isNotEmpty())
       memoryCachedApps
@@ -51,6 +52,7 @@ class AppRepo @Inject constructor(
         .toList()
         .also {
           Timber.tag("JIM").d("# of disk cached apps = ${it.size}")
+          cachedApps.addAll(it)
         }
   }
 

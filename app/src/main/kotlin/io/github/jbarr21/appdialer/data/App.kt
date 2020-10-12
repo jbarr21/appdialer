@@ -11,7 +11,6 @@ import io.github.jbarr21.appdialer.util.AppIconFetcher.Companion.PARAM_USER_ID
 import io.github.jbarr21.appdialer.util.AppIconFetcher.Companion.SCHEME_PNAME
 
 // TODO: fine tune color selection
-// TODO: use Adaptive Icons
 data class App(
   val name: String,
   val packageName: String,

@@ -8,10 +8,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.ui.tooling.preview.Preview
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.App
+import io.github.jbarr21.appdialer.data.DialerButton
+import io.github.jbarr21.appdialer.data.SimpleListItem
 import io.github.jbarr21.appdialer.ui.AppTheme
 import io.github.jbarr21.appdialer.ui.main.apps.AppGrid
 import io.github.jbarr21.appdialer.ui.main.apps.AppItem
-import io.github.jbarr21.appdialer.data.DialerButton
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerGrid
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerItem
 
@@ -72,9 +73,9 @@ fun MainPreviewModal() {
 @Composable
 fun MainAppBottomSheet() {
   MainAppBottomSheet(previewApp, actions = listOf(
-    BottomSheetItem("Uninstall", R.drawable.ic_delete_black_24dp),
-    BottomSheetItem("App Info", R.drawable.ic_info_black_24dp),
-    BottomSheetItem("Play Store", R.drawable.ic_local_grocery_store_black_24dp)
+    SimpleListItem<App>("Uninstall", iconRes = R.drawable.ic_delete_black_24dp),
+    SimpleListItem<App>("App Info", iconRes = R.drawable.ic_info_black_24dp),
+    SimpleListItem<App>("Play Store", iconRes = R.drawable.ic_local_grocery_store_black_24dp)
   ))
 }
 
