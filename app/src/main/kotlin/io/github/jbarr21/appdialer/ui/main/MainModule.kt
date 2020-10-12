@@ -1,79 +1,14 @@
 package io.github.jbarr21.appdialer.ui.main
 
-import android.content.pm.LauncherApps
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DiffUtil
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
-import io.github.jbarr21.appdialer.data.App
-import io.github.jbarr21.appdialer.data.AppStream
-import io.github.jbarr21.appdialer.data.UserCache
-import io.github.jbarr21.appdialer.ui.main.apps.AppDiffCallback
-import io.github.jbarr21.appdialer.ui.main.apps.ModalFragmentListener
-import io.github.jbarr21.appdialer.ui.main.dialer.DialerAdapter
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerButton
-import io.github.jbarr21.appdialer.ui.main.dialer.DialerButtonDiffCallback
-import io.github.jbarr21.appdialer.ui.main.dialer.QueryStream
-import io.github.jbarr21.appdialer.util.ActivityLauncher
-import io.github.jbarr21.appdialer.util.ActivityLauncherImpl
-import io.github.jbarr21.appdialer.util.Vibrator
-import kotlinx.coroutines.launch
 
 @InstallIn(ActivityComponent::class)
 @Module
 object MainModule {
-
-  @Provides
-  fun activityLauncher(activity: FragmentActivity, launcherApps: LauncherApps): ActivityLauncher {
-    return ActivityLauncherImpl(activity, launcherApps)
-  }
-
-  @Provides
-  fun modalFragmentListener(activityLauncher: ActivityLauncher, userCache: UserCache) = ModalFragmentListener(activityLauncher, userCache)
-
-  @Provides
-  fun fragmentManager(activity: FragmentActivity) = activity.supportFragmentManager
-
-  @Provides
-  fun appDiffCallback(callback: AppDiffCallback): DiffUtil.ItemCallback<App> = callback
-
-  // Dialer
-
-  @Provides
-  fun dialerAdapter(
-    activity: FragmentActivity,
-    appStream: AppStream,
-    dialerLabels: List<DialerButton>,
-    queryStream: QueryStream,
-    vibrator: Vibrator
-  ) = DialerAdapter(
-    DialerButtonDiffCallback(),
-    dialerLabels,
-    { button ->
-      if (button.isClearButton || button.isInfoButton) {
-        activity.lifecycleScope.launch {
-          vibrator.vibrate()
-        }
-        // TODO: switch from activity lifecycle to coordinator (x3)
-        queryStream.longClick(button, activity.lifecycleScope)
-      }
-    },
-    { button ->
-      if (appStream.currentApps().isNotEmpty()) {
-        activity.lifecycleScope.launch {
-          vibrator.vibrate()
-        }
-        if (button.isClearButton) {
-          queryStream.setQuery(emptyList(), activity.lifecycleScope)
-        } else {
-          queryStream.setQuery(queryStream.currentQuery() + button, activity.lifecycleScope)
-        }
-      }
-    }
-  )
 
   @Provides
   fun dialerLabels(): List<DialerButton> {

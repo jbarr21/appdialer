@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-feature android:name="there.isnt.a.vibrate.feature" android:required="false" />
 
     <application
             android:allowBackup="false"
@@ -23,17 +22,8 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.main.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".ui.main.MainComposeActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="App Dialer C">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -55,12 +45,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-<!--        <receiver android:name=".service.PackageAddedOrRemovedReceiver" android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.PACKAGE_ADDED" />-->
-<!--                <action android:name="android.intent.action.PACKAGE_REMOVED" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
         <service android:name=".service.KeepAliveService" android:enabled="true"/>
     </application>
 

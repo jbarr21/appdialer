@@ -10,7 +10,7 @@ import android.os.IBinder
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.UserPreferencesRepo
-import io.github.jbarr21.appdialer.ui.main.MainActivity
+import io.github.jbarr21.appdialer.ui.main.MainComposeActivity
 import io.github.jbarr21.appdialer.util.Channels
 import timber.log.Timber
 import javax.inject.Inject
@@ -21,13 +21,10 @@ class KeepAliveService : Service() {
   @Inject
   lateinit var userPreferencesRepo: UserPreferencesRepo
 
-  private val appReceiver by lazy { PackageAddedOrRemovedReceiver() }
-
   override fun onCreate() {
     super.onCreate()
     Timber.tag("JIM").d("Service created")
     startForeground(1337, createNotification())
-    PackageAddedOrRemovedReceiver.register(this, appReceiver)
   }
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -51,11 +48,10 @@ class KeepAliveService : Service() {
 
   override fun onDestroy() {
     Timber.tag("JIM").d("Service destroyed")
-    PackageAddedOrRemovedReceiver.unregister(this, appReceiver)
   }
 
   private fun createNotification(): Notification {
-    val pendingIntent: PendingIntent = Intent(this, MainActivity::class.java).let { intent ->
+    val pendingIntent: PendingIntent = Intent(this, MainComposeActivity::class.java).let { intent ->
       PendingIntent.getActivity(this, 0, intent, 0)
     }
 
