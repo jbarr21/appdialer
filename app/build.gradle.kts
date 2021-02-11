@@ -1,4 +1,4 @@
-val composeVersion = "1.0.0-alpha10"
+val composeVersion = "1.0.0-alpha11"
 val coroutinesVersion = "1.3.8"
 val corbindVersion = "1.4.0"
 val flipperVersion = "0.55.0"
@@ -39,7 +39,6 @@ android {
     targetCompatibility = JavaVersion.VERSION_1_8
   }
   composeOptions {
-    kotlinCompilerVersion = "1.4.21"
     kotlinCompilerExtensionVersion = composeVersion
   }
   kotlinOptions {
@@ -89,7 +88,7 @@ dependencies {
   implementation("com.jakewharton:process-phoenix:2.0.0")
   implementation("com.jakewharton.timber:timber:4.7.1")
   implementation("com.squareup.coordinators:coordinators:0.4")
-  implementation("dev.chrisbanes.accompanist:accompanist-coil:0.4.0")
+  implementation("dev.chrisbanes.accompanist:accompanist-coil:0.5.0")
   implementation("dev.chrisbanes:insetter-ktx:0.2.1")
   implementation("io.coil-kt:coil:0.10.1")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")

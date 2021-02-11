@@ -1,6 +1,5 @@
 package io.github.jbarr21.appdialer.ui.main.apps
 
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,8 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.coil.CoilImage
-import dev.chrisbanes.accompanist.imageloading.ImageLoadState
-import dev.chrisbanes.accompanist.imageloading.MaterialLoadingImage
 import io.github.jbarr21.appdialer.data.App
 
 @Composable
@@ -37,20 +35,13 @@ fun AppItem(
       .padding(all = 8.dp)
   ) {
     CoilImage(
-      data = app.iconUri,
-      modifier = Modifier.size(48.dp)
-    ) { imageState ->
-      when (imageState) {
-        is ImageLoadState.Success -> {
-          MaterialLoadingImage(
-            result = imageState,
-            fadeInEnabled = true,
-            fadeInDurationMs = 600,
-          )
-        }
-        else -> Box(modifier = Modifier.background(Color.DarkGray).clip(CircleShape))
+      data = app.iconUri.toString(),
+      modifier = Modifier.size(48.dp),
+      contentDescription = null,
+      loading = {
+        Box(modifier = Modifier.background(Color.DarkGray).clip(CircleShape))
       }
-    }
+    )
     Text(
       text = app.label,
       color = MaterialTheme.colors.onSurface,

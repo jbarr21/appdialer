@@ -1,6 +1,7 @@
 package io.github.jbarr21.appdialer.ui.main.dialer
 
 import android.widget.Toast
+import androidx.compose.foundation.InteractionState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -60,7 +61,11 @@ fun DialerGrid(
             backgroundColor = color,
             onClick = { onColorClicked(color) },
             modifier = Modifier.size(48.dp)
-              .clickable(onClick = { onColorClicked(color) }, indication = rememberRipple(bounded = false))
+              .clickable(
+                onClick = { onColorClicked(color) },
+                indication = rememberRipple(bounded = false),
+                interactionState = InteractionState()
+              )
               .padding(all = 16.dp)
           ) { }
         }

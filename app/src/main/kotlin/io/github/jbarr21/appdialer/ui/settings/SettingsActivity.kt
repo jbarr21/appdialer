@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +14,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Switch
+import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -87,6 +87,7 @@ class SettingsActivity : AppCompatActivity() {
       navigationIcon = {
         Image(
           imageVector = vectorResource(id = R.drawable.ic_back),
+          contentDescription = null,
           modifier = Modifier
             .padding(horizontal = 16.dp)
             .clickable(onClick = onNavIconPressed)
@@ -117,6 +118,7 @@ class SettingsActivity : AppCompatActivity() {
       Image(
         imageVector = vectorResource(id = listItem.iconRes),
         colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
+        contentDescription = null,
         modifier = Modifier.padding(horizontal = 24.dp)
       )
       Column(modifier = Modifier.weight(1f, fill = true)) {

@@ -1,11 +1,12 @@
 package io.github.jbarr21.appdialer.ui.main.dialer
 
-import androidx.compose.foundation.Text
+import androidx.compose.foundation.InteractionState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,6 +30,7 @@ fun DialerItem(
         onClick = { onClick(button) },
         onLongClick = { onLongClick(button) },
         indication = rememberRipple(bounded = false),
+        interactionState = InteractionState()
       )
       .fillMaxWidth()
       .preferredHeight(96.dp)
