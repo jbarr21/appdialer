@@ -1,8 +1,9 @@
-val composeVersion = "1.0.0-alpha04"
+val composeVersion = "1.0.0-alpha10"
 val coroutinesVersion = "1.3.8"
 val corbindVersion = "1.4.0"
 val flipperVersion = "0.55.0"
 val hiltVersion = "2.28-alpha"
+val kotlinVersion = "1.4.21"
 val roomVersion = "2.2.5"
 
 plugins {
@@ -38,7 +39,7 @@ android {
     targetCompatibility = JavaVersion.VERSION_1_8
   }
   composeOptions {
-    kotlinCompilerVersion = "1.4.0"
+    kotlinCompilerVersion = "1.4.21"
     kotlinCompilerExtensionVersion = composeVersion
   }
   kotlinOptions {
@@ -61,10 +62,11 @@ dependencies {
   kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
   kapt("androidx.lifecycle:lifecycle-compiler:2.2.0")
 
-  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.0")
+  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
   implementation("androidx.activity:activity-ktx:1.1.0")
   implementation("androidx.appcompat:appcompat:1.2.0")
   implementation("androidx.compose.ui:ui:$composeVersion")
+  implementation("androidx.compose.ui:ui-tooling:$composeVersion")
   implementation("androidx.compose.foundation:foundation:$composeVersion")
   implementation("androidx.compose.material:material:$composeVersion")
   implementation("androidx.compose.material:material-icons-core:$composeVersion")
@@ -82,13 +84,12 @@ dependencies {
   implementation("androidx.recyclerview:recyclerview:1.1.0")
   implementation("androidx.room:room-ktx:$roomVersion")
   implementation("androidx.room:room-runtime:$roomVersion")
-  implementation("androidx.ui:ui-tooling:$composeVersion")
   implementation("com.google.android.material:material:1.2.1")
   implementation("com.google.dagger:hilt-android:$hiltVersion")
   implementation("com.jakewharton:process-phoenix:2.0.0")
   implementation("com.jakewharton.timber:timber:4.7.1")
   implementation("com.squareup.coordinators:coordinators:0.4")
-  implementation("dev.chrisbanes.accompanist:accompanist-coil:0.3.0")
+  implementation("dev.chrisbanes.accompanist:accompanist-coil:0.4.0")
   implementation("dev.chrisbanes:insetter-ktx:0.2.1")
   implementation("io.coil-kt:coil:0.10.1")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
@@ -104,5 +105,5 @@ dependencies {
 
   androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
   androidTestImplementation("androidx.test:runner:1.2.0")
-  androidTestImplementation("androidx.ui:ui-test:$composeVersion")
+  androidTestImplementation("androidx.compose.ui:ui-test:$composeVersion")
 }

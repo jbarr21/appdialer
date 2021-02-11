@@ -13,7 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.ripple.RippleIndication
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawShadow
@@ -58,12 +58,11 @@ fun DialerGrid(
         buttonColors.forEach { color ->
           FloatingActionButton(
             backgroundColor = color,
-            icon = {},
             onClick = { onColorClicked(color) },
             modifier = Modifier.size(48.dp)
-              .clickable(onClick = { onColorClicked(color) }, indication = RippleIndication(bounded = false))
+              .clickable(onClick = { onColorClicked(color) }, indication = rememberRipple(bounded = false))
               .padding(all = 16.dp)
-          )
+          ) { }
         }
       }
     }

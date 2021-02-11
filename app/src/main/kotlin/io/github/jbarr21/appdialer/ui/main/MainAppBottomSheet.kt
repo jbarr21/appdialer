@@ -17,7 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.data.SimpleListItem
@@ -30,7 +30,8 @@ fun MainAppBottomSheet(
 ) {
   Surface(
     color = Color.Black.copy(alpha = 0.5f),
-    modifier = Modifier.fillMaxSize()
+    modifier = Modifier
+      .fillMaxSize()
       .clickable(onClick = onDismiss, indication = null)
   ) {
     Surface(
@@ -56,7 +57,7 @@ fun MainAppBottomSheet(
               .padding(16.dp)
           ) {
             Image(
-              asset = vectorResource(id = it.iconRes),
+              bitmap = imageResource(id = it.iconRes),
               colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
             )
             Text(

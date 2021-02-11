@@ -23,8 +23,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.SimpleListItem
@@ -86,7 +86,7 @@ class SettingsActivity : AppCompatActivity() {
       title = { Text("AppDialer Settings") },
       navigationIcon = {
         Image(
-          asset = vectorResource(id = R.drawable.ic_back),
+          imageVector = vectorResource(id = R.drawable.ic_back),
           modifier = Modifier
             .padding(horizontal = 16.dp)
             .clickable(onClick = onNavIconPressed)
@@ -115,7 +115,7 @@ class SettingsActivity : AppCompatActivity() {
       modifier = Modifier.clickable(onClick = { onCheckedChange(!checked) }).padding(vertical = 16.dp)
     ) {
       Image(
-        asset = vectorResource(id = listItem.iconRes),
+        imageVector = vectorResource(id = listItem.iconRes),
         colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
         modifier = Modifier.padding(horizontal = 24.dp)
       )

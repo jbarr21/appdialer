@@ -30,12 +30,12 @@ fun AppGrid(
   val isLoading = apps.value.isEmpty() && query.value.isEmpty()
   when {
     isLoading -> {
-      Box(modifier = Modifier.fillMaxSize(), alignment = Alignment.TopCenter) {
+      Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
         CircularProgressIndicator(modifier = Modifier.padding(32.dp))
       }
     }
     isEmpty -> {
-      Box(modifier = Modifier.fillMaxSize(), alignment = Alignment.TopCenter) {
+      Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
         Text(
           text = "No matches for \"${query.value}\"",
           textAlign = TextAlign.Center,

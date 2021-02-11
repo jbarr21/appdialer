@@ -2,7 +2,6 @@ package io.github.jbarr21.appdialer.ui.main
 
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Stack
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
@@ -65,7 +64,7 @@ fun MainScreen(
   }
 
   Surface(color = MaterialTheme.colors.background, modifier = Modifier.fillMaxSize()) {
-    Stack {
+    Box {
       AppGrid(apps = apps, query = query, onClick = onAppClicked, onLongClick = onAppLongClicked)
       Box(modifier = Modifier.align(alignment = Alignment.BottomCenter)) {
         DialerGrid(buttons = buttons, buttonColors = buttonColors, onClick = onDialerClicked, onLongClick = onDialerLongClickedDecorated)

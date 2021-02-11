@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ripple.RippleIndication
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +28,7 @@ fun DialerItem(
       .clickable(
         onClick = { onClick(button) },
         onLongClick = { onLongClick(button) },
-        indication = RippleIndication(bounded = false),
+        indication = rememberRipple(bounded = false),
       )
       .fillMaxWidth()
       .preferredHeight(96.dp)
