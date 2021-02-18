@@ -33,8 +33,8 @@ class MainViewModel(
 
   fun addToQuery(dialerButton: DialerButton) {
     query.value = query.value.plus(dialerButton)
-    val queryText = query.value.asText()
-    trie.predictWord(queryText)
+    queryText.value = query.value.asText()
+    trie.predictWord(queryText.value)
       .sortedBy { it.label.toLowerCase() }
       .also { apps -> filteredApps.value = apps }
   }
