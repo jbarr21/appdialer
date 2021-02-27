@@ -1,6 +1,5 @@
 package io.github.jbarr21.appdialer.ui.main
 
-import androidx.compose.material.Text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,6 +10,7 @@ import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -19,10 +19,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.data.DialerButton
 import io.github.jbarr21.appdialer.data.SimpleListItem
+import io.github.jbarr21.appdialer.ui.AppTheme
+import io.github.jbarr21.appdialer.ui.main.MainPreviewData.buttonColors
+import io.github.jbarr21.appdialer.ui.main.MainPreviewData.buttons
+import io.github.jbarr21.appdialer.ui.main.MainPreviewData.previewApps
 import io.github.jbarr21.appdialer.ui.main.apps.AppGrid
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerGrid
 import kotlinx.coroutines.launch
@@ -78,5 +83,29 @@ fun MainScreen(
         MainAppBottomSheet(it, appLongClickActions, onDismiss = { onAppLongClicked(null) })
       }
     }
+  }
+}
+
+@Preview
+@Composable
+fun MainPreview() {
+  AppTheme(darkTheme = true) {
+    MainScreen(apps = mutableStateOf(previewApps), buttons = buttons, buttonColors = buttonColors)
+  }
+}
+
+@Preview
+@Composable
+fun MainPreviewLight() {
+  AppTheme(darkTheme = false) {
+    MainScreen(apps = mutableStateOf(previewApps), buttons = buttons, buttonColors = buttonColors)
+  }
+}
+
+@Preview
+@Composable
+fun MainPreviewModal() {
+  AppTheme(darkTheme = false) {
+    MainScreen(apps = mutableStateOf(previewApps), buttons = buttons, buttonColors = buttonColors)
   }
 }

@@ -2,6 +2,7 @@ package io.github.jbarr21.appdialer.ui.main.dialer
 
 import androidx.compose.foundation.InteractionState
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.jbarr21.appdialer.data.DialerButton
 
@@ -36,4 +38,13 @@ fun DialerItem(
       .preferredHeight(96.dp)
       .wrapContentHeight(align = Alignment.CenterVertically)
   )
+}
+
+@Preview
+@Composable
+fun DialerItemPreview() {
+  Column {
+    DialerItem(DialerButton(digit = 5, letters = "JKL"))
+    DialerItem(DialerButton(digit = -1, label = "CLEAR*"))
+  }
 }

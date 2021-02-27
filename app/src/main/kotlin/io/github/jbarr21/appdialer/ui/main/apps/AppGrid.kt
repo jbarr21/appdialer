@@ -16,8 +16,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.jbarr21.appdialer.data.App
+import io.github.jbarr21.appdialer.ui.main.MainPreviewData.previewApps
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -54,4 +56,17 @@ fun AppGrid(
       })
     }
   }
+}
+
+@Preview
+@Composable
+fun AppGridPreview() {
+  AppGrid(mutableStateOf(previewApps))
+}
+
+@Preview(widthDp = 300, heightDp = 300)
+@Preview
+@Composable
+fun EmptyAppGridPreview() {
+  AppGrid(mutableStateOf(emptyList()), query = mutableStateOf("xyz")) {}
 }

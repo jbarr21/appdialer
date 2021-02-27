@@ -19,9 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.data.SimpleListItem
+import io.github.jbarr21.appdialer.ui.main.MainPreviewData.previewApp
 
 @Composable
 fun MainAppBottomSheet(
@@ -71,4 +74,14 @@ fun MainAppBottomSheet(
       }
     }
   }
+}
+
+@Preview(widthDp = 300, heightDp = 400)
+@Composable
+fun MainAppBottomSheet() {
+  MainAppBottomSheet(previewApp, actions = listOf(
+    SimpleListItem<App>("Uninstall", iconRes = R.drawable.ic_delete_black_24dp),
+    SimpleListItem<App>("App Info", iconRes = R.drawable.ic_info_black_24dp),
+    SimpleListItem<App>("Play Store", iconRes = R.drawable.ic_local_grocery_store_black_24dp)
+  ))
 }

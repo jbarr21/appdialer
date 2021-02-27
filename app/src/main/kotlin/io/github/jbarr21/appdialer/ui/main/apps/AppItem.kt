@@ -16,9 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.coil.CoilImage
 import io.github.jbarr21.appdialer.data.App
+import io.github.jbarr21.appdialer.ui.main.MainPreviewData.previewApp
 
 @Composable
 fun AppItem(
@@ -50,5 +52,15 @@ fun AppItem(
       maxLines = 1,
       modifier = Modifier.padding(top = 8.dp)
     )
+  }
+}
+
+@Preview(widthDp = 150)
+@Composable
+fun AppItemPreview() {
+  Column {
+    AppItem(previewApp) {}
+    AppItem(previewApp.copy(name = "Application Name"))
+    AppItem(previewApp.copy(name = "Really Long Application Name"))
   }
 }
