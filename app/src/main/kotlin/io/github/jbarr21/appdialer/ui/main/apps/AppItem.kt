@@ -1,12 +1,14 @@
 package io.github.jbarr21.appdialer.ui.main.apps
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -22,35 +24,42 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.ui.main.MainPreviewData.previewApp
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppItem(
   app: App,
   onClick: (App) -> Unit = {},
   onLongClick: (App) -> Unit = {}
 ) {
+  val placeholderImage = Box(modifier = Modifier
+    .background(Color.DarkGray)
+    .clip(CircleShape))
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = Modifier
       .fillMaxWidth()
-      .clickable(onClick = { onClick(app) }, onLongClick = { onLongClick(app) })
+      .combinedClickable(onClick = { onClick(app) }, onLongClick = { onLongClick(app) })
       .background(color = Color(app.iconColor))
       .padding(all = 8.dp)
   ) {
-    CoilImage(
-      data = app.iconUri.toString(),
-      modifier = Modifier.size(48.dp),
-      contentDescription = null,
-      loading = {
-        Box(modifier = Modifier.background(Color.DarkGray).clip(CircleShape))
-      }
-    )
+    Box(modifier = Modifier
+      .padding(8.dp)
+      .fillMaxWidth()
+      .aspectRatio(1f)) {
+      CoilImage(
+        data = app.iconUri.toString(),
+        modifier = Modifier.fillMaxSize(),
+        contentDescription = null,
+        loading = { placeholderImage },
+        error = { placeholderImage }
+      )
+    }
     Text(
       text = app.label,
       color = MaterialTheme.colors.onSurface,
       style = MaterialTheme.typography.body2,
       overflow = TextOverflow.Ellipsis,
-      maxLines = 1,
-      modifier = Modifier.padding(top = 8.dp)
+      maxLines = 1
     )
   }
 }

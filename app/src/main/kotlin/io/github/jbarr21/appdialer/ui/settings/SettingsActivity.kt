@@ -1,6 +1,7 @@
 package io.github.jbarr21.appdialer.ui.settings
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
@@ -20,8 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.setContent
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -58,25 +58,23 @@ class SettingsActivity : AppCompatActivity() {
   ) {
     AppTheme {
       Scaffold(
-        topBar = { TopBar(onNavIconPressed = onNavIconPressed) },
-        bodyContent = {
-          Surface(modifier = Modifier.fillMaxSize()) {
-            Column {
-              SettingsGroup("General")
-              SettingsItem(
-                listItem = settingsData[0],
-                checked = userPreferences.useHapticFeedback,
-                onCheckedChange = { viewModel.updateUseHaptipFeedback(it) }
-              )
-              SettingsItem(
-                listItem = settingsData[1],
-                checked = userPreferences.usePersistentService,
-                onCheckedChange = { viewModel.updateUsePersistentService(it) }
-              )
-            }
+        topBar = { TopBar(onNavIconPressed = onNavIconPressed) }) {
+        Surface(modifier = Modifier.fillMaxSize()) {
+          Column {
+            SettingsGroup("General")
+            SettingsItem(
+              listItem = settingsData[0],
+              checked = userPreferences.useHapticFeedback,
+              onCheckedChange = { viewModel.updateUseHaptipFeedback(it) }
+            )
+            SettingsItem(
+              listItem = settingsData[1],
+              checked = userPreferences.usePersistentService,
+              onCheckedChange = { viewModel.updateUsePersistentService(it) }
+            )
           }
         }
-      )
+      }
     }
   }
 
@@ -86,7 +84,7 @@ class SettingsActivity : AppCompatActivity() {
       title = { Text("AppDialer Settings") },
       navigationIcon = {
         Image(
-          imageVector = vectorResource(id = R.drawable.ic_back),
+          painter = painterResource(id = R.drawable.ic_back),
           contentDescription = null,
           modifier = Modifier
             .padding(horizontal = 16.dp)
@@ -116,7 +114,7 @@ class SettingsActivity : AppCompatActivity() {
       modifier = Modifier.clickable(onClick = { onCheckedChange(!checked) }).padding(vertical = 16.dp)
     ) {
       Image(
-        imageVector = vectorResource(id = listItem.iconRes),
+        painter = painterResource(id = listItem.iconRes),
         colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
         contentDescription = null,
         modifier = Modifier.padding(horizontal = 24.dp)

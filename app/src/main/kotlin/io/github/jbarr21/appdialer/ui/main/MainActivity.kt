@@ -2,9 +2,9 @@ package io.github.jbarr21.appdialer.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.platform.setContent
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.App

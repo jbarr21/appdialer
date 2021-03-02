@@ -1,9 +1,9 @@
-val composeVersion = "1.0.0-alpha11"
+val composeVersion = "1.0.0-beta01"
 val coroutinesVersion = "1.3.8"
 val corbindVersion = "1.4.0"
 val flipperVersion = "0.55.0"
 val hiltVersion = "2.28-alpha"
-val kotlinVersion = "1.4.21"
+val kotlinVersion = "1.4.30"
 val roomVersion = "2.2.5"
 
 plugins {
@@ -14,12 +14,12 @@ plugins {
 }
 
 android {
-  compileSdkVersion(29)
-  buildToolsVersion = "29.0.2"
+  compileSdkVersion(30)
+  buildToolsVersion = "30.0.3"
   defaultConfig {
     applicationId = "io.github.jbarr21.appdialer"
     minSdkVersion(23)
-    targetSdkVersion(29)
+    targetSdkVersion(30)
     versionCode = 2
     versionName = "0.0.2"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -44,6 +44,7 @@ android {
   kotlinOptions {
     jvmTarget = "1.8"
     useIR = true
+    freeCompilerArgs += listOf("-Xallow-jvm-ir-dependencies")
   }
   sourceSets {
     map {
@@ -62,7 +63,8 @@ dependencies {
   kapt("androidx.lifecycle:lifecycle-compiler:2.2.0")
 
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
-  implementation("androidx.activity:activity-ktx:1.1.0")
+  implementation("androidx.activity:activity-compose:1.3.0-alpha03")
+  implementation("androidx.activity:activity-ktx:1.3.0-alpha03")
   implementation("androidx.appcompat:appcompat:1.2.0")
   implementation("androidx.compose.ui:ui:$composeVersion")
   implementation("androidx.compose.ui:ui-tooling:$composeVersion")
@@ -88,9 +90,9 @@ dependencies {
   implementation("com.jakewharton:process-phoenix:2.0.0")
   implementation("com.jakewharton.timber:timber:4.7.1")
   implementation("com.squareup.coordinators:coordinators:0.4")
-  implementation("dev.chrisbanes.accompanist:accompanist-coil:0.5.0")
+  implementation("dev.chrisbanes.accompanist:accompanist-coil:0.6.1")
   implementation("dev.chrisbanes:insetter-ktx:0.2.1")
-  implementation("io.coil-kt:coil:0.10.1")
+  implementation("io.coil-kt:coil:1.1.1")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 

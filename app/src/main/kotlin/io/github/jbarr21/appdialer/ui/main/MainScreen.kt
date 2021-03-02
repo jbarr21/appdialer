@@ -5,12 +5,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Snackbar
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -76,7 +74,6 @@ fun MainScreen(
       }
       SnackbarHost(
         hostState = snackbarHostState,
-        snackbar = { Snackbar(text = { Text(text = it.message, style = MaterialTheme.typography.body2) }) },
         modifier = Modifier.fillMaxSize().padding(8.dp).align(alignment = Alignment.TopCenter)
       )
       selectedApp.value?.let {

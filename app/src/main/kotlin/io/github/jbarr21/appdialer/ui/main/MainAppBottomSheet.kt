@@ -1,7 +1,6 @@
 package io.github.jbarr21.appdialer.ui.main
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.InteractionState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.jbarr21.appdialer.R
@@ -36,7 +35,7 @@ fun MainAppBottomSheet(
     color = Color.Black.copy(alpha = 0.5f),
     modifier = Modifier
       .fillMaxSize()
-      .clickable(onClick = onDismiss, indication = null, interactionState = InteractionState())
+      .clickable(onClick = onDismiss) //  indication = null, interactionState = InteractionState()
   ) {
     Surface(
       color = MaterialTheme.colors.surface,
@@ -44,7 +43,7 @@ fun MainAppBottomSheet(
       modifier = Modifier
         .wrapContentHeight(align = Alignment.Bottom)
         .fillMaxWidth()
-        .clickable(onClick = {}, indication = null, interactionState = InteractionState())
+        .clickable(onClick = {}) // indication = null, interactionState = InteractionState()
     ) {
       Column(verticalArrangement = Arrangement.Bottom) {
         Text(
@@ -61,7 +60,7 @@ fun MainAppBottomSheet(
               .padding(16.dp)
           ) {
             Image(
-              imageVector = vectorResource(id = it.iconRes),
+              painter = painterResource(id = it.iconRes),
               colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
               contentDescription = null,
             )
