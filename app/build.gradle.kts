@@ -1,10 +1,9 @@
-val composeVersion = "1.0.0-beta01"
+val composeVersion = "1.0.0-beta09"
 val coroutinesVersion = "1.3.8"
-val corbindVersion = "1.4.0"
 val flipperVersion = "0.55.0"
 val hiltVersion = "2.28-alpha"
-val kotlinVersion = "1.4.30"
-val roomVersion = "2.2.5"
+val kotlinVersion = "1.5.10"
+val roomVersion = "2.3.0"
 
 plugins {
   id("com.android.application")
@@ -26,7 +25,6 @@ android {
   }
   buildFeatures {
     compose = true
-    viewBinding = true
   }
   buildTypes {
     getByName("release") {
@@ -43,8 +41,6 @@ android {
   }
   kotlinOptions {
     jvmTarget = "1.8"
-    useIR = true
-    freeCompilerArgs += listOf("-Xallow-jvm-ir-dependencies")
   }
   sourceSets {
     map {
@@ -58,14 +54,14 @@ android {
 }
 
 dependencies {
-  kapt("androidx.room:room-compiler:2.2.5")
+  kapt("androidx.room:room-compiler:2.3.0")
   kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
-  kapt("androidx.lifecycle:lifecycle-compiler:2.2.0")
+  kapt("androidx.lifecycle:lifecycle-compiler:2.3.1")
 
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
-  implementation("androidx.activity:activity-compose:1.3.0-alpha03")
-  implementation("androidx.activity:activity-ktx:1.3.0-alpha03")
-  implementation("androidx.appcompat:appcompat:1.2.0")
+  implementation("androidx.activity:activity-compose:1.3.0-beta01")
+  implementation("androidx.activity:activity-ktx:1.3.0-beta01")
+  implementation("androidx.appcompat:appcompat:1.3.0")
   implementation("androidx.compose.ui:ui:$composeVersion")
   implementation("androidx.compose.ui:ui-tooling:$composeVersion")
   implementation("androidx.compose.foundation:foundation:$composeVersion")
@@ -73,25 +69,23 @@ dependencies {
   implementation("androidx.compose.material:material-icons-core:$composeVersion")
   implementation("androidx.compose.material:material-icons-extended:$composeVersion")
   implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-  implementation("androidx.core:core-ktx:1.3.1")
+  implementation("androidx.core:core-ktx:1.5.0")
   implementation("androidx.datastore:datastore-preferences:1.0.0-alpha01")
   implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-  implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
-  implementation("androidx.lifecycle:lifecycle-runtime:2.2.0")
-  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.2.0")
-  implementation("androidx.lifecycle:lifecycle-viewmodel:2.2.0")
-  implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
+  implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
+  implementation("androidx.lifecycle:lifecycle-runtime:2.3.1")
+  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
+  implementation("androidx.lifecycle:lifecycle-viewmodel:2.3.1")
+  implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
+  implementation("androidx.navigation:navigation-compose:2.4.0-alpha02")
   implementation("androidx.palette:palette:1.0.0")
-  implementation("androidx.recyclerview:recyclerview:1.1.0")
   implementation("androidx.room:room-ktx:$roomVersion")
   implementation("androidx.room:room-runtime:$roomVersion")
-  implementation("com.google.android.material:material:1.2.1")
+  implementation("com.google.accompanist:accompanist-coil:0.10.0")
+  implementation("com.google.android.material:material:1.3.0")
   implementation("com.google.dagger:hilt-android:$hiltVersion")
   implementation("com.jakewharton:process-phoenix:2.0.0")
   implementation("com.jakewharton.timber:timber:4.7.1")
-  implementation("com.squareup.coordinators:coordinators:0.4")
-  implementation("dev.chrisbanes.accompanist:accompanist-coil:0.6.1")
-  implementation("dev.chrisbanes:insetter-ktx:0.2.1")
   implementation("io.coil-kt:coil:1.1.1")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
@@ -101,10 +95,10 @@ dependencies {
   debugImplementation("com.facebook.soloader:soloader:0.9.0")
   releaseImplementation("com.facebook.flipper:flipper-noop:$flipperVersion")
 
-  testImplementation("com.google.truth:truth:0.44")
-  testImplementation("junit:junit:4.12")
+  testImplementation("com.google.truth:truth:1.1")
+  testImplementation("junit:junit:4.13.2")
 
-  androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
-  androidTestImplementation("androidx.test:runner:1.2.0")
+  androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
+  androidTestImplementation("androidx.test:runner:1.3.0")
   androidTestImplementation("androidx.compose.ui:ui-test:$composeVersion")
 }

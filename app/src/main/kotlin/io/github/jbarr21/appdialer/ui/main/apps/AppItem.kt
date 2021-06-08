@@ -1,6 +1,7 @@
 package io.github.jbarr21.appdialer.ui.main.apps
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
@@ -20,9 +21,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.chrisbanes.accompanist.coil.CoilImage
+import com.google.accompanist.coil.rememberCoilPainter
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.ui.main.MainPreviewData.previewApp
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -46,12 +48,14 @@ fun AppItem(
       .padding(8.dp)
       .fillMaxWidth()
       .aspectRatio(1f)) {
-      CoilImage(
-        data = app.iconUri.toString(),
-        modifier = Modifier.fillMaxSize(),
+      Image(
+        painter = rememberCoilPainter(
+          request = app.iconUri.toString(),
+          fadeIn = true),
         contentDescription = null,
-        loading = { placeholderImage },
-        error = { placeholderImage }
+//        loading = { placeholderImage },
+//        error = { placeholderImage },
+        modifier = Modifier.fillMaxSize()
       )
     }
     Text(
