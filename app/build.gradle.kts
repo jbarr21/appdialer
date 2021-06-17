@@ -30,6 +30,7 @@ android {
     getByName("release") {
       isMinifyEnabled = false
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+      signingConfig = signingConfigs.getByName("debug")
     }
   }
   compileOptions {
@@ -93,7 +94,6 @@ dependencies {
   debugImplementation("com.facebook.flipper:flipper:$flipperVersion")
   debugImplementation("com.facebook.flipper:flipper-network-plugin:$flipperVersion")
   debugImplementation("com.facebook.soloader:soloader:0.9.0")
-  releaseImplementation("com.facebook.flipper:flipper-noop:$flipperVersion")
 
   testImplementation("com.google.truth:truth:1.1")
   testImplementation("junit:junit:4.13.2")

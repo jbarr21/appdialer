@@ -7,18 +7,7 @@ import android.os.Build
 import androidx.core.content.getSystemService
 import coil.Coil
 import coil.ImageLoader
-import com.facebook.flipper.android.AndroidFlipperClient
-import com.facebook.flipper.android.utils.FlipperUtils
-import com.facebook.flipper.plugins.crashreporter.CrashReporterPlugin
-import com.facebook.flipper.plugins.databases.DatabasesFlipperPlugin
-import com.facebook.flipper.plugins.inspector.DescriptorMapping
-import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
-import com.facebook.flipper.plugins.navigation.NavigationFlipperPlugin
-import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
-import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPlugin
-import com.facebook.soloader.SoLoader
 import dagger.hilt.android.HiltAndroidApp
-import io.github.jbarr21.appdialer.BuildConfig
 import io.github.jbarr21.appdialer.data.UserPreferencesRepo
 import io.github.jbarr21.appdialer.service.KeepAliveService
 import io.github.jbarr21.appdialer.util.Channels
@@ -44,7 +33,7 @@ class AppDialerApplication : Application(), CoroutineScope {
     super.onCreate()
     Timber.plant(Timber.DebugTree())
     Timber.tag("JIM").d("Application created")
-    setupFlipper(this)
+    Flipper.init(this)
     createNotificationChannel()
     Coil.setImageLoader(imageLoader)
     GlobalScope.launch(Dispatchers.IO) {
@@ -56,25 +45,6 @@ class AppDialerApplication : Application(), CoroutineScope {
     cancel()
     Timber.tag("JIM").d("Application destroyed")
     super.onTerminate()
-  }
-
-  private fun setupFlipper(application: Application) {
-    if (BuildConfig.DEBUG) {
-      SoLoader.init(application, false)
-      if (FlipperUtils.shouldEnableFlipper(application)) {
-        AndroidFlipperClient.getInstance(application).apply {
-          listOf(
-            CrashReporterPlugin.getInstance(),
-            DatabasesFlipperPlugin(application),
-            InspectorFlipperPlugin(application, DescriptorMapping.withDefaults()),
-            NavigationFlipperPlugin.getInstance(),
-            NetworkFlipperPlugin(),
-            SharedPreferencesFlipperPlugin(application)
-          ).forEach { addPlugin(it) }
-          start()
-        }
-      }
-    }
   }
 
   private fun createNotificationChannel() {
