@@ -1,27 +1,34 @@
 package io.github.jbarr21.appdialer.ui.settings
 
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.jbarr21.appdialer.data.SimpleListItem
 import io.github.jbarr21.appdialer.data.UserPreferences
 import io.github.jbarr21.appdialer.data.UserPreferencesRepo
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SettingsViewModel(private val userPreferencesRepo: UserPreferencesRepo) : ViewModel() {
+@HiltViewModel
+class SettingsViewModel @Inject constructor(
+  private val userPreferencesRepo: UserPreferencesRepo,
+  internal val settingsData: List<SimpleListItem<Unit>>
+) : ViewModel() {
 
-  val userPreferences by lazy {
-    MutableLiveData<UserPreferences>().also {
-      loadUserPreferences()
-    }
+  var userPreferences by mutableStateOf(UserPreferences())
+
+  init {
+    loadUserPreferences()
   }
 
   private fun loadUserPreferences() {
     viewModelScope.launch {
-      userPreferencesRepo.userPreferencesFlow
-        .collect { userPreferences.value = it }
+      userPreferencesRepo.userPreferencesFlow.collect { userPreferences = it }
     }
   }
 
@@ -33,7 +40,10 @@ class SettingsViewModel(private val userPreferencesRepo: UserPreferencesRepo) : 
     userPreferencesRepo.updateUsePersistentService(enable)
   }
 
-  class Factory @Inject constructor(private val userPreferencesRepo: UserPreferencesRepo) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>) = SettingsViewModel(userPreferencesRepo) as T
+  class Factory @Inject constructor(
+    private val userPreferencesRepo: UserPreferencesRepo,
+    private val settingsData: List<SimpleListItem<Unit>>
+  ) : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>) = SettingsViewModel(userPreferencesRepo, settingsData) as T
   }
 }

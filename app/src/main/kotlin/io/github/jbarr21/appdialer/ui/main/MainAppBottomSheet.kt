@@ -23,12 +23,13 @@ import androidx.compose.ui.unit.dp
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.data.SimpleListItem
-import io.github.jbarr21.appdialer.ui.main.MainPreviewData.previewApp
+import io.github.jbarr21.appdialer.ui.main.PreviewData.previewApp
 
 @Composable
 fun MainAppBottomSheet(
   app: App,
   actions: List<SimpleListItem<App>>,
+  onActionClick: () -> Unit = {},
   onDismiss: () -> Unit = {}
 ) {
   Surface(
@@ -56,7 +57,10 @@ fun MainAppBottomSheet(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
               .fillMaxWidth()
-              .clickable(onClick = { it.action(app) })
+              .clickable(onClick = {
+                it.action(app)
+                onActionClick()
+              })
               .padding(16.dp)
           ) {
             Image(

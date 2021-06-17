@@ -1,63 +1,112 @@
 package io.github.jbarr21.appdialer.ui.main
 
+import android.app.Activity
+import android.content.Context
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.data.AppRepo
 import io.github.jbarr21.appdialer.data.DialerButton
+import io.github.jbarr21.appdialer.data.SimpleListItem
 import io.github.jbarr21.appdialer.data.asText
+import io.github.jbarr21.appdialer.ui.Screen
+import io.github.jbarr21.appdialer.util.ActivityLauncher
 import io.github.jbarr21.appdialer.util.Trie
+import io.github.jbarr21.appdialer.util.Vibrator
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MainViewModel(
-  private val appRepo: AppRepo
+@HiltViewModel
+class MainViewModel @Inject constructor(
+  private val activityLauncher: ActivityLauncher,
+  internal val appLongClickActions: List<SimpleListItem<App>>,
+  private val appRepo: AppRepo,
+  internal val dialerLabels: List<DialerButton>,
+  private val vibrator: Vibrator
 ) : ViewModel() {
 
-  private val allApps by lazy { MutableLiveData<List<App>>() }
-  private val query = mutableStateOf(listOf<DialerButton>())
-  private val trie = Trie<App>()
+  private var allApps by mutableStateOf(emptyList<App>())
+  private var query by mutableStateOf(listOf<DialerButton>())
+  private var trie = Trie<App>()
 
   val buttonColors = listOf(0xff2196f3, 0xfff44336, 0xffffeb3b, 0xff4caf50, 0xff888888).map { Color(it) }
-  val selectedApp = mutableStateOf<App?>(null)
-  val filteredApps by lazy { MutableLiveData<List<App>>() }
-  val queryText = mutableStateOf(query.value.asText())
+  var selectedApp = mutableStateOf<App?>(null)
+  var filteredApps by mutableStateOf(emptyList<App>())
+  var queryText by mutableStateOf(query.asText())
+  var isRefreshing by mutableStateOf(false)
 
   init {
     loadApps(useCache = true)
   }
 
   fun addToQuery(dialerButton: DialerButton) {
-    query.value = query.value.plus(dialerButton)
-    queryText.value = query.value.asText()
-    trie.predictWord(queryText.value)
+    query = query.plus(dialerButton)
+    queryText = query.asText()
+    trie.predictWord(queryText)
       .sortedBy { it.label.toLowerCase() }
-      .also { apps -> filteredApps.value = apps }
+      .also { apps -> filteredApps = apps }
   }
 
   fun clearQuery() {
-    query.value = emptyList()
-    filteredApps.value = allApps.value
+    query = emptyList()
+    filteredApps = allApps
   }
 
   fun loadApps(useCache: Boolean = true) {
+    isRefreshing = true
     viewModelScope.launch {
       appRepo.loadApps(useCache).let { apps ->
-        allApps.value = apps
-        if (query.value.isEmpty()) {
-          filteredApps.value = apps
+        allApps = apps
+        if (query.isEmpty()) {
+          filteredApps = apps
         }
         trie.clear()
         apps.forEach { trie.add(it.label, it) }
+        delay(3000)
+        isRefreshing = false
       }
     }
   }
 
-  class Factory @Inject constructor(private val appRepo: AppRepo) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>) = MainViewModel(appRepo) as T
+  fun onAppClicked(context: Context, app: App) {
+    vibrator.vibrate()
+    activityLauncher.startMainActivity(app)
+    (context as Activity).finishAndRemoveTask()
+  }
+
+  val onAppLongClicked: (App?) -> Unit = {
+    vibrator.vibrate()
+    selectedApp.value = it
+  }
+
+  val onDialerClicked: (DialerButton) -> Unit = {
+    vibrator.vibrate()
+    if (it.isClearButton) {
+      clearQuery()
+    } else {
+      addToQuery(it)
+    }
+  }
+
+  fun onDialerLongClicked(button: DialerButton, navController: NavController) {
+    vibrator.vibrate()
+    if (button.isClearButton) {
+      navController.navigate(Screen.Settings.toString())
+    }
+  }
+
+  fun onDialerLongClickedDecorated(button: DialerButton, navController: NavController, snackbarHostState: SnackbarHostState) {
+    onDialerLongClicked(button, navController)
+    if (button.isInfoButton) {
+      navController.navigate(Screen.Info.toString())
+    }
   }
 }

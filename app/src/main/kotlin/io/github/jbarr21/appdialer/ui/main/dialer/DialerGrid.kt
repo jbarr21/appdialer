@@ -22,9 +22,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.insets.navigationBarsPadding
 import io.github.jbarr21.appdialer.data.DialerButton
-import io.github.jbarr21.appdialer.ui.main.MainPreviewData.buttonColors
-import io.github.jbarr21.appdialer.ui.main.MainPreviewData.buttons
+import io.github.jbarr21.appdialer.ui.AppTheme
+import io.github.jbarr21.appdialer.ui.main.PreviewData.buttonColors
+import io.github.jbarr21.appdialer.ui.main.PreviewData.buttons
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -52,14 +54,15 @@ fun DialerGrid(
         }
       })
       Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().navigationBarsPadding(),
         horizontalArrangement = Arrangement.SpaceEvenly
       ) {
         buttonColors.forEach { color ->
           FloatingActionButton(
             backgroundColor = color,
             onClick = { onColorClicked(color) },
-            modifier = Modifier.size(48.dp)
+            modifier = Modifier
+              .size(48.dp)
               .clickable(
                 onClick = { onColorClicked(color) }
 //                , indication = rememberRipple(bounded = false),
@@ -76,5 +79,7 @@ fun DialerGrid(
 @Preview
 @Composable
 fun DialerGridPreview() {
-  DialerGrid(buttons = buttons, buttonColors = buttonColors)
+  AppTheme(darkTheme = true) {
+    DialerGrid(buttons = buttons, buttonColors = buttonColors)
+  }
 }

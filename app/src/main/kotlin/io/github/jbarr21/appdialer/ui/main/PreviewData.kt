@@ -4,21 +4,20 @@ import android.os.Process
 import androidx.compose.ui.graphics.Color
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.data.DialerButton
+import kotlin.random.Random
 
-object MainPreviewData {
+object PreviewData {
   val previewApp = App(
     "Name",
     "com.foo",
     "BarActivity",
     Process.myUserHandle(),
-    iconColor = randomColor()
+    iconColor = randomColor("Name")
   )
 
   val previewApps = (0 until 10).map {
-    previewApp.copy(
-      name = "${previewApp.name} $it",
-      iconColor = randomColor()
-    )
+    val name = "${previewApp.name} $it"
+    previewApp.copy(name = name, iconColor = randomColor(name))
   }
 
   val buttons = listOf(DialerButton(label = "CLEAR*")) + (0 until 8).map { digit ->
@@ -29,9 +28,14 @@ object MainPreviewData {
       }.joinToString(separator = ""))
   }
 
-  val buttonColors = (0 until 5).map { Color(randomColor()) }
+  val buttonColors = (0 until 5).map { Color(randomColor(('A'.toInt() + it).toString())) }
 
-  fun randomColor(): Int {
-    return android.graphics.Color.rgb((0..256).random(), (0..256).random(), (0..256).random())
+  private fun randomColor(str: String): Int {
+    val random = Random(str.hashCode())
+    return android.graphics.Color.rgb(
+      (0..256).random(random),
+      (0..256).random(random),
+      (0..256).random(random)
+    )
   }
 }

@@ -7,8 +7,6 @@ data class DialerButton(
 ) {
   val isClearButton = "clear" in label.toString().toLowerCase()
   val isInfoButton = "i" in label.toString().toLowerCase()
-  val isRefreshButton = "r" in label.toString().toLowerCase()
-
 }
 
 fun List<DialerButton>.asText() = map { it.letters.first().toString() }.joinToString(separator = "")

@@ -1,6 +1,6 @@
 package io.github.jbarr21.appdialer.util
 
-import io.github.jbarr21.appdialer.ui.main.MainModule
+import io.github.jbarr21.appdialer.ui.main.dialer.DialerModule
 import java.util.*
 
 // TODO: support matching at more than just the first letter of the label
@@ -10,7 +10,7 @@ class Trie<T>(
   )
 ) {
 
-  private val keyMappings = MainModule.keyMappings()
+  private val keyMappings = DialerModule.keyMappings()
 
   fun add(word: String, value: T? = null) {
     var node = root

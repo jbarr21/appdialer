@@ -13,27 +13,29 @@ import coil.ImageLoader
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import io.github.jbarr21.appdialer.data.db.AppDatabase
+import io.github.jbarr21.appdialer.util.ActivityLauncher
 import io.github.jbarr21.appdialer.util.AppIconFetcher
-import javax.inject.Singleton
 
-
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 object AppModule {
 
-  @Singleton
+  @Provides
+  fun activityLauncher(
+    application: Application,
+    launcherApps: LauncherApps
+  ): ActivityLauncher = ActivityLauncher(application, launcherApps)
+
   @Provides
   fun activityManager(application: Application) = application.getSystemService<ActivityManager>()!!
 
-  @Singleton
   @Provides
   fun appDatabase(application: Application): AppDatabase {
     return Room.databaseBuilder(application, AppDatabase::class.java, "apps").build()
   }
 
-  @Singleton
   @Provides
   fun imageCache(am: ActivityManager, application: Application): LruCache<String, Drawable> {
     val largeHeap = application.applicationInfo.flags and FLAG_LARGE_HEAP !== 0
@@ -43,7 +45,6 @@ object AppModule {
     return LruCache<String, Drawable>(maxSize)
   }
 
-  @Singleton
   @Provides
   fun imageLoader(application: Application, appIconFetcher: AppIconFetcher): ImageLoader {
     return ImageLoader.Builder(application).componentRegistry {
@@ -51,15 +52,12 @@ object AppModule {
     }.build()
   }
 
-  @Singleton
   @Provides
   fun launcherApps(application: Application) = application.getSystemService<LauncherApps>()!!
 
-  @Singleton
   @Provides
   fun packageManager(application: Application) = application.packageManager
 
-  @Singleton
   @Provides
   fun userManager(application: Application) = application.getSystemService<UserManager>()!!
 }

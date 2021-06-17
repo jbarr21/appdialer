@@ -33,9 +33,15 @@ class AppRepo @Inject constructor(
     return withContext(Dispatchers.IO) {
       if (useCache) {
         val cachedApps = loadAppsFromCache()
-        if (cachedApps.isNotEmpty()) return@withContext cachedApps
+        if (cachedApps.isNotEmpty()) {
+          this@AppRepo.cachedApps.clear()
+          this@AppRepo.cachedApps.addAll(cachedApps)
+          return@withContext cachedApps
+        }
       }
       val pmApps = loadAppsFromPackageManager()
+      this@AppRepo.cachedApps.clear()
+      this@AppRepo.cachedApps.addAll(pmApps)
       return@withContext pmApps
     }
   }

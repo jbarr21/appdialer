@@ -11,27 +11,29 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.jbarr21.appdialer.data.App
-import io.github.jbarr21.appdialer.ui.main.MainPreviewData.previewApps
+import io.github.jbarr21.appdialer.ui.main.PreviewData.previewApps
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppGrid(
-  apps: State<List<App>>,
-  query: State<String> = mutableStateOf(""),
+  apps: List<App>,
+  query: String = "",
   numColumns: Int = 4,
+  isRefreshing: Boolean = false,
   onClick: (App) -> Unit = {},
-  onLongClick: (App) -> Unit = {}
+  onLongClick: (App) -> Unit = {},
+  onRefresh: () -> Unit = {}
 ) {
-  val isEmpty = apps.value.isEmpty() && query.value.isNotEmpty()
-  val isLoading = apps.value.isEmpty() && query.value.isEmpty()
+  val isEmpty = apps.isEmpty() && query.isNotEmpty()
+  val isLoading = apps.isEmpty() && query.isEmpty()
   when {
     isLoading -> {
       Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
@@ -41,19 +43,24 @@ fun AppGrid(
     isEmpty -> {
       Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
         Text(
-          text = "No matches for \"${query.value}\"",
+          text = "No matches for \"${query}\"",
           textAlign = TextAlign.Center,
           style = MaterialTheme.typography.h5,
           modifier = Modifier.padding(32.dp)
         )
       }
     }
-    apps.value.isNotEmpty() -> {
-      LazyVerticalGrid(cells = GridCells.Fixed(numColumns), content = {
-        itemsIndexed(apps.value) { _, app ->
-          AppItem(app, onClick, onLongClick)
-        }
-      })
+    apps.isNotEmpty() -> {
+      SwipeRefresh(
+        state = rememberSwipeRefreshState(isRefreshing),
+        onRefresh = onRefresh
+      ) {
+        LazyVerticalGrid(cells = GridCells.Fixed(numColumns), content = {
+          itemsIndexed(apps) { _, app ->
+            AppItem(app, query, onClick, onLongClick)
+          }
+        })
+      }
     }
   }
 }
@@ -61,12 +68,17 @@ fun AppGrid(
 @Preview
 @Composable
 fun AppGridPreview() {
-  AppGrid(mutableStateOf(previewApps))
+  AppGrid(previewApps)
 }
 
 @Preview(widthDp = 300, heightDp = 300)
-@Preview
 @Composable
 fun EmptyAppGridPreview() {
-  AppGrid(mutableStateOf(emptyList()), query = mutableStateOf("xyz")) {}
+  AppGrid(emptyList(), query = "xyz") {}
+}
+
+@Preview(widthDp = 300, heightDp = 300)
+@Composable
+fun LoadingAppGridPreview() {
+  AppGrid(emptyList(), query = "") {}
 }
