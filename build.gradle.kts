@@ -1,6 +1,6 @@
 buildscript {
   val kotlinVersion = "1.5.10"
-  val hiltVersion = "2.28-alpha"
+  val hiltVersion = "2.36"
   repositories {
     google()
     jcenter()
