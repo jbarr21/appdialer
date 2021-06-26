@@ -20,7 +20,7 @@ android {
     minSdkVersion(23)
     targetSdkVersion(30)
     versionCode = 2
-    versionName = "0.0.2"
+    versionName = "0.0.3"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
   buildFeatures {
@@ -72,6 +72,7 @@ dependencies {
   implementation("androidx.core:core-ktx:1.5.0")
   implementation("androidx.datastore:datastore-preferences:1.0.0-alpha01")
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0-alpha03")
+  implementation("com.google.dagger:hilt-android:$hiltVersion")
   implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
   implementation("androidx.lifecycle:lifecycle-runtime:2.3.1")
   implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
@@ -86,7 +87,6 @@ dependencies {
   implementation("com.google.accompanist:accompanist-swiperefresh:0.11.1")
   implementation("com.google.accompanist:accompanist-systemuicontroller:0.11.1")
   implementation("com.google.android.material:material:1.3.0")
-  implementation("com.google.dagger:hilt-android:$hiltVersion")
   implementation("com.jakewharton:process-phoenix:2.0.0")
   implementation("com.jakewharton.timber:timber:4.7.1")
   implementation("io.coil-kt:coil:1.2.2")

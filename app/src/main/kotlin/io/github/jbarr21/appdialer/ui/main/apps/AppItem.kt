@@ -6,11 +6,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
@@ -22,6 +20,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.imageloading.ImageLoadState
@@ -77,17 +77,16 @@ fun AppItem(
   }
 }
 
+private class AppProvider : PreviewParameterProvider<App> {
+  override val values = listOf("Name", "Application Name", "Really Long Application Name")
+    .map { previewApp.copy(name = it) }
+    .asSequence()
+}
+
 @Preview(widthDp = 150)
 @Composable
-fun AppItemPreview() {
+fun AppItemPreview(@PreviewParameter(AppProvider::class) app: App) {
   AppTheme(darkTheme = true) {
-    Column {
-      listOf("Name", "Application Name", "Really Long Application Name")
-        .forEach {
-          AppItem(previewApp.copy(name = it))
-          Spacer(modifier = Modifier.height(16.dp))
-        }
-      AppItem(previewApp.copy(name = "Calm"), query = "AA")
-    }
+    AppItem(app)
   }
 }

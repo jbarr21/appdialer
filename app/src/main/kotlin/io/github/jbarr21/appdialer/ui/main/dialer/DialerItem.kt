@@ -2,10 +2,7 @@ package io.github.jbarr21.appdialer.ui.main.dialer
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.MaterialTheme
@@ -18,6 +15,8 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import io.github.jbarr21.appdialer.data.DialerButton
 import io.github.jbarr21.appdialer.ui.AppTheme
@@ -54,19 +53,18 @@ fun DialerItem(
   )
 }
 
+private class ButtonProvider : PreviewParameterProvider<DialerButton> {
+  override val values = listOf(
+    4 to "GHI",
+    5 to "JKL",
+    -1 to "CLEAR*"
+  ).map { (digit, letters) -> DialerButton(digit = digit, letters = letters) }.asSequence()
+}
+
 @Preview
 @Composable
-fun DialerItemPreview() {
+fun DialerItemPreview(@PreviewParameter(ButtonProvider::class) button: DialerButton) {
   AppTheme(darkTheme = true) {
-    Column {
-      listOf(
-        4 to "GHI",
-        5 to "JKL",
-        -1 to "CLEAR*"
-      ).forEach { (digit, letters) ->
-        DialerItem(DialerButton(digit = digit, letters = letters))
-        Spacer(modifier = Modifier.height(16.dp))
-      }
-    }
+    DialerItem(button)
   }
 }
