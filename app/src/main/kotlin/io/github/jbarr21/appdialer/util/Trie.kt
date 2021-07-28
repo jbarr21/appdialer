@@ -4,11 +4,7 @@ import io.github.jbarr21.appdialer.ui.main.dialer.DialerModule
 import java.util.*
 
 // TODO: support matching at more than just the first letter of the label
-class Trie<T>(
-  val root: TrieNode<T> = TrieNode(
-    ' '
-  )
-) {
+class Trie<T>(val root: TrieNode<T> = TrieNode(key = ' ')) {
 
   private val keyMappings = DialerModule.keyMappings()
 
@@ -16,7 +12,7 @@ class Trie<T>(
     var node = root
     val sanitizedWord = sanitize(word)
     sanitizedWord.forEach { ch ->
-      node = node.children.firstOrNull { it.key == ch } ?: TrieNode<T>(ch.toLowerCase()).also { node.children += it }
+      node = node.get(ch) ?: TrieNode<T>(ch.toLowerCase()).also { node.put(ch, it) }
     }
     node.isLeaf = true
     node.value = value
@@ -25,7 +21,7 @@ class Trie<T>(
   fun contains(word: String, partial: Boolean = false): Boolean {
     var node = root
     sanitize(word).forEach { ch: Char ->
-      node = node.children.firstOrNull { it.key == ch } ?: return false
+      node = node.get(ch) ?: return false
     }
     return node.isLeaf || partial
   }
@@ -34,15 +30,13 @@ class Trie<T>(
     var node = root
     if (word.isNotEmpty()) {
       sanitize(word).forEach { ch: Char ->
-        node = node.children.firstOrNull { it.key == ch } ?: return emptyList()
+        node = node.get(ch) ?: return emptyList()
       }
     }
     return bfs(node)
   }
 
-  fun clear() {
-    root.children.clear()
-  }
+  fun clear() = root.clear()
 
   fun bfs(root: TrieNode<T>): List<T> {
     val list = mutableListOf<T>()
@@ -77,5 +71,13 @@ class Trie<T>(
     var value: T? = null,
     var isLeaf: Boolean = false,
     val children: MutableList<TrieNode<T>> = mutableListOf()
-  )
+  ) {
+    fun get(ch: Char): TrieNode<T>? = children.firstOrNull { it.key == ch }
+
+    fun put(ch: Char, node: TrieNode<T>) {
+      children.add(node)
+    }
+
+    fun clear() = children.clear()
+  }
 }

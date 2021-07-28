@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.insets.LocalWindowInsets
+import com.google.accompanist.insets.toPaddingValues
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.jbarr21.appdialer.data.App
@@ -32,6 +34,7 @@ fun AppGrid(
   onLongClick: (App) -> Unit = {},
   onRefresh: () -> Unit = {}
 ) {
+  val insets = LocalWindowInsets.current
   val isEmpty = apps.isEmpty() && query.isNotEmpty()
   val isLoading = apps.isEmpty() && query.isEmpty()
   when {
@@ -55,11 +58,15 @@ fun AppGrid(
         state = rememberSwipeRefreshState(isRefreshing),
         onRefresh = onRefresh
       ) {
-        LazyVerticalGrid(cells = GridCells.Fixed(numColumns), content = {
-          itemsIndexed(apps) { _, app ->
-            AppItem(app, query, onClick, onLongClick)
+        LazyVerticalGrid(
+          cells = GridCells.Fixed(numColumns),
+          contentPadding = insets.statusBars.toPaddingValues(),
+          content = {
+            itemsIndexed(apps) { _, app ->
+              AppItem(app, query, onClick, onLongClick)
+            }
           }
-        })
+        )
       }
     }
   }

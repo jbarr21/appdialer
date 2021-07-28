@@ -1,4 +1,4 @@
-val composeVersion = "1.0.0-beta09"
+val composeVersion = "1.0.0"
 val coroutinesVersion = "1.3.8"
 val flipperVersion = "0.55.0"
 val hiltVersion = "2.36"
