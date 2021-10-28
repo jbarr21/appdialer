@@ -2,6 +2,7 @@ package io.github.jbarr21.appdialer.ui.main.apps
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.GridCells
@@ -13,11 +14,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.toPaddingValues
+import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.jbarr21.appdialer.data.App
@@ -35,6 +37,7 @@ fun AppGrid(
   onRefresh: () -> Unit = {}
 ) {
   val insets = LocalWindowInsets.current
+  val statusTop = with(LocalDensity.current) { insets.statusBars.top.toDp() }
   val isEmpty = apps.isEmpty() && query.isNotEmpty()
   val isLoading = apps.isEmpty() && query.isEmpty()
   when {
@@ -56,11 +59,12 @@ fun AppGrid(
     apps.isNotEmpty() -> {
       SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing),
+        indicatorPadding = PaddingValues(top = statusTop),
         onRefresh = onRefresh
       ) {
         LazyVerticalGrid(
           cells = GridCells.Fixed(numColumns),
-          contentPadding = insets.statusBars.toPaddingValues(),
+          contentPadding = rememberInsetsPaddingValues(insets = insets.statusBars, additionalBottom = 96.dp * 3),
           content = {
             itemsIndexed(apps) { _, app ->
               AppItem(app, query, onClick, onLongClick)

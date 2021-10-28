@@ -14,9 +14,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.github.jbarr21.appdialer.data.UserPreferencesRepo
 import io.github.jbarr21.appdialer.data.db.AppDatabase
 import io.github.jbarr21.appdialer.util.ActivityLauncher
 import io.github.jbarr21.appdialer.util.AppIconFetcher
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -60,4 +62,8 @@ object AppModule {
 
   @Provides
   fun userManager(application: Application) = application.getSystemService<UserManager>()!!
+
+  @Singleton
+  @Provides
+  fun userPreferencesRepo(application: Application) = UserPreferencesRepo(application)
 }

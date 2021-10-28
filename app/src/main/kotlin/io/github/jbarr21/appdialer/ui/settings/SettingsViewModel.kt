@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.jbarr21.appdialer.data.SimpleListItem
@@ -38,12 +37,5 @@ class SettingsViewModel @Inject constructor(
 
   fun updateUsePersistentService(enable: Boolean) = viewModelScope.launch {
     userPreferencesRepo.updateUsePersistentService(enable)
-  }
-
-  class Factory @Inject constructor(
-    private val userPreferencesRepo: UserPreferencesRepo,
-    private val settingsData: List<SimpleListItem<Unit>>
-  ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>) = SettingsViewModel(userPreferencesRepo, settingsData) as T
   }
 }

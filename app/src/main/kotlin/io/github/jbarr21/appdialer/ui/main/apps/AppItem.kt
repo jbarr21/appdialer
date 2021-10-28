@@ -10,21 +10,17 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.coil.rememberCoilPainter
-import com.google.accompanist.imageloading.ImageLoadState
+import coil.compose.rememberImagePainter
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.ui.AppTheme
 import io.github.jbarr21.appdialer.ui.main.PreviewData.previewApp
@@ -50,22 +46,17 @@ fun AppItem(
       .fillMaxWidth()
       .aspectRatio(1f)) {
 
-      val painter = rememberCoilPainter(request = app.iconUri.toString())
-      when (painter.loadState) {
-        is ImageLoadState.Success -> {
-          Image(
-            painter = painter,
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize()
-          )
-        }
-        else -> {
-          Box(modifier = Modifier
-            .fillMaxSize()
-            .clip(CircleShape)
-            .background(Color.DarkGray))
-        }
-      }
+      val painter =
+      Image(
+        painter = rememberImagePainter(
+          data = app.iconUri,
+          builder = {
+            crossfade(true)
+          }
+        ),
+        contentDescription = null,
+        modifier = Modifier.fillMaxSize()
+      )
     }
     Text(
       text = app.annotatedLabel(query),
@@ -85,8 +76,8 @@ private class AppProvider : PreviewParameterProvider<App> {
 
 @Preview(widthDp = 150)
 @Composable
-fun AppItemPreview(@PreviewParameter(AppProvider::class) app: App) {
+fun AppItemPreview() {
   AppTheme(darkTheme = true) {
-    AppItem(app)
+    AppItem(previewApp)
   }
 }

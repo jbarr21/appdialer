@@ -2,7 +2,8 @@ package io.github.jbarr21.appdialer.ui.main
 
 import android.app.Activity
 import android.content.Context
-import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -82,9 +83,11 @@ class MainViewModel @Inject constructor(
     (context as Activity).finishAndRemoveTask()
   }
 
-  val onAppLongClicked: (App?) -> Unit = {
+  @ExperimentalMaterialApi
+  fun onAppLongClicked(app: App?, sheetState: ModalBottomSheetState): App? {
     vibrator.vibrate()
-    selectedApp.value = it
+    selectedApp.value = app
+    return app
   }
 
   val onDialerClicked: (DialerButton) -> Unit = {
@@ -103,7 +106,7 @@ class MainViewModel @Inject constructor(
     }
   }
 
-  fun onDialerLongClickedDecorated(button: DialerButton, navController: NavController, snackbarHostState: SnackbarHostState) {
+  fun onDialerLongClickedDecorated(button: DialerButton, navController: NavController) {
     onDialerLongClicked(button, navController)
     if (button.isInfoButton) {
       navController.navigate(Screen.Info.toString())
