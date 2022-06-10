@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -58,19 +58,19 @@ fun AppGrid(
     }
     apps.isNotEmpty() -> {
       SwipeRefresh(
+        modifier = Modifier.fillMaxSize(),
         state = rememberSwipeRefreshState(isRefreshing),
         indicatorPadding = PaddingValues(top = statusTop),
         onRefresh = onRefresh
       ) {
         LazyVerticalGrid(
-          cells = GridCells.Fixed(numColumns),
+          columns = GridCells.Fixed(numColumns),
           contentPadding = rememberInsetsPaddingValues(insets = insets.statusBars, additionalBottom = 96.dp * 3),
-          content = {
-            itemsIndexed(apps) { _, app ->
-              AppItem(app, query, onClick, onLongClick)
-            }
+        ) {
+          items(items = apps, key = { "${it.packageName}${it.activityName}" }) { app ->
+            AppItem(app, query, onClick, onLongClick)
           }
-        )
+        }
       }
     }
   }

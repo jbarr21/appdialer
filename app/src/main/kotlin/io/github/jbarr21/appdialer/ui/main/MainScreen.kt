@@ -15,16 +15,14 @@ import androidx.compose.material.Surface
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import io.github.jbarr21.appdialer.ui.AppTheme
 import io.github.jbarr21.appdialer.ui.main.apps.AppGrid
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerGrid
 import kotlinx.coroutines.launch
@@ -56,7 +54,7 @@ fun MainScreen(
       }
     ) {
       val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberBottomSheetState(BottomSheetValue.Expanded)
+        bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
       )
       BottomSheetScaffold(
         scaffoldState = scaffoldState,
@@ -84,39 +82,9 @@ fun MainScreen(
           onRefresh = { viewModel.loadApps(false) }
         )
       }
+      LaunchedEffect(null) {
+        scaffoldState.bottomSheetState.expand()
+      }
     }
-  }
-}
-
-@Preview
-@Composable
-fun MainPreview() {
-  AppTheme(darkTheme = true) {
-    MainScreen(
-      viewModel = hiltViewModel(),
-      navController = NavController(LocalContext.current)
-    )
-  }
-}
-
-@Preview
-@Composable
-fun MainPreviewLight() {
-  AppTheme(darkTheme = false) {
-    MainScreen(
-      viewModel = hiltViewModel(),
-      navController = NavController(LocalContext.current)
-    )
-  }
-}
-
-@Preview
-@Composable
-fun MainPreviewModal() {
-  AppTheme(darkTheme = false) {
-    MainScreen(
-      viewModel = hiltViewModel(),
-      navController = NavController(LocalContext.current)
-    )
   }
 }

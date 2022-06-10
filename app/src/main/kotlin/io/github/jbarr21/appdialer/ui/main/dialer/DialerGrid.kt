@@ -2,9 +2,9 @@ package io.github.jbarr21.appdialer.ui.main.dialer
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -33,11 +33,11 @@ fun DialerGrid(
     modifier = Modifier.shadow(32.dp)
   ) {
     Column {
-      LazyVerticalGrid(cells = GridCells.Fixed(numColumns), content = {
-        itemsIndexed(buttons) { _, button ->
+      LazyVerticalGrid(columns = GridCells.Fixed(numColumns)) {
+        items(items = buttons, key = { it.label }) { button ->
           DialerItem(button, onClick, onLongClick)
         }
-      })
+      }
      ColorButtons(buttonColors)
     }
   }
