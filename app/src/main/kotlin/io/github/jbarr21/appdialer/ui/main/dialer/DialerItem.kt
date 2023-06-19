@@ -53,7 +53,7 @@ fun DialerItem(
   )
 }
 
-private class ButtonProvider : PreviewParameterProvider<DialerButton> {
+internal class ButtonProvider : PreviewParameterProvider<DialerButton> {
   override val values = listOf(
     4 to "GHI",
     5 to "JKL",

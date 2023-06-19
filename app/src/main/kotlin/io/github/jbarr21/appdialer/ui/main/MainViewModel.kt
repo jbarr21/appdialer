@@ -103,6 +103,8 @@ class MainViewModel @Inject constructor(
     vibrator.vibrate()
     if (button.isClearButton) {
       navController.navigate(Screen.Settings.toString())
+    } else if (button.digit == 7) {
+      activityLauncher.startShowkase()
     }
   }
 

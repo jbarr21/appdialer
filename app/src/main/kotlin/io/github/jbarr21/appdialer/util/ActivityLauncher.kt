@@ -7,7 +7,9 @@ import android.content.pm.LauncherApps
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import com.airbnb.android.showkase.models.Showkase
 import io.github.jbarr21.appdialer.data.App
+import io.github.jbarr21.appdialer.ui.getBrowserIntent
 
 class ActivityLauncher constructor(
   private val application: Application,
@@ -39,9 +41,16 @@ class ActivityLauncher constructor(
     startActivity(intent, app)
   }
 
+  fun startShowkase() {
+    application.startActivity(Showkase.getBrowserIntent(application.applicationContext).apply {
+      addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    })
+  }
+
   private fun startActivity(intent: Intent, app: App) {
     intent.putExtra(Intent.EXTRA_USER, app.user)
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     application.startActivity(intent)
   }
 }
+

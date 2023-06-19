@@ -91,7 +91,7 @@ fun SettingsItem(listItem: SimpleListItem<Unit>, checked: Boolean, onCheckedChan
   }
 }
 
-@Preview
+@Preview(name = "Settings screen", group = "Settings")
 @Composable
 fun SettingsScreenPreview() {
   AppTheme(darkTheme = true) {

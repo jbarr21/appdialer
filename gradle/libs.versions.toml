@@ -13,6 +13,7 @@ kotlin = "1.8.20"
 ksp = "1.8.20-1.0.11"
 lifecycle = "2.5.1"
 room = "2.4.2"
+showkase = "1.0.0-beta18"
 
 [plugins]
 agp = { id = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -77,6 +78,9 @@ misc-debug-flipperNetwork = { module = "com.facebook.flipper:flipper-network-plu
 misc-debug-soLoader = "com.facebook.soloader:soloader:0.10.3"
 
 okhttp-core = "com.squareup.okhttp3:okhttp:4.9.2"
+
+showkase = { module = "com.airbnb.android:showkase", version.ref = "showkase" }
+showkase-processor = { module = "com.airbnb.android:showkase-processor", version.ref = "showkase" }
 
 test-android-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 test-android-espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "espresso" }

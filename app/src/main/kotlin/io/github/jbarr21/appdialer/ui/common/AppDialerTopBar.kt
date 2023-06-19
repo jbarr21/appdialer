@@ -46,7 +46,7 @@ fun AppDialerTopBar(
   )
 }
 
-@Preview
+@Preview(name = "Top bar", group = "Components")
 @Composable
 fun AppDialerTopBarPreview() {
   AppTheme(darkTheme = true) {

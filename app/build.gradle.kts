@@ -56,6 +56,7 @@ dependencies {
   kapt(libs.androidx.room.apt)
   kapt(libs.androidx.lifecycle.apt)
   kapt(libs.dagger.hilt.apt.compiler)
+  kapt(libs.showkase.processor)
 
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.appcompat)
@@ -98,6 +99,7 @@ dependencies {
   implementation(libs.misc.timber)
 
   implementation(libs.okhttp.core)
+  implementation(libs.showkase)
 
   debugImplementation(libs.misc.debug.flipper)
   debugImplementation(libs.misc.debug.flipperNetwork)
