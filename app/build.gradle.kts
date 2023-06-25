@@ -60,17 +60,17 @@ dependencies {
 
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.window)
 
   implementation(libs.androidx.compose.foundation)
   implementation(libs.androidx.compose.material)
+  implementation(libs.androidx.compose.material3.core)
+  implementation(libs.androidx.compose.material3.windowSizeClass)
   implementation(libs.androidx.compose.materialIcons)
   implementation(libs.androidx.compose.materialIconsExtended)
   implementation(libs.androidx.compose.ui)
   implementation(libs.androidx.compose.uiTooling)
 
-  implementation(libs.androidx.compose.accompantist.insets)
-  implementation(libs.androidx.compose.accompantist.navigation)
-  implementation(libs.androidx.compose.accompantist.swipeRefresh)
   implementation(libs.androidx.compose.accompantist.systemUi)
 
   implementation(libs.androidx.core)

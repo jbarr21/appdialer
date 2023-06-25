@@ -7,19 +7,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Switch
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -27,14 +25,18 @@ import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.SimpleListItem
 import io.github.jbarr21.appdialer.ui.AppTheme
 import io.github.jbarr21.appdialer.ui.common.AppDialerTopBar
+import io.github.jbarr21.appdialer.ui.preview.FakeNavController
+import io.github.jbarr21.appdialer.ui.preview.ThemePreviews
 
 @Composable
 fun SettingsScreen(
   viewModel: SettingsViewModel = viewModel(),
   navController: NavController
 ) {
-  Scaffold(topBar = { AppDialerTopBar(title = "AppDialer Settings", navController = navController) }) {
-    Surface(modifier = Modifier.fillMaxSize()) {
+  Scaffold(topBar = { AppDialerTopBar(title = "Settings", navController = navController) }) { it ->
+    Surface(modifier = Modifier
+      .fillMaxSize()
+      .padding(it)) {
       Column {
         SettingsGroup("General")
         SettingsItem(
@@ -56,8 +58,8 @@ fun SettingsScreen(
 fun SettingsGroup(title: String) {
   Text(
     title,
-    style = MaterialTheme.typography.button,
-    color = MaterialTheme.colors.secondaryVariant,
+    style = MaterialTheme.typography.labelLarge,
+    color = MaterialTheme.colorScheme.secondary,
     modifier = Modifier
       .fillMaxWidth()
       .padding(vertical = 8.dp, horizontal = 72.dp)
@@ -75,13 +77,13 @@ fun SettingsItem(listItem: SimpleListItem<Unit>, checked: Boolean, onCheckedChan
   ) {
     Image(
       painter = painterResource(id = listItem.iconRes),
-      colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
+      colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.secondary),
       contentDescription = null,
       modifier = Modifier.padding(horizontal = 24.dp)
     )
     Column(modifier = Modifier.weight(1f, fill = true)) {
-      Text(listItem.label, style = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.Medium))
-      Text(listItem.description.orEmpty(), style = MaterialTheme.typography.body2)
+      Text(listItem.label, style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium))
+      Text(listItem.description.orEmpty(), style = MaterialTheme.typography.bodyMedium)
     }
     Switch(
       checked = checked,
@@ -91,17 +93,17 @@ fun SettingsItem(listItem: SimpleListItem<Unit>, checked: Boolean, onCheckedChan
   }
 }
 
-@Preview(name = "Settings screen", group = "Settings")
+@ThemePreviews
 @Composable
 fun SettingsScreenPreview() {
-  AppTheme(darkTheme = true) {
+  AppTheme {
     Surface {
       Column {
-        AppDialerTopBar(title = "AppDialer Settings", navController = NavController(LocalContext.current))
+        AppDialerTopBar(title = "Settings", navController = FakeNavController.create(showNavIcon = true))
 
         SettingsGroup(title = "General")
 
-        repeat(3) {
+        repeat(2) {
           SettingsItem(
             listItem = SimpleListItem(
               label = "Setting title $it",

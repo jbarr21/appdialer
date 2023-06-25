@@ -1,31 +1,36 @@
 package io.github.jbarr21.appdialer.ui.main.apps
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.rememberInsetsPaddingValues
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.jbarr21.appdialer.data.App
+import io.github.jbarr21.appdialer.data.id
+import io.github.jbarr21.appdialer.ui.AppTheme
 import io.github.jbarr21.appdialer.ui.main.PreviewData.previewApps
+import io.github.jbarr21.appdialer.ui.preview.ThemePreviews
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AppGrid(
   apps: List<App>,
@@ -36,60 +41,74 @@ fun AppGrid(
   onLongClick: (App) -> Unit = {},
   onRefresh: () -> Unit = {}
 ) {
-  val insets = LocalWindowInsets.current
-  val statusTop = with(LocalDensity.current) { insets.statusBars.top.toDp() }
-  val isEmpty = apps.isEmpty() && query.isNotEmpty()
-  val isLoading = apps.isEmpty() && query.isEmpty()
-  when {
-    isLoading -> {
-      Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
-        CircularProgressIndicator(modifier = Modifier.padding(32.dp))
-      }
-    }
-    isEmpty -> {
-      Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
-        Text(
-          text = "No matches for \"${query}\"",
-          textAlign = TextAlign.Center,
-          style = MaterialTheme.typography.h5,
-          modifier = Modifier.padding(32.dp)
-        )
-      }
-    }
-    apps.isNotEmpty() -> {
-      SwipeRefresh(
-        modifier = Modifier.fillMaxSize(),
-        state = rememberSwipeRefreshState(isRefreshing),
-        indicatorPadding = PaddingValues(top = statusTop),
-        onRefresh = onRefresh
-      ) {
-        LazyVerticalGrid(
-          columns = GridCells.Fixed(numColumns),
-          contentPadding = rememberInsetsPaddingValues(insets = insets.statusBars, additionalBottom = 96.dp * 3),
-        ) {
-          items(items = apps, key = { "${it.packageName}${it.activityName}" }) { app ->
-            AppItem(app, query, onClick, onLongClick)
+  Surface(modifier = Modifier.fillMaxSize()) {
+    val isEmpty = apps.isEmpty() && query.isNotEmpty()
+    val isLoading = apps.isEmpty() && query.isEmpty()
+    when {
+      isLoading -> AppGridLoading()
+      isEmpty -> AppGridEmpty(query = query)
+      apps.isNotEmpty() -> {
+        val pullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh)
+        Box(Modifier.pullRefresh(pullRefreshState)) {
+          LazyVerticalGrid(
+            columns = GridCells.Fixed(numColumns),
+            contentPadding = WindowInsets.statusBars.asPaddingValues(),
+          ) {
+            items(items = apps, key = { "${it.packageName}${it.activityName}${it.user.id}" }) { app ->
+              AppItem(app, query, onClick, onLongClick)
+            }
           }
+          PullRefreshIndicator(isRefreshing, pullRefreshState,
+            Modifier
+              .align(Alignment.TopCenter)
+              .statusBarsPadding())
         }
       }
     }
   }
 }
 
-@Preview
 @Composable
-fun AppGridPreview() {
-  AppGrid(previewApps)
+fun AppGridLoading() {
+  Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
+    CircularProgressIndicator(modifier = Modifier.padding(32.dp))
+  }
 }
 
+@Composable
+fun AppGridEmpty(query: String) {
+  Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
+    Text(
+      text = "No matches for \"${query}\"",
+      textAlign = TextAlign.Center,
+      style = MaterialTheme.typography.headlineSmall,
+      modifier = Modifier.padding(32.dp)
+    )
+  }
+}
+
+@ThemePreviews
+@Composable
+fun AppGridPreview() {
+  AppTheme {
+    AppGrid(previewApps)
+  }
+}
+
+@ThemePreviews
 @Preview(widthDp = 300, heightDp = 300)
 @Composable
 fun EmptyAppGridPreview() {
-  AppGrid(emptyList(), query = "xyz") {}
+  AppTheme {
+    AppGrid(emptyList(), query = "xyz") {}
+  }
 }
 
+@ThemePreviews
 @Preview(widthDp = 300, heightDp = 300)
 @Composable
 fun LoadingAppGridPreview() {
-  AppGrid(emptyList(), query = "") {}
+  AppTheme {
+    AppGrid(emptyList(), query = "") {}
+  }
 }

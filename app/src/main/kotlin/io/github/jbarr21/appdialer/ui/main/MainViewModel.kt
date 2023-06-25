@@ -3,7 +3,6 @@ package io.github.jbarr21.appdialer.ui.main
 import android.app.Activity
 import android.content.Context
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -84,7 +83,7 @@ class MainViewModel @Inject constructor(
   }
 
   @ExperimentalMaterialApi
-  fun onAppLongClicked(app: App?, sheetState: ModalBottomSheetState): App? {
+  fun onAppLongClicked(app: App?): App? {
     vibrator.vibrate()
     selectedApp.value = app
     return app

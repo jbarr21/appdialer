@@ -10,20 +10,21 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.ui.AppTheme
 import io.github.jbarr21.appdialer.ui.main.PreviewData.previewApp
+import io.github.jbarr21.appdialer.ui.preview.ThemePreviews
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -46,7 +47,6 @@ fun AppItem(
       .fillMaxWidth()
       .aspectRatio(1f)) {
 
-      val painter =
       Image(
         painter = rememberImagePainter(
           data = app.iconUri,
@@ -60,8 +60,8 @@ fun AppItem(
     }
     Text(
       text = app.annotatedLabel(query),
-      color = MaterialTheme.colors.onSurface,
-      style = MaterialTheme.typography.body2,
+      color = MaterialTheme.colorScheme.onSurface,
+      style = MaterialTheme.typography.bodyMedium,
       overflow = TextOverflow.Ellipsis,
       maxLines = 1
     )
@@ -74,10 +74,10 @@ private class AppProvider : PreviewParameterProvider<App> {
     .asSequence()
 }
 
-@Preview(widthDp = 150)
+@ThemePreviews
 @Composable
-fun AppItemPreview() {
-  AppTheme(darkTheme = true) {
-    AppItem(previewApp)
+fun AppItemPreview(@PreviewParameter(AppProvider::class) app: App) {
+  AppTheme {
+    AppItem(app)
   }
 }

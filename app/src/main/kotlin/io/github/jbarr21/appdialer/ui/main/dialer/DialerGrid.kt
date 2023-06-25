@@ -1,24 +1,22 @@
 package io.github.jbarr21.appdialer.ui.main.dialer
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.jbarr21.appdialer.data.DialerButton
 import io.github.jbarr21.appdialer.ui.AppTheme
 import io.github.jbarr21.appdialer.ui.main.PreviewData.buttonColors
 import io.github.jbarr21.appdialer.ui.main.PreviewData.buttons
+import io.github.jbarr21.appdialer.ui.preview.ThemePreviews
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DialerGrid(
   buttons: List<DialerButton>,
@@ -28,8 +26,8 @@ fun DialerGrid(
   onLongClick: (DialerButton) -> Unit = {}
 ) {
   Surface(
-    color = MaterialTheme.colors.surface,
-    elevation = 2.dp,
+    color = MaterialTheme.colorScheme.surface,
+    shadowElevation = 4.dp,
     modifier = Modifier.shadow(32.dp)
   ) {
     Column {
@@ -43,10 +41,10 @@ fun DialerGrid(
   }
 }
 
-@Preview
+@ThemePreviews
 @Composable
 fun DialerGridPreview() {
-  AppTheme(darkTheme = true) {
+  AppTheme {
     DialerGrid(buttons = buttons, buttonColors = buttonColors)
   }
 }
