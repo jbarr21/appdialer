@@ -2,10 +2,11 @@ plugins {
   id("com.android.application")
   kotlin("android")
   kotlin("kapt")
-  alias(libs.plugins.hilt)
+  // alias(libs.plugins.hilt)
 }
 
 android {
+  namespace = "io.github.jbarr21.appdialer"
   compileSdkVersion(33)
   buildToolsVersion = "30.0.3"
   defaultConfig {
@@ -53,10 +54,10 @@ android {
 }
 
 dependencies {
-  kapt(libs.androidx.room.apt)
-  kapt(libs.androidx.lifecycle.apt)
-  kapt(libs.dagger.hilt.apt.compiler)
-  kapt(libs.showkase.processor)
+  // kapt(libs.androidx.room.apt)
+  // kapt(libs.androidx.lifecycle.apt)
+  // kapt(libs.dagger.hilt.apt.compiler)
+  // kapt(libs.showkase.processor)
 
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.appcompat)
@@ -75,7 +76,7 @@ dependencies {
 
   implementation(libs.androidx.core)
   implementation(libs.androidx.datastore)
-  implementation(libs.androidx.hilt.navCompose)
+  // implementation(libs.androidx.hilt.navCompose)
 
   implementation(libs.androidx.lifecycle.extensions)
   implementation(libs.androidx.lifecycle.runtimeKtx)
@@ -88,7 +89,7 @@ dependencies {
   implementation(libs.androidx.room.runtime)
 
   implementation(libs.coil.compose)
-  implementation(libs.dagger.hilt.android)
+  // implementation(libs.dagger.hilt.android)
   implementation(libs.google.material)
 
   implementation(libs.kotlin.coroutines)
@@ -99,7 +100,7 @@ dependencies {
   implementation(libs.misc.timber)
 
   implementation(libs.okhttp.core)
-  implementation(libs.showkase)
+  // implementation(libs.showkase)
 
   debugImplementation(libs.misc.debug.flipper)
   debugImplementation(libs.misc.debug.flipperNetwork)
@@ -108,7 +109,7 @@ dependencies {
   testImplementation(libs.test.junit)
   testImplementation(libs.test.truth)
 
-  androidTestImplementation(libs.test.android.espresso.core)
-  androidTestImplementation(libs.test.android.runner)
-  androidTestImplementation(libs.androidx.compose.uiTest)
+  // androidTestImplementation(libs.test.android.espresso.core)
+  // androidTestImplementation(libs.test.android.runner)
+  // androidTestImplementation(libs.androidx.compose.uiTest)
 }
