@@ -6,12 +6,13 @@ plugins {
 }
 
 android {
-  compileSdkVersion(33)
-  buildToolsVersion = "30.0.3"
+  compileSdk = 34
+  buildToolsVersion = "34.0.0"
+  namespace = "io.github.jbarr21.appdialer"
   defaultConfig {
     applicationId = "io.github.jbarr21.appdialer"
-    minSdkVersion(23)
-    targetSdkVersion(33)
+    minSdk = 23
+    targetSdk = 33
     versionCode = 2
     versionName = "0.0.3"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

@@ -1,5 +1,6 @@
 package io.github.jbarr21.appdialer.service
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
@@ -15,6 +16,7 @@ import io.github.jbarr21.appdialer.util.Channels
 import timber.log.Timber
 import javax.inject.Inject
 
+@SuppressLint("UnspecifiedImmutableFlag")
 @AndroidEntryPoint
 class KeepAliveService : Service() {
 

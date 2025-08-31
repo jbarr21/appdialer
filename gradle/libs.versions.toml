@@ -1,19 +1,19 @@
 [versions]
 accompanist = "0.30.1"
-agp = "7.4.2"
+agp = "8.4.0"
 androidTestSupport = "1.5.2"
 coil = "1.4.0"
-compose = "1.4.3"
-composeCompiler = "1.4.6"
-composeMaterial3 = "1.1.1"
-coroutines = "1.6.4"
-dagger = "2.44"
+compose = "1.6.7"
+composeCompiler = "1.5.14"
+composeMaterial3 = "1.2.1"
+coroutines = "1.8.0"
+dagger = "2.49"
 espresso = "3.5.1"
 flipper = "0.79.1"
-kotlin = "1.8.20"
-ksp = "1.8.20-1.0.11"
-lifecycle = "2.6.1"
-room = "2.5.1"
+kotlin = "1.9.24"
+ksp = "1.9.24-1.0.20"
+lifecycle = "2.8.0"
+room = "2.6.1"
 showkase = "1.0.0-beta18"
 
 [plugins]
@@ -30,9 +30,9 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp"}
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
-androidx-activity-compose = "androidx.activity:activity-compose:1.7.2"
+androidx-activity-compose = "androidx.activity:activity-compose:1.9.0"
 androidx-appcompat = "androidx.appcompat:appcompat:1.6.1"
-androidx-window = "androidx.window:window:1.1.0"
+androidx-window = "androidx.window:window:1.2.0"
 
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
@@ -45,16 +45,16 @@ androidx-compose-uiTooling = { module = "androidx.compose.ui:ui-tooling", versio
 androidx-compose-uiTest = { module = "androidx.compose.ui:ui-test", version.ref = "compose" }
 androidx-compose-accompantist-systemUi = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 
-androidx-core = "androidx.core:core-ktx:1.10.1"
-androidx-datastore = "androidx.datastore:datastore-preferences:1.0.0"
-androidx-hilt-navCompose = "androidx.hilt:hilt-navigation-compose:1.0.0"
+androidx-core = "androidx.core:core-ktx:1.13.1"
+androidx-datastore = "androidx.datastore:datastore-preferences:1.1.1"
+androidx-hilt-navCompose = "androidx.hilt:hilt-navigation-compose:1.2.0"
 
 androidx-lifecycle-apt = { module = "androidx.lifecycle:lifecycle-compiler", version.ref = "lifecycle" }
 androidx-lifecycle-extensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
 androidx-lifecycle-runtimeKtx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodelKtx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 
-androidx-navigation-compose = "androidx.navigation:navigation-compose:2.6.0"
+androidx-navigation-compose = "androidx.navigation:navigation-compose:2.7.7"
 androidx-palette = "androidx.palette:palette:1.0.0"
 
 androidx-room-apt = { module = "androidx.room:room-compiler", version.ref = "room" }
@@ -66,7 +66,7 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 dagger-hilt-apt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
 
-google-material = "com.google.android.material:material:1.9.0"
+google-material = "com.google.android.material:material:1.12.0"
 
 kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlin-coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
@@ -78,7 +78,7 @@ misc-debug-flipper = { module = "com.facebook.flipper:flipper", version.ref = "f
 misc-debug-flipperNetwork = { module = "com.facebook.flipper:flipper-network-plugin", version.ref = "flipper" }
 misc-debug-soLoader = "com.facebook.soloader:soloader:0.10.3"
 
-okhttp-core = "com.squareup.okhttp3:okhttp:4.9.2"
+okhttp-core = "com.squareup.okhttp3:okhttp:4.12.0"
 
 showkase = { module = "com.airbnb.android:showkase", version.ref = "showkase" }
 showkase-processor = { module = "com.airbnb.android:showkase-processor", version.ref = "showkase" }
