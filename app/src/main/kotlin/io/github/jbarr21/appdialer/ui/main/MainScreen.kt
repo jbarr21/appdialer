@@ -93,7 +93,6 @@ fun MainScreen(
         modifier = Modifier.wrapContentHeight(align = Alignment.Bottom),
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
-        windowInsets = BottomSheetDefaults.windowInsets.only(WindowInsetsSides.Horizontal),
         scrimColor = Color.Black.copy(alpha = 0.5f),
       ) {
         AppActionSheetContent(

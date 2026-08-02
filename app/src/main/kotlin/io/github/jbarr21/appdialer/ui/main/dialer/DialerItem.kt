@@ -6,9 +6,9 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -41,7 +41,7 @@ fun DialerItem(
     }
   }.toAnnotatedString()
 
-  CompositionLocalProvider(LocalIndication provides rememberRipple(bounded = false, radius = 64.dp)) {
+  CompositionLocalProvider(LocalIndication provides ripple(bounded = false, radius = 64.dp)) {
     Text(
       text = annotatedText,
       textAlign = TextAlign.Center,
