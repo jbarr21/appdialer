@@ -7,6 +7,7 @@ compose = "1.11.4"
 composeIcons = "1.7.8"
 composeMaterial3 = "1.4.0"
 coroutines = "1.11.0"
+composeRules = "0.6.3"
 detekt = "2.0.0-alpha.5"
 espresso = "3.7.0"
 kotlin = "2.4.10"
@@ -33,6 +34,7 @@ detekt = { id = "dev.detekt", version.ref = "detekt" }
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp"}
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 ktfmt-formatter = { module = "com.facebook:ktfmt", version.ref = "ktfmt" }
+detekt-compose-rules = { module = "io.nlopez.compose.rules:detekt", version.ref = "composeRules" }
 
 androidx-activity-compose = "androidx.activity:activity-compose:1.13.0"
 androidx-appcompat = "androidx.appcompat:appcompat:1.7.1"

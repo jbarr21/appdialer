@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+  detektPlugins(libs.detekt.compose.rules)
   ktfmt(libs.ktfmt.formatter)
   ksp(libs.androidx.room.apt)
 
