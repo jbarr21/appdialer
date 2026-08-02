@@ -1,18 +1,17 @@
 plugins {
   id("com.android.application")
-  kotlin("android")
-  kotlin("kapt")
+  alias(libs.plugins.kotlin.compose)
+  alias(libs.plugins.ksp)
   alias(libs.plugins.hilt)
 }
 
 android {
-  compileSdk = 34
-  buildToolsVersion = "34.0.0"
+  compileSdk = 37
   namespace = "io.github.jbarr21.appdialer"
   defaultConfig {
     applicationId = "io.github.jbarr21.appdialer"
     minSdk = 23
-    targetSdk = 33
+    targetSdk = 37
     versionCode = 2
     versionName = "0.0.3"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -28,19 +27,13 @@ android {
     }
   }
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
   packagingOptions {
     resources {
       excludes += "META-INF/kotlinx_coroutines_core.version"
     }
-  }
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-  }
-  kotlinOptions {
-    jvmTarget = "1.8"
   }
   sourceSets {
     map {
@@ -54,10 +47,8 @@ android {
 }
 
 dependencies {
-  kapt(libs.androidx.room.apt)
-  kapt(libs.androidx.lifecycle.apt)
-  kapt(libs.dagger.hilt.apt.compiler)
-  kapt(libs.showkase.processor)
+  ksp(libs.androidx.room.apt)
+  ksp(libs.dagger.hilt.apt.compiler)
 
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.appcompat)
@@ -100,7 +91,6 @@ dependencies {
   implementation(libs.misc.timber)
 
   implementation(libs.okhttp.core)
-  implementation(libs.showkase)
 
   debugImplementation(libs.misc.debug.flipper)
   debugImplementation(libs.misc.debug.flipperNetwork)
