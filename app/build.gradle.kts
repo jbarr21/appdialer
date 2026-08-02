@@ -2,7 +2,7 @@ plugins {
   id("com.android.application")
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.ksp)
-  alias(libs.plugins.hilt)
+  alias(libs.plugins.metro)
 }
 
 android {
@@ -38,17 +38,12 @@ android {
   sourceSets {
     map {
       it.java.srcDir("src/${it.name}/kotlin")
-//      // For kapt (stubs)
-//      it.java.srcDirs.add(file("build/generated/source/kapt/$it"))
-//      // For kotlin code gen during kapt
-//      it.java.srcDirs.add(file("build/generated/source/kaptKotlin/$it"))
     }
   }
 }
 
 dependencies {
   ksp(libs.androidx.room.apt)
-  ksp(libs.dagger.hilt.apt.compiler)
 
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.appcompat)
@@ -67,7 +62,6 @@ dependencies {
 
   implementation(libs.androidx.core)
   implementation(libs.androidx.datastore)
-  implementation(libs.androidx.hilt.navCompose)
 
   implementation(libs.androidx.lifecycle.extensions)
   implementation(libs.androidx.lifecycle.runtimeKtx)
@@ -80,7 +74,6 @@ dependencies {
   implementation(libs.androidx.room.runtime)
 
   implementation(libs.coil.compose)
-  implementation(libs.dagger.hilt.android)
   implementation(libs.google.material)
 
   implementation(libs.kotlin.coroutines)

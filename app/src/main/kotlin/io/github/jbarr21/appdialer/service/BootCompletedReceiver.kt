@@ -3,22 +3,17 @@ package io.github.jbarr21.appdialer.service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import dagger.hilt.android.AndroidEntryPoint
-import io.github.jbarr21.appdialer.data.UserPreferencesRepo
+import io.github.jbarr21.appdialer.app.AppDialerApplication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class BootCompletedReceiver : BroadcastReceiver() {
 
-  @Inject
-  lateinit var userPreferencesRepo: UserPreferencesRepo
-
   override fun onReceive(context: Context, intent: Intent) {
+    val app = context.applicationContext as AppDialerApplication
     GlobalScope.launch(Dispatchers.Main) {
-      KeepAliveService.start(context, userPreferencesRepo)
+      KeepAliveService.start(context, app.appGraph.userPreferencesRepo)
     }
   }
 }

@@ -5,10 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import androidx.core.content.getSystemService
-import coil3.ImageLoader
 import coil3.SingletonImageLoader
-import dagger.hilt.android.HiltAndroidApp
-import io.github.jbarr21.appdialer.data.UserPreferencesRepo
 import io.github.jbarr21.appdialer.service.KeepAliveService
 import io.github.jbarr21.appdialer.util.Channels
 import kotlinx.coroutines.CoroutineScope
@@ -17,27 +14,27 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
+import dev.zacsweers.metro.createGraphFactory
 import kotlin.coroutines.CoroutineContext
 
-@HiltAndroidApp
 class AppDialerApplication : Application(), CoroutineScope {
 
-  @Inject lateinit var imageLoader: ImageLoader
-  @Inject lateinit var userPreferencesRepo: UserPreferencesRepo
+  lateinit var appGraph: AppGraph
+    private set
 
   override val coroutineContext: CoroutineContext
     get() = Dispatchers.Main
 
   override fun onCreate() {
     super.onCreate()
+    appGraph = createGraphFactory<AppGraph.Factory>().create(this)
     Timber.plant(Timber.DebugTree())
     Timber.tag("JIM").d("Application created")
     Flipper.init(this)
     createNotificationChannel()
-    SingletonImageLoader.setSafe { imageLoader }
+    SingletonImageLoader.setSafe { appGraph.imageLoader }
     GlobalScope.launch(Dispatchers.IO) {
-      KeepAliveService.start(this@AppDialerApplication, userPreferencesRepo)
+      KeepAliveService.start(this@AppDialerApplication, appGraph.userPreferencesRepo)
     }
   }
 

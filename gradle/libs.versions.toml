@@ -7,19 +7,19 @@ compose = "1.11.3"
 composeIcons = "1.7.8"
 composeMaterial3 = "1.4.0"
 coroutines = "1.11.0"
-dagger = "2.60.1"
 espresso = "3.7.0"
 flipper = "0.79.1"
 kotlin = "2.4.10"
 ksp = "2.3.10"
 lifecycle = "2.10.0"
 room = "2.8.4"
+metro = "1.2.1"
 
 [plugins]
 agp = { id = "com.android.tools.build:gradle", version.ref = "agp" }
 agp-application = { id = "com.android.application", version.ref = "agp" }
 agp-library = { id = "com.android.library", version.ref = "agp" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
+metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
@@ -46,8 +46,6 @@ androidx-compose-accompantist-systemUi = { module = "com.google.accompanist:acco
 
 androidx-core = "androidx.core:core-ktx:1.19.0"
 androidx-datastore = "androidx.datastore:datastore-preferences:1.2.1"
-androidx-hilt-navCompose = "androidx.hilt:hilt-navigation-compose:1.4.0"
-
 androidx-lifecycle-extensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
 androidx-lifecycle-runtimeKtx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodelKtx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
@@ -60,9 +58,6 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
-
-dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
-dagger-hilt-apt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
 
 google-material = "com.google.android.material:material:1.13.0"
 

@@ -5,15 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.Inject
 import io.github.jbarr21.appdialer.data.SimpleListItem
 import io.github.jbarr21.appdialer.data.UserPreferences
 import io.github.jbarr21.appdialer.data.UserPreferencesRepo
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
 class SettingsViewModel @Inject constructor(
   private val userPreferencesRepo: UserPreferencesRepo,
   internal val settingsData: List<SimpleListItem<Unit>>

@@ -8,20 +8,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
-import dagger.hilt.android.AndroidEntryPoint
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.UserPreferencesRepo
 import io.github.jbarr21.appdialer.ui.RootActivity
 import io.github.jbarr21.appdialer.util.Channels
 import timber.log.Timber
-import javax.inject.Inject
 
 @SuppressLint("UnspecifiedImmutableFlag")
-@AndroidEntryPoint
 class KeepAliveService : Service() {
-
-  @Inject
-  lateinit var userPreferencesRepo: UserPreferencesRepo
 
   override fun onCreate() {
     super.onCreate()

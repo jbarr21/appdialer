@@ -8,7 +8,7 @@ import androidx.core.content.getSystemService
 import io.github.jbarr21.appdialer.data.UserPreferencesRepo
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class Vibrator @Inject constructor(
   private val application: Application,

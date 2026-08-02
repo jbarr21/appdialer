@@ -17,10 +17,11 @@ import coil3.decode.DataSource
 import coil3.request.Options
 import io.github.jbarr21.appdialer.data.UserCache
 import io.github.jbarr21.appdialer.data.isMain
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import io.github.jbarr21.appdialer.app.AppScope
 
-@Singleton
+@SingleIn(AppScope::class)
 class AppIconFetcher @Inject constructor(
   private val activityManager: ActivityManager,
   private val imageCache: LruCache<String, Drawable>,

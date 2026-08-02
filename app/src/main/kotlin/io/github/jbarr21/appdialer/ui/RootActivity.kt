@@ -6,9 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.core.view.WindowCompat
-import dagger.hilt.android.AndroidEntryPoint
+import io.github.jbarr21.appdialer.app.AppDialerApplication
 
-@AndroidEntryPoint
 class RootActivity : ComponentActivity() {
 
   @ExperimentalMaterial3WindowSizeClassApi
@@ -18,7 +17,7 @@ class RootActivity : ComponentActivity() {
     setContent {
       val windowSizeClass = calculateWindowSizeClass(this)
       AppTheme {
-        AppDialerApp(windowSizeClass)
+        AppDialerApp(windowSizeClass, (application as AppDialerApplication).appGraph)
       }
     }
   }

@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.Inject
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.data.AppRepo
 import io.github.jbarr21.appdialer.data.DialerButton
@@ -22,9 +22,7 @@ import io.github.jbarr21.appdialer.util.Trie
 import io.github.jbarr21.appdialer.util.Vibrator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
 class MainViewModel @Inject constructor(
   private val activityLauncher: ActivityLauncher,
   internal val appLongClickActions: List<SimpleListItem<App>>,

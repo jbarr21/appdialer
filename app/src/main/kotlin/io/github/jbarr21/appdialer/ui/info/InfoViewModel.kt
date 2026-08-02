@@ -5,13 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.Inject
 import io.github.jbarr21.appdialer.data.AppRepo
 import io.github.jbarr21.appdialer.data.isMain
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
 class InfoViewModel @Inject constructor(private val appRepo: AppRepo) : ViewModel() {
 
   var appStats by mutableStateOf(AppStats(-1, -1, -1, -1)).also { loadApps() }
