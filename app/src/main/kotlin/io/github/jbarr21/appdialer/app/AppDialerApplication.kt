@@ -30,7 +30,6 @@ class AppDialerApplication : Application(), CoroutineScope {
     appGraph = createGraphFactory<AppGraph.Factory>().create(this)
     Timber.plant(Timber.DebugTree())
     Timber.tag("JIM").d("Application created")
-    Flipper.init(this)
     createNotificationChannel()
     SingletonImageLoader.setSafe { appGraph.imageLoader }
     GlobalScope.launch(Dispatchers.IO) {

@@ -85,10 +85,6 @@ dependencies {
 
   implementation(libs.okhttp.core)
 
-  debugImplementation(libs.misc.debug.flipper)
-  debugImplementation(libs.misc.debug.flipperNetwork)
-  debugImplementation(libs.misc.debug.soLoader)
-
   testImplementation(libs.test.junit)
   testImplementation(libs.test.truth)
 
