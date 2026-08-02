@@ -12,7 +12,7 @@ class Trie<T>(val root: TrieNode<T> = TrieNode(key = ' ')) {
     var node = root
     val sanitizedWord = sanitize(word)
     sanitizedWord.forEach { ch ->
-      node = node.get(ch) ?: TrieNode<T>(ch.toLowerCase()).also { node.put(ch, it) }
+      node = node.get(ch) ?: TrieNode<T>(ch.lowercaseChar()).also { node.put(ch, it) }
     }
     node.isLeaf = true
     node.value = value
@@ -53,7 +53,7 @@ class Trie<T>(val root: TrieNode<T> = TrieNode(key = ' ')) {
   }
 
   private fun sanitize(word: String): String {
-    return word.map { it.toLowerCase() }.filter { it in 'a'..'z' }.map { digitize(it) }.joinToString(separator = "")
+    return word.map { it.lowercaseChar() }.filter { it in 'a'..'z' }.map { digitize(it) }.joinToString(separator = "")
   }
 
   private fun digitize(ch: Char): String {
