@@ -4,12 +4,13 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.Intent.ACTION_MAIN
 import android.graphics.Color.TRANSPARENT
-import android.net.Uri
 import android.os.UserHandle
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import coil3.Uri
+import coil3.toUri
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerModule
 import io.github.jbarr21.appdialer.util.AppIconFetcher.Companion.PARAM_ACTIVITY_NAME
 import io.github.jbarr21.appdialer.util.AppIconFetcher.Companion.PARAM_USER_ID
@@ -56,12 +57,12 @@ data class App(
   }
 
   private fun Map<Int, String>.keyForValueContainingChar(ch: Char): Int {
-    return entries.firstOrNull { (_, letters) -> ch.toLowerCase() in letters.toLowerCase() }?.key ?: -1
+    return entries.firstOrNull { (_, letters) -> ch.lowercaseChar() in letters.lowercase() }?.key ?: -1
   }
 
   companion object {
     fun iconUri(packageName: String, activityName: String, user: UserHandle): Uri {
-      return Uri.parse("$SCHEME_PNAME://$packageName?$PARAM_ACTIVITY_NAME=$activityName&$PARAM_USER_ID=${user.id}")
+      return "$SCHEME_PNAME://$packageName?$PARAM_ACTIVITY_NAME=$activityName&$PARAM_USER_ID=${user.id}".toUri()
     }
   }
 }

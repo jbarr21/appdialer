@@ -6,10 +6,10 @@ import android.content.pm.LauncherApps
 import android.graphics.Color
 import android.os.UserHandle
 import android.os.UserManager
-import androidx.core.graphics.drawable.toBitmap
 import androidx.palette.graphics.Palette
-import coil.imageLoader
-import coil.request.ImageRequest
+import coil3.imageLoader
+import coil3.request.ImageRequest
+import coil3.toBitmap
 import io.github.jbarr21.appdialer.data.db.AppDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -70,7 +70,7 @@ class AppRepo @Inject constructor(
       }
       .awaitAll()
       .flatten()
-      .sortedBy { app -> app.name.toLowerCase() }
+      .sortedBy { app -> app.name.lowercase() }
       .also { apps ->
         appDatabase.appDao().deleteAll()
         appDatabase.appDao().insertAll(*apps.map { it.toAppEntity() }.toTypedArray())
@@ -92,7 +92,7 @@ class AppRepo @Inject constructor(
     val iconUri = App.iconUri(packageName, activityName, user)
     val icon = run {
       val request = ImageRequest.Builder(application).data(iconUri).build()
-      request.context.imageLoader.execute(request).drawable?.toBitmap()
+      application.imageLoader.execute(request).image?.toBitmap()
     } ?: throw IllegalStateException("Null icon for uri: $iconUri")
     val iconColor = Palette.from(icon).generate().getDominantColor(Color.TRANSPARENT)
     return App(it.label.toString(), packageName, it.componentName.className, user, iconColor)

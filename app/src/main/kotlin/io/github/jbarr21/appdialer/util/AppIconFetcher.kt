@@ -5,16 +5,16 @@ import android.content.pm.LauncherApps
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.UserHandle
 import androidx.collection.LruCache
-import coil.bitmap.BitmapPool
-import coil.decode.DataSource
-import coil.decode.Options
-import coil.fetch.DrawableResult
-import coil.fetch.FetchResult
-import coil.fetch.Fetcher
-import coil.size.Size
+import coil3.ImageLoader
+import coil3.Uri
+import coil3.asImage
+import coil3.fetch.Fetcher
+import coil3.fetch.ImageFetchResult
+import coil3.fetch.FetchResult
+import coil3.decode.DataSource
+import coil3.request.Options
 import io.github.jbarr21.appdialer.data.UserCache
 import io.github.jbarr21.appdialer.data.isMain
 import javax.inject.Inject
@@ -26,40 +26,53 @@ class AppIconFetcher @Inject constructor(
   private val imageCache: LruCache<String, Drawable>,
   private val launcherApps: LauncherApps,
   private val packageManager: PackageManager,
-  private val userCache: UserCache
-) : Fetcher<Uri> {
+  private val userCache: UserCache,
+  private val data: Uri
+) : Fetcher {
 
   private val dpi by lazy { activityManager.launcherLargeIconDensity }
   private val defaultAppIcon by lazy {
     Resources.getSystem().getDrawableForDensity(android.R.mipmap.sym_def_app_icon, dpi)
   }
 
-  override suspend fun fetch(pool: BitmapPool, data: Uri, size: Size, options: Options): FetchResult {
-    return imageCache.get(key(data))?.let { icon ->
-      DrawableResult(
-        drawable = icon,
+  override suspend fun fetch(): FetchResult {
+    return imageCache.get(data.toString())?.let { icon ->
+      ImageFetchResult(
+        image = icon.asImage(),
         isSampled = false,
         dataSource = DataSource.MEMORY
       )
     } ?: fetchUncachedIcon(data)
   }
 
-  private fun fetchUncachedIcon(data: Uri): DrawableResult {
-    val packageName = data.host.orEmpty()
-    val user = userCache.findById(data.getQueryParameter(PARAM_USER_ID).orEmpty().toInt())
-    val activityName = data.getQueryParameter(PARAM_ACTIVITY_NAME).orEmpty()
+  private fun fetchUncachedIcon(data: Uri): ImageFetchResult {
+    val packageName = data.authority.orEmpty()
+    val parameters = data.query.orEmpty().split("&").associate { parameter ->
+      parameter.substringBefore("=") to parameter.substringAfter("=", "")
+    }
+    val user = userCache.findById(parameters[PARAM_USER_ID].orEmpty().toInt())
+    val activityName = parameters[PARAM_ACTIVITY_NAME].orEmpty()
     val icon = getFullResIcon(packageName, activityName, user)
-    imageCache.put(key(data), icon)
-    return DrawableResult(
-      drawable = icon,
+    imageCache.put(data.toString(), icon)
+    return ImageFetchResult(
+      image = icon.asImage(),
       isSampled = false,
       dataSource = DataSource.DISK
     )
   }
 
-  override fun key(data: Uri) = data.toString()
-
-  override fun handles(data: Uri) = data.scheme == SCHEME_PNAME
+  class Factory @Inject constructor(
+    private val activityManager: ActivityManager,
+    private val imageCache: LruCache<String, Drawable>,
+    private val launcherApps: LauncherApps,
+    private val packageManager: PackageManager,
+    private val userCache: UserCache
+  ) : Fetcher.Factory<Uri> {
+    override fun create(data: Uri, options: Options, imageLoader: ImageLoader): Fetcher? {
+      return AppIconFetcher(activityManager, imageCache, launcherApps, packageManager, userCache, data)
+        .takeIf { data.scheme == SCHEME_PNAME }
+    }
+  }
 
   private fun getFullResIcon(packageName: String, activityName: String, user: UserHandle): Drawable {
     try {

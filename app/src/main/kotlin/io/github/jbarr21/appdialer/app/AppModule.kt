@@ -9,7 +9,7 @@ import android.os.UserManager
 import androidx.collection.LruCache
 import androidx.core.content.getSystemService
 import androidx.room.Room
-import coil.ImageLoader
+import coil3.ImageLoader
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,8 +48,8 @@ object AppModule {
   }
 
   @Provides
-  fun imageLoader(application: Application, appIconFetcher: AppIconFetcher): ImageLoader {
-    return ImageLoader.Builder(application).componentRegistry {
+  fun imageLoader(application: Application, appIconFetcher: AppIconFetcher.Factory): ImageLoader {
+    return ImageLoader.Builder(application).components {
       add(appIconFetcher)
     }.build()
   }

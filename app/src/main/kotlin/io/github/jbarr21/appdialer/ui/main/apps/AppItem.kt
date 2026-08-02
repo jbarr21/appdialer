@@ -1,7 +1,6 @@
 package io.github.jbarr21.appdialer.ui.main.apps
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
@@ -20,7 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
+import coil3.compose.AsyncImage
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.ui.AppTheme
 import io.github.jbarr21.appdialer.ui.main.PreviewData.previewApp
@@ -47,13 +46,8 @@ fun AppItem(
       .fillMaxWidth()
       .aspectRatio(1f)) {
 
-      Image(
-        painter = rememberImagePainter(
-          data = app.iconUri,
-          builder = {
-            crossfade(true)
-          }
-        ),
+      AsyncImage(
+        model = app.iconUri,
         contentDescription = null,
         modifier = Modifier.fillMaxSize()
       )

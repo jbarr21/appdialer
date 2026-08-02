@@ -5,8 +5,8 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import androidx.core.content.getSystemService
-import coil.Coil
-import coil.ImageLoader
+import coil3.ImageLoader
+import coil3.SingletonImageLoader
 import dagger.hilt.android.HiltAndroidApp
 import io.github.jbarr21.appdialer.data.UserPreferencesRepo
 import io.github.jbarr21.appdialer.service.KeepAliveService
@@ -35,7 +35,7 @@ class AppDialerApplication : Application(), CoroutineScope {
     Timber.tag("JIM").d("Application created")
     Flipper.init(this)
     createNotificationChannel()
-    Coil.setImageLoader(imageLoader)
+    SingletonImageLoader.setSafe { imageLoader }
     GlobalScope.launch(Dispatchers.IO) {
       KeepAliveService.start(this@AppDialerApplication, userPreferencesRepo)
     }
