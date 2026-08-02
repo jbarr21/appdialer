@@ -51,7 +51,7 @@ class MainViewModel @Inject constructor(
     query = query.plus(dialerButton)
     queryText = query.asText()
     trie.predictWord(queryText)
-      .sortedBy { it.label.toLowerCase() }
+      .sortedBy { it.label.lowercase() }
       .also { apps -> filteredApps = apps }
   }
 
@@ -102,8 +102,6 @@ class MainViewModel @Inject constructor(
     vibrator.vibrate()
     if (button.isClearButton) {
       navController.navigate(Screen.Settings.toString())
-    } else if (button.digit == 7) {
-      activityLauncher.startShowkase()
     }
   }
 
