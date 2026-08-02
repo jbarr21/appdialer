@@ -9,6 +9,8 @@ composeMaterial3 = "1.4.0"
 coroutines = "1.11.0"
 espresso = "3.7.0"
 kotlin = "2.4.10"
+ktfmt = "0.64"
+ktfmtGradle = "0.26.0"
 ksp = "2.3.10"
 lifecycle = "2.10.0"
 room = "2.8.4"
@@ -22,11 +24,13 @@ metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ktfmt = { id = "com.ncorti.ktfmt.gradle", version.ref = "ktfmtGradle" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 [libraries]
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp"}
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+ktfmt-formatter = { module = "com.facebook:ktfmt", version.ref = "ktfmt" }
 
 androidx-activity-compose = "androidx.activity:activity-compose:1.13.0"
 androidx-appcompat = "androidx.appcompat:appcompat:1.7.1"

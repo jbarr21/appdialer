@@ -1,6 +1,7 @@
 plugins {
   id("com.android.application")
   alias(libs.plugins.kotlin.compose)
+  alias(libs.plugins.ktfmt)
   alias(libs.plugins.ksp)
   alias(libs.plugins.metro)
 }
@@ -16,9 +17,7 @@ android {
     versionName = "0.0.3"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
-  buildFeatures {
-    compose = true
-  }
+  buildFeatures { compose = true }
   buildTypes {
     getByName("release") {
       isMinifyEnabled = true
@@ -31,19 +30,12 @@ android {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
   }
-  packagingOptions {
-    resources {
-      excludes += "META-INF/kotlinx_coroutines_core.version"
-    }
-  }
-  sourceSets {
-    map {
-      it.java.srcDir("src/${it.name}/kotlin")
-    }
-  }
+  packagingOptions { resources { excludes += "META-INF/kotlinx_coroutines_core.version" } }
+  sourceSets { map { it.java.srcDir("src/${it.name}/kotlin") } }
 }
 
 dependencies {
+  ktfmt(libs.ktfmt.formatter)
   ksp(libs.androidx.room.apt)
 
   implementation(libs.androidx.activity.compose)
