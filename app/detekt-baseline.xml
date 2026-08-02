@@ -1,0 +1,95 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComposableParamOrder:InfoScreen.kt:@Composable fun InfoScreen</ID>
+    <ID>ComposableParamOrder:MainScreen.kt:@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class) @Composable fun MainScreen</ID>
+    <ID>ComposableParamOrder:SettingsScreen.kt:@Composable fun SettingsScreen</ID>
+    <ID>ExplicitItLambdaParameter:SettingsScreen.kt:{ it -&gt; Surface(modifier = Modifier .fillMaxSize() .padding(it)) { Column { SettingsGroup("General") SettingsItem( listItem = viewModel.settingsData[0], checked = viewModel.userPreferences.useHapticFeedback, onCheckedChange = { viewModel.updateUseHaptipFeedback(it) } ) SettingsItem( listItem = viewModel.settingsData[1], checked = viewModel.userPreferences.usePersistentService, onCheckedChange = { viewModel.updateUsePersistentService(it) } ) } } }</ID>
+    <ID>ForbiddenComment:App.kt:App$// TODO: fine tune color selection</ID>
+    <ID>ForbiddenComment:Trie.kt:Trie$// TODO: support matching at more than just the first letter of the label</ID>
+    <ID>FunctionNaming:AppActionSheetContent.kt:@Composable fun AppActionSheetContent</ID>
+    <ID>FunctionNaming:AppActionSheetContent.kt:@ThemePreviews @Composable fun AppActionSheetContent</ID>
+    <ID>FunctionNaming:AppDialerApp.kt:@OptIn(ExperimentalAnimationApi::class) @Composable fun AppDialerApp</ID>
+    <ID>FunctionNaming:AppDialerTopBar.kt:@OptIn(ExperimentalMaterial3Api::class) @Composable fun AppDialerTopBar</ID>
+    <ID>FunctionNaming:AppDialerTopBar.kt:@ThemePreviews @Composable fun AppDialerTopBarPreview</ID>
+    <ID>FunctionNaming:AppGrid.kt:@Composable fun AppGridEmpty</ID>
+    <ID>FunctionNaming:AppGrid.kt:@Composable fun AppGridLoading</ID>
+    <ID>FunctionNaming:AppGrid.kt:@OptIn(ExperimentalMaterialApi::class) @Composable fun AppGrid</ID>
+    <ID>FunctionNaming:AppGrid.kt:@ThemePreviews @Composable fun AppGridPreview</ID>
+    <ID>FunctionNaming:AppGrid.kt:@ThemePreviews @Preview(widthDp = 300, heightDp = 300) @Composable fun EmptyAppGridPreview</ID>
+    <ID>FunctionNaming:AppGrid.kt:@ThemePreviews @Preview(widthDp = 300, heightDp = 300) @Composable fun LoadingAppGridPreview</ID>
+    <ID>FunctionNaming:AppItem.kt:@OptIn(ExperimentalFoundationApi::class) @Composable fun AppItem</ID>
+    <ID>FunctionNaming:AppItem.kt:@ThemePreviews @Composable fun AppItemPreview</ID>
+    <ID>FunctionNaming:AppTheme.kt:@SuppressLint("NewApi") @Composable fun AppTheme</ID>
+    <ID>FunctionNaming:ColorButtons.kt:@Composable fun ColorButtons</ID>
+    <ID>FunctionNaming:ColorButtons.kt:@Preview @Composable fun ColorButtonsPreview</ID>
+    <ID>FunctionNaming:DialerGrid.kt:@Composable fun DialerGrid</ID>
+    <ID>FunctionNaming:DialerGrid.kt:@ThemePreviews @Composable fun DialerGridPreview</ID>
+    <ID>FunctionNaming:DialerItem.kt:@OptIn(ExperimentalFoundationApi::class) @Composable fun DialerItem</ID>
+    <ID>FunctionNaming:DialerItem.kt:@ThemePreviews @Composable fun DialerItemPreview</ID>
+    <ID>FunctionNaming:InfoScreen.kt:@Composable fun InfoContent</ID>
+    <ID>FunctionNaming:InfoScreen.kt:@Composable fun InfoScreen</ID>
+    <ID>FunctionNaming:InfoScreen.kt:@ThemePreviews @Composable fun InfoScreenLoadingPreview</ID>
+    <ID>FunctionNaming:InfoScreen.kt:@ThemePreviews @Composable fun InfoScreenPreview</ID>
+    <ID>FunctionNaming:MainScreen.kt:@OptIn(ExperimentalMaterial3Api::class) @Composable fun MainScreenContent</ID>
+    <ID>FunctionNaming:MainScreen.kt:@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class) @Composable fun MainScreen</ID>
+    <ID>FunctionNaming:SettingsScreen.kt:@Composable fun SettingsGroup</ID>
+    <ID>FunctionNaming:SettingsScreen.kt:@Composable fun SettingsItem</ID>
+    <ID>FunctionNaming:SettingsScreen.kt:@Composable fun SettingsScreen</ID>
+    <ID>FunctionNaming:SettingsScreen.kt:@ThemePreviews @Composable fun SettingsScreenPreview</ID>
+    <ID>FunctionParameterNaming:MainScreen.kt:AppActionSheet: @Composable () -&gt; Unit</ID>
+    <ID>FunctionParameterNaming:MainScreen.kt:AppGrid: @Composable (PaddingValues) -&gt; Unit</ID>
+    <ID>FunctionParameterNaming:MainScreen.kt:Dialer: @Composable ColumnScope.() -&gt; Unit</ID>
+    <ID>MagicNumber:AppGraph.kt:DialerModule$10</ID>
+    <ID>MagicNumber:DialerModule.kt:DialerModule$10</ID>
+    <ID>MagicNumber:InfoScreen.kt:100</ID>
+    <ID>MagicNumber:InfoScreen.kt:121</ID>
+    <ID>MagicNumber:InfoScreen.kt:142</ID>
+    <ID>MagicNumber:InfoScreen.kt:42</ID>
+    <ID>MagicNumber:KeepAliveService.kt:KeepAliveService$1337</ID>
+    <ID>MagicNumber:MainViewModel.kt:MainViewModel$3000</ID>
+    <ID>MagicNumber:PreviewData.kt:PreviewData$256</ID>
+    <ID>MagicNumber:Vibrator.kt:Vibrator$500</ID>
+    <ID>MatchingDeclarationName:User.kt:UserCache</ID>
+    <ID>MaxLineLength:App.kt:App$&amp;&amp;</ID>
+    <ID>ModifierMissing:AppActionSheetContent.kt:@Composable fun AppActionSheetContent</ID>
+    <ID>ModifierMissing:AppDialerTopBar.kt:@OptIn(ExperimentalMaterial3Api::class) @Composable fun AppDialerTopBar</ID>
+    <ID>ModifierMissing:AppGrid.kt:@Composable fun AppGridEmpty</ID>
+    <ID>ModifierMissing:AppGrid.kt:@Composable fun AppGridLoading</ID>
+    <ID>ModifierMissing:AppGrid.kt:@OptIn(ExperimentalMaterialApi::class) @Composable fun AppGrid</ID>
+    <ID>ModifierMissing:AppItem.kt:@OptIn(ExperimentalFoundationApi::class) @Composable fun AppItem</ID>
+    <ID>ModifierMissing:ColorButtons.kt:@Composable fun ColorButtons</ID>
+    <ID>ModifierMissing:DialerGrid.kt:@Composable fun DialerGrid</ID>
+    <ID>ModifierMissing:DialerItem.kt:@OptIn(ExperimentalFoundationApi::class) @Composable fun DialerItem</ID>
+    <ID>ModifierMissing:InfoScreen.kt:@Composable fun InfoScreen</ID>
+    <ID>ModifierMissing:MainScreen.kt:@OptIn(ExperimentalMaterial3Api::class) @Composable fun MainScreenContent</ID>
+    <ID>ModifierMissing:SettingsScreen.kt:@Composable fun SettingsGroup</ID>
+    <ID>ModifierMissing:SettingsScreen.kt:@Composable fun SettingsItem</ID>
+    <ID>ModifierMissing:SettingsScreen.kt:@Composable fun SettingsScreen</ID>
+    <ID>NewLineAtEndOfFile:AppDao.kt:io.github.jbarr21.appdialer.data.db.AppDao.kt</ID>
+    <ID>NewLineAtEndOfFile:AppDatabase.kt:io.github.jbarr21.appdialer.data.db.AppDatabase.kt</ID>
+    <ID>NewLineAtEndOfFile:AppEntity.kt:io.github.jbarr21.appdialer.data.db.AppEntity.kt</ID>
+    <ID>NewLineAtEndOfFile:Channels.kt:io.github.jbarr21.appdialer.util.Channels.kt</ID>
+    <ID>NewLineAtEndOfFile:ModelMappers.kt:io.github.jbarr21.appdialer.data.ModelMappers.kt</ID>
+    <ID>NewLineAtEndOfFile:ThemePreviews.kt:io.github.jbarr21.appdialer.ui.preview.ThemePreviews.kt</ID>
+    <ID>NewLineAtEndOfFile:TrieTest.kt:io.github.jbarr21.appdialer.TrieTest.kt</ID>
+    <ID>NewLineAtEndOfFile:UserPreferencesRepo.kt:io.github.jbarr21.appdialer.data.UserPreferencesRepo.kt</ID>
+    <ID>PreviewAnnotationNaming:ThemePreviews.kt:ThemePreviews</ID>
+    <ID>PreviewPublic:AppActionSheetContent.kt:@ThemePreviews @Composable fun AppActionSheetContent</ID>
+    <ID>PreviewPublic:AppDialerTopBar.kt:@ThemePreviews @Composable fun AppDialerTopBarPreview</ID>
+    <ID>PreviewPublic:AppGrid.kt:@ThemePreviews @Composable fun AppGridPreview</ID>
+    <ID>PreviewPublic:AppGrid.kt:@ThemePreviews @Preview(widthDp = 300, heightDp = 300) @Composable fun EmptyAppGridPreview</ID>
+    <ID>PreviewPublic:AppGrid.kt:@ThemePreviews @Preview(widthDp = 300, heightDp = 300) @Composable fun LoadingAppGridPreview</ID>
+    <ID>PreviewPublic:AppItem.kt:@ThemePreviews @Composable fun AppItemPreview</ID>
+    <ID>PreviewPublic:ColorButtons.kt:@Preview @Composable fun ColorButtonsPreview</ID>
+    <ID>PreviewPublic:DialerGrid.kt:@ThemePreviews @Composable fun DialerGridPreview</ID>
+    <ID>PreviewPublic:DialerItem.kt:@ThemePreviews @Composable fun DialerItemPreview</ID>
+    <ID>PreviewPublic:InfoScreen.kt:@ThemePreviews @Composable fun InfoScreenLoadingPreview</ID>
+    <ID>PreviewPublic:InfoScreen.kt:@ThemePreviews @Composable fun InfoScreenPreview</ID>
+    <ID>PreviewPublic:SettingsScreen.kt:@ThemePreviews @Composable fun SettingsScreenPreview</ID>
+    <ID>SwallowedException:ActivityLauncher.kt:ActivityLauncher$anfe: ActivityNotFoundException</ID>
+    <ID>TooManyFunctions:AppGraph.kt:AppGraph</ID>
+    <ID>UnusedParameter:Trie.kt:Trie.TrieNode$ch: Char</ID>
+  </CurrentIssues>
+</SmellBaseline>
