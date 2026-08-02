@@ -1,5 +1,6 @@
 plugins {
   id("com.android.application")
+  alias(libs.plugins.detekt)
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.ktfmt)
   alias(libs.plugins.ksp)
