@@ -21,6 +21,9 @@ import io.github.jbarr21.appdialer.util.ActivityLauncher
 import io.github.jbarr21.appdialer.util.Trie
 import io.github.jbarr21.appdialer.util.Vibrator
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class MainViewModel @Inject constructor(
@@ -34,6 +37,7 @@ class MainViewModel @Inject constructor(
   private var allApps by mutableStateOf(emptyList<App>())
   private var query by mutableStateOf(listOf<DialerButton>())
   private var trie = Trie<App>()
+  private var loadAppsJob: Job? = null
 
   val buttonColors = listOf(0xff2196f3, 0xfff44336, 0xffffeb3b, 0xff4caf50, 0xff888888).map { Color(it) }
   var selectedApp = mutableStateOf<App?>(null)
@@ -59,17 +63,24 @@ class MainViewModel @Inject constructor(
   }
 
   fun loadApps(useCache: Boolean = true) {
+    loadAppsJob?.cancel()
     isRefreshing = true
-    viewModelScope.launch {
-      appRepo.loadApps(useCache).let { apps ->
-        allApps = apps
-        if (query.isEmpty()) {
-          filteredApps = apps
+    loadAppsJob = viewModelScope.launch {
+      try {
+        appRepo.loadApps(useCache).let { apps ->
+          allApps = apps
+          if (query.isEmpty()) {
+            filteredApps = apps
+          }
+          trie.clear()
+          apps.forEach { trie.add(it.label, it) }
+          delay(3000)
         }
-        trie.clear()
-        apps.forEach { trie.add(it.label, it) }
-        delay(3000)
-        isRefreshing = false
+      } finally {
+        if (currentCoroutineContext().isActive) {
+          isRefreshing = false
+          loadAppsJob = null
+        }
       }
     }
   }
