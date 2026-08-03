@@ -1,6 +1,7 @@
 package io.github.jbarr21.appdialer.util
 
 import android.app.ActivityManager
+import android.content.pm.LauncherActivityInfo
 import android.content.pm.LauncherApps
 import android.content.pm.PackageManager
 import android.content.res.Resources
@@ -16,6 +17,7 @@ import coil3.fetch.FetchResult
 import coil3.decode.DataSource
 import coil3.request.Options
 import io.github.jbarr21.appdialer.data.UserCache
+import io.github.jbarr21.appdialer.data.id
 import io.github.jbarr21.appdialer.data.isMain
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
@@ -31,6 +33,7 @@ class AppIconFetcher @Inject constructor(
   private val data: Uri
 ) : Fetcher {
 
+  private val activityInfoCache = LruCache<String, LauncherActivityInfo>(256)
   private val dpi by lazy { activityManager.launcherLargeIconDensity }
   private val defaultAppIcon by lazy {
     Resources.getSystem().getDrawableForDensity(android.R.mipmap.sym_def_app_icon, dpi)
@@ -77,9 +80,14 @@ class AppIconFetcher @Inject constructor(
 
   private fun getFullResIcon(packageName: String, activityName: String, user: UserHandle): Drawable {
     try {
-      return launcherApps.getActivityList(packageName, user).let {
-        if (it.size == 1) it.first() else it.first { it.componentName.className == activityName }
-      }.getIcon(dpi).let { icon ->
+      val cacheKey = "$packageName:$activityName:${user.id}"
+      val activityInfo = activityInfoCache.get(cacheKey) ?: launcherApps
+        .getActivityList(packageName, user)
+        .let { activities ->
+          if (activities.size == 1) activities.first() else activities.first { it.componentName.className == activityName }
+        }
+        .also { activityInfoCache.put(cacheKey, it) }
+      return activityInfo.getIcon(dpi).let { icon ->
         if (user.isMain) icon else packageManager.getUserBadgedIcon(icon, user)
       }
     } catch (ignored: PackageManager.NameNotFoundException) { } catch (ignored: Resources.NotFoundException) { }
