@@ -58,52 +58,68 @@ fun MainScreen(
     )
   )
 
-  val appGrid: @Composable (PaddingValues) -> Unit = @Composable {
-    AppGrid(
-      apps = viewModel.filteredApps,
-      query = viewModel.queryText,
-      numColumns = if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) 6 else 4,
-      isRefreshing = viewModel.isRefreshing,
-      onClick = { viewModel.onAppClicked(context, it) },
-      onLongClick = {
-        val app = viewModel.onAppLongClicked(it)
-        app?.let {
-          scope.launch { appActionSheetState.show() }
+  val appGrid: @Composable (PaddingValues) -> Unit = remember(
+    viewModel,
+    context,
+    windowSizeClass,
+    scope,
+    appActionSheetState,
+  ) {
+    @Composable {
+      AppGrid(
+        apps = viewModel.filteredApps,
+        query = viewModel.queryText,
+        numColumns = if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) 6 else 4,
+        isRefreshing = viewModel.isRefreshing,
+        onClick = { viewModel.onAppClicked(context, it) },
+        onLongClick = {
+          val app = viewModel.onAppLongClicked(it)
+          app?.let {
+            scope.launch { appActionSheetState.show() }
+          }
+        },
+        onRefresh = { viewModel.loadApps(false) }
+      )
+    }
+  }
+
+  val dialer: @Composable ColumnScope.() -> Unit = remember(viewModel, navController) {
+    @Composable {
+      DialerGrid(
+        buttons = viewModel.dialerLabels,
+        buttonColors = viewModel.buttonColors,
+        onClick = viewModel.onDialerClicked,
+        onLongClick = { viewModel.onDialerLongClickedDecorated(it, navController) })
+    }
+  }
+
+  val appActionSheet: @Composable () -> Unit = remember(
+    viewModel,
+    scope,
+    appActionSheetState,
+  ) {
+    @Composable {
+      viewModel.selectedApp.value?.let { selectedApp ->
+        ModalBottomSheet(
+          onDismissRequest = { scope.launch {
+            viewModel.onAppLongClicked(null)
+            appActionSheetState.show()
+          }},
+          modifier = Modifier.wrapContentHeight(align = Alignment.Bottom),
+          sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+          shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
+          scrimColor = Color.Black.copy(alpha = 0.5f),
+        ) {
+          AppActionSheetContent(
+            selectedApp,
+            viewModel.appLongClickActions,
+            onActionClick = { viewModel.selectedApp.value = null },
+            onDismiss = { viewModel.onAppLongClicked(null) }
+          )
         }
-      },
-      onRefresh = { viewModel.loadApps(false) }
-    )
-  }
-
-  val dialer: @Composable ColumnScope.() -> Unit = {
-    DialerGrid(
-      buttons = viewModel.dialerLabels,
-      buttonColors = viewModel.buttonColors,
-      onClick = viewModel.onDialerClicked,
-      onLongClick = { viewModel.onDialerLongClickedDecorated(it, navController) })
-  }
-
-  val appActionSheet: @Composable () -> Unit = {
-    viewModel.selectedApp.value?.let { selectedApp ->
-      ModalBottomSheet(
-        onDismissRequest = { scope.launch {
-          viewModel.onAppLongClicked(null)
-          appActionSheetState.show()
-        }},
-        modifier = Modifier.wrapContentHeight(align = Alignment.Bottom),
-        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-        shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
-        scrimColor = Color.Black.copy(alpha = 0.5f),
-      ) {
-        AppActionSheetContent(
-          selectedApp,
-          viewModel.appLongClickActions,
-          onActionClick = { viewModel.selectedApp.value = null },
-          onDismiss = { viewModel.onAppLongClicked(null) }
-        )
       }
     }
-  } ?: { }
+  }
 
   MainScreenContent(appGrid, dialer, appActionSheet, appActionSheetState, dialerScaffoldState)
 }
