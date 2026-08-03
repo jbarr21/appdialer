@@ -6,7 +6,7 @@ import java.util.*
 // TODO: support matching at more than just the first letter of the label
 class Trie<T>(val root: TrieNode<T> = TrieNode(key = ' ')) {
 
-  private val keyMappings = DialerModule.keyMappings()
+  private val keyMappings = DialerModule.keyMappings
 
   fun add(word: String, value: T? = null) {
     var node = root

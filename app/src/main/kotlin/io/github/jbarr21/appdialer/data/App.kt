@@ -37,7 +37,7 @@ data class App(
   }
 
   fun annotatedLabel(query: String): AnnotatedString {
-    val keyMappings = DialerModule.keyMappings()
+    val keyMappings = DialerModule.keyMappings
     var matching = 0
     while (matching < query.length && matching < label.length
         && keyMappings.keyForValueContainingChar(label[matching]) == keyMappings.keyForValueContainingChar(query[matching])) {
