@@ -19,21 +19,19 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import io.github.jbarr21.appdialer.R
 import io.github.jbarr21.appdialer.data.SimpleListItem
 import io.github.jbarr21.appdialer.ui.AppTheme
 import io.github.jbarr21.appdialer.ui.common.AppDialerTopBar
-import io.github.jbarr21.appdialer.ui.preview.FakeNavController
 import io.github.jbarr21.appdialer.ui.preview.ThemePreviews
+import io.github.jbarr21.appdialer.ui.SettingsCircuitState
 
 @Composable
 fun SettingsScreen(
-  viewModel: SettingsViewModel = viewModel(),
-  navController: NavController
+  state: SettingsCircuitState,
 ) {
-  Scaffold(topBar = { AppDialerTopBar(title = "Settings", navController = navController) }) { it ->
+  val viewModel = state.viewModel
+  Scaffold(topBar = { AppDialerTopBar(title = "Settings", showNavigationIcon = true, onBack = { state.navigator.pop() }) }) { it ->
     Surface(modifier = Modifier
       .fillMaxSize()
       .padding(it)) {
@@ -99,7 +97,7 @@ fun SettingsScreenPreview() {
   AppTheme {
     Surface {
       Column {
-        AppDialerTopBar(title = "Settings", navController = FakeNavController.create(showNavIcon = true))
+        AppDialerTopBar(title = "Settings", showNavigationIcon = true)
 
         SettingsGroup(title = "General")
 
