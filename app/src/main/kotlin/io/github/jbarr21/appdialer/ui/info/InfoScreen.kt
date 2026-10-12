@@ -11,16 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import io.github.jbarr21.appdialer.ui.AppTheme
 import io.github.jbarr21.appdialer.ui.common.AppDialerTopBar
 import io.github.jbarr21.appdialer.ui.preview.ThemePreviews
+import io.github.jbarr21.appdialer.ui.InfoCircuitState
 
 @Composable
-fun InfoScreen(viewModel: InfoViewModel = viewModel(), navController: NavController) {
-  Scaffold(topBar = { AppDialerTopBar(title = "Info", navController = navController) }) {
-    InfoContent(viewModel.appStats, Modifier.padding(it))
+fun InfoScreen(state: InfoCircuitState) {
+  Scaffold(topBar = { AppDialerTopBar(title = "Info", showNavigationIcon = true, onBack = { state.navigator.pop() }) }) {
+    InfoContent(state.viewModel.appStats, Modifier.padding(it))
   }
 }
 

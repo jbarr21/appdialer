@@ -18,8 +18,6 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberModalBottomSheetState
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -32,19 +30,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import io.github.jbarr21.appdialer.ui.main.apps.AppGrid
 import io.github.jbarr21.appdialer.ui.main.dialer.DialerGrid
 import kotlinx.coroutines.launch
+import io.github.jbarr21.appdialer.ui.MainCircuitState
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-  viewModel: MainViewModel = viewModel(),
-  navController: NavController,
-  windowSizeClass: WindowSizeClass,
+  state: MainCircuitState,
 ) {
+  val viewModel = state.viewModel
+  val navigator = state.navigator
   val context = LocalContext.current
   val scope = rememberCoroutineScope()
   val appActionSheetState = rememberModalBottomSheetState(
@@ -61,7 +58,6 @@ fun MainScreen(
   val appGrid: @Composable (PaddingValues) -> Unit = remember(
     viewModel,
     context,
-    windowSizeClass,
     scope,
     appActionSheetState,
   ) {
@@ -69,7 +65,7 @@ fun MainScreen(
       AppGrid(
         apps = viewModel.filteredApps,
         query = viewModel.queryText,
-        numColumns = if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) 6 else 4,
+        numColumns = if (androidx.compose.ui.platform.LocalConfiguration.current.screenWidthDp >= 600) 6 else 4,
         isRefreshing = viewModel.isRefreshing,
         onClick = { viewModel.onAppClicked(context, it) },
         onLongClick = {
@@ -83,13 +79,15 @@ fun MainScreen(
     }
   }
 
-  val dialer: @Composable ColumnScope.() -> Unit = remember(viewModel, navController) {
+  val dialer: @Composable ColumnScope.() -> Unit = remember(viewModel, navigator) {
     @Composable {
       DialerGrid(
         buttons = viewModel.dialerLabels,
         buttonColors = viewModel.buttonColors,
         onClick = viewModel.onDialerClicked,
-        onLongClick = { viewModel.onDialerLongClickedDecorated(it, navController) })
+        onLongClick = {
+          viewModel.onDialerLongClicked(it) { screen -> navigator.goTo(screen) }
+        })
     }
   }
 

@@ -9,14 +9,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import dev.zacsweers.metro.Inject
 import io.github.jbarr21.appdialer.data.App
 import io.github.jbarr21.appdialer.data.AppRepo
 import io.github.jbarr21.appdialer.data.DialerButton
 import io.github.jbarr21.appdialer.data.SimpleListItem
 import io.github.jbarr21.appdialer.data.asText
-import io.github.jbarr21.appdialer.ui.Screen
+import io.github.jbarr21.appdialer.ui.InfoCircuitScreen
+import io.github.jbarr21.appdialer.ui.SettingsCircuitScreen
+import com.slack.circuit.runtime.screen.Screen
 import io.github.jbarr21.appdialer.util.ActivityLauncher
 import io.github.jbarr21.appdialer.util.Trie
 import io.github.jbarr21.appdialer.util.Vibrator
@@ -105,17 +106,17 @@ class MainViewModel @Inject constructor(
     }
   }
 
-  fun onDialerLongClicked(button: DialerButton, navController: NavController) {
+  fun onDialerLongClicked(button: DialerButton, navigate: (Screen) -> Unit) {
     vibrator.vibrate()
     if (button.isClearButton) {
-      navController.navigate(Screen.Settings.toString())
+      navigate(SettingsCircuitScreen)
     }
   }
 
-  fun onDialerLongClickedDecorated(button: DialerButton, navController: NavController) {
-    onDialerLongClicked(button, navController)
+  fun onDialerLongClickedDecorated(button: DialerButton, navigate: (Screen) -> Unit) {
+    onDialerLongClicked(button, navigate)
     if (button.isInfoButton) {
-      navController.navigate(Screen.Info.toString())
+      navigate(InfoCircuitScreen)
     }
   }
 }

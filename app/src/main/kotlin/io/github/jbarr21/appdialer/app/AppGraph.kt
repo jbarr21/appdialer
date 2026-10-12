@@ -10,6 +10,8 @@ import androidx.collection.LruCache
 import androidx.core.content.getSystemService
 import androidx.room.Room
 import coil3.ImageLoader
+import com.slack.circuit.foundation.Circuit
+import com.slack.circuit.runtime.presenter.presenterOf
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
@@ -20,7 +22,16 @@ import io.github.jbarr21.appdialer.data.SimpleListItem
 import io.github.jbarr21.appdialer.data.UserPreferencesRepo
 import io.github.jbarr21.appdialer.data.db.AppDatabase
 import io.github.jbarr21.appdialer.ui.info.InfoViewModel
+import io.github.jbarr21.appdialer.ui.InfoCircuitScreen
+import io.github.jbarr21.appdialer.ui.InfoCircuitState
+import io.github.jbarr21.appdialer.ui.MainCircuitScreen
+import io.github.jbarr21.appdialer.ui.MainCircuitState
+import io.github.jbarr21.appdialer.ui.SettingsCircuitScreen
+import io.github.jbarr21.appdialer.ui.SettingsCircuitState
 import io.github.jbarr21.appdialer.ui.main.MainViewModel
+import io.github.jbarr21.appdialer.ui.main.MainScreen
+import io.github.jbarr21.appdialer.ui.info.InfoScreen
+import io.github.jbarr21.appdialer.ui.settings.SettingsScreen
 import io.github.jbarr21.appdialer.ui.settings.SettingsViewModel
 import io.github.jbarr21.appdialer.util.ActivityLauncher
 import io.github.jbarr21.appdialer.util.AppIconFetcher
@@ -37,6 +48,7 @@ interface AppGraph {
   val mainViewModel: MainViewModel
   val settingsViewModel: SettingsViewModel
   val infoViewModel: InfoViewModel
+  val circuit: Circuit
 
   @DependencyGraph.Factory
   fun interface Factory {
@@ -114,6 +126,26 @@ interface AppGraph {
       iconRes = R.drawable.ic_notifications
     )
   )
+
+  @Provides
+  fun circuit(
+    mainViewModel: MainViewModel,
+    settingsViewModel: SettingsViewModel,
+    infoViewModel: InfoViewModel,
+  ): Circuit = Circuit.Builder()
+    .addPresenter<MainCircuitScreen, MainCircuitState> { _, navigator, _ ->
+      presenterOf { MainCircuitState(mainViewModel, navigator) }
+    }
+    .addUi<MainCircuitScreen, MainCircuitState> { state, _ -> MainScreen(state) }
+    .addPresenter<SettingsCircuitScreen, SettingsCircuitState> { _, navigator, _ ->
+      presenterOf { SettingsCircuitState(settingsViewModel, navigator) }
+    }
+    .addUi<SettingsCircuitScreen, SettingsCircuitState> { state, _ -> SettingsScreen(state) }
+    .addPresenter<InfoCircuitScreen, InfoCircuitState> { _, navigator, _ ->
+      presenterOf { InfoCircuitState(infoViewModel, navigator) }
+    }
+    .addUi<InfoCircuitScreen, InfoCircuitState> { state, _ -> InfoScreen(state) }
+    .build()
 }
 
 private object DialerModule {

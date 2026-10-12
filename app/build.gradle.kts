@@ -2,6 +2,7 @@ plugins {
   id("com.android.application")
   alias(libs.plugins.detekt)
   alias(libs.plugins.kotlin.compose)
+  id("kotlin-parcelize")
   alias(libs.plugins.ktfmt)
   alias(libs.plugins.ksp)
   alias(libs.plugins.metro)
@@ -62,7 +63,8 @@ dependencies {
   implementation(libs.androidx.lifecycle.runtimeKtx)
   implementation(libs.androidx.lifecycle.viewmodelKtx)
 
-  implementation(libs.androidx.navigation.compose)
+  implementation(libs.circuit.foundation)
+
   implementation(libs.androidx.palette)
 
   implementation(libs.androidx.room.ktx)
