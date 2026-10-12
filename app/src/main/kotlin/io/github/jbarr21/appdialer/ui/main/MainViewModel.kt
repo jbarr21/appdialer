@@ -20,7 +20,6 @@ import io.github.jbarr21.appdialer.ui.Screen
 import io.github.jbarr21.appdialer.util.ActivityLauncher
 import io.github.jbarr21.appdialer.util.Trie
 import io.github.jbarr21.appdialer.util.Vibrator
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.Job
@@ -74,7 +73,6 @@ class MainViewModel @Inject constructor(
           }
           trie.clear()
           apps.forEach { trie.add(it.label, it) }
-          delay(3000)
         }
       } finally {
         if (currentCoroutineContext().isActive) {
